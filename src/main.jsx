@@ -1,10 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
 
-import { AuthContextProvider } from './context/AuthContext';
-import { BrowserRouter as Router } from 'react-router-dom';
+import "./index.css";
+import "./public/css/style.css";
+import "./public/css/customizer.css";
+
+import { AuthContextProvider } from "./context/AuthContext";
+import { BrowserRouter as Router } from "react-router-dom";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -14,5 +17,5 @@ ReactDOM.render(
       </AuthContextProvider>
     </Router>
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
