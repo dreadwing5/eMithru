@@ -1,9 +1,9 @@
-import './login.css';
+import "./login.css";
 
-import { useContext, useRef } from 'react';
-import { loginCall } from '../../apiCalls';
-import { AuthContext } from '../../context/AuthContext';
-import CircularProgress from '@mui/material/CircularProgress';
+import { useContext, useRef } from "react";
+import { loginCall } from "../../apiCalls";
+import { AuthContext } from "../../context/AuthContext";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function Login() {
   const userId = useRef();
@@ -13,16 +13,18 @@ export default function Login() {
     loginCall({ userID: userId.current.value }, dispatch);
   };
   return (
-    <div className='login'>
-      <form className='loginBox' onSubmit={handleClick}>
+    <div className="login">
+      <h1 className="text-3xl font-bold underline">Hello world!</h1>
+
+      <form className="loginBox" onSubmit={handleClick}>
         <input
-          placeholder='User ID'
+          placeholder="User ID"
           required
-          className='loginInput'
+          className="loginInput"
           ref={userId}
         />
-        <button className='loginButton' type='submit' disabled={isFetching}>
-          {isFetching ? <CircularProgress /> : 'Log In'}
+        <button className="loginButton" type="submit" disabled={isFetching}>
+          {isFetching ? <CircularProgress /> : "Log In"}
         </button>
       </form>
     </div>
