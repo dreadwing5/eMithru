@@ -2,13 +2,9 @@ import { Route, Routes, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "./context/AuthContext";
 
-// import Login from "./pages/login/Login";
+import Login from "./pages/login/Login";
 import DashBoard from "./pages/dashboard/Dashboard";
 import Messenger from "./pages/messenger/Messenger";
-
-// Tailwind components
-
-import Login from "./tailwind/_Footer";
 
 function App() {
   const { user } = useContext(AuthContext);
