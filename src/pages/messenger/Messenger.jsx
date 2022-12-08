@@ -9,6 +9,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { BASE_URL, SOCKET_URL } from "../../config";
 
 import Navbar from "../../components/navbar/Navbar";
+import Header from "../../components/header/Header";
 import Conversation from "../../components/conversations/Conversation";
 import Message from "../../components/message/Message";
 
@@ -103,7 +104,8 @@ export default function Messenger() {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
+      <Header />
       <div className="messenger">
         <div className="chatMenu">
           <div className="chatMenuWrapper">
