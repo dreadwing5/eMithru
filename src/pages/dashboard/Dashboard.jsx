@@ -178,14 +178,13 @@ export default function Home() {
             {/* Navigation */}
             <ul className="md:flex-col md:min-w-full flex flex-col list-none md:mb-4">
               <li className="inline-flex">
-                <a
-                  href="https://www.creative-tim.com/learning-lab/tailwind/react/colors/notus"
-                  target="_blank"
+                <Link
+                  to="/messenger"
                   className="text-blueGray-700 hover:text-blueGray-500 text-sm block mb-4 no-underline font-semibold"
                 >
                   <i className="fas fa-paint-brush mr-2 text-blueGray-300 text-base"></i>
                   Private Conversation
-                </a>
+                </Link>
               </li>
 
               <li className="inline-flex">
