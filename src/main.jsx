@@ -7,6 +7,8 @@ import "./index.css";
 import { AuthContextProvider } from "./context/AuthContext";
 import { BrowserRouter as Router } from "react-router-dom";
 
+import "tw-elements";
+
 ReactDOM.render(
   <React.StrictMode>
     <Router>
