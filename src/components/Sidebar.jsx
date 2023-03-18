@@ -38,56 +38,49 @@ const navItems = [
     icon: <HomeOutlined />,
   },
   {
-    text: "Client Facing",
+    text: "Profile",
     icon: null,
   },
   {
-    text: "Products",
+    text: "View",
     icon: <ShoppingCartOutlined />,
   },
   {
-    text: "Customers",
+    text: "Update",
     icon: <Groups2Outlined />,
   },
   {
-    text: "Transactions",
-    icon: <ReceiptLongOutlined />,
-  },
-  {
-    text: "Geography",
-    icon: <PublicOutlined />,
-  },
-  {
-    text: "Sales",
+    text: "Meetings",
     icon: null,
   },
   {
-    text: "Overview",
+    text: "Schedule Meetings",
     icon: <PointOfSaleOutlined />,
   },
   {
-    text: "Daily",
+    text: "Upcoming Meeting",
     icon: <TodayOutlined />,
   },
   {
-    text: "Monthly",
-    icon: <CalendarMonthOutlined />,
-  },
-  {
-    text: "Breakdown",
-    icon: <PieChartOutlined />,
-  },
-  {
-    text: "Management",
+    text: "Conversation",
     icon: null,
   },
   {
-    text: "Admin",
-    icon: <AdminPanelSettingsOutlined />,
+    text: "Private Conversation",
+    icon: <TodayOutlined />,
   },
   {
-    text: "Performance",
-    icon: <TrendingUpOutlined />,
+    text: "Support Bot",
+    icon: <TodayOutlined />,
+  },
+
+  {
+    text: "Attendance",
+    icon: null,
+  },
+  {
+    text: "View Attendance",
+    icon: <TodayOutlined />,
   },
 ];
 

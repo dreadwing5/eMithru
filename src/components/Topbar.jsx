@@ -1,5 +1,6 @@
-import { useContext } from "react";
+import { useContext, createRef, useEffect } from "react";
 import { ColorModeContext } from "../context/ThemeContext";
+
 import {
   LightModeOutlined,
   DarkModeOutlined,
@@ -29,6 +30,10 @@ import FlexBetween from "./FlexBetween";
 const Topbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
+
+  const handleClick = () => {
+    colorMode.toggleColorMode();
+  };
 
   return (
     <AppBar
@@ -61,7 +66,7 @@ const Topbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         {/* RIGHT SIDE */}
 
         <FlexBetween gap="1.5rem">
-          <IconButton onClick={colorMode.toggleColorMode}>
+          <IconButton onClick={handleClick}>
             {theme.palette.mode === "light" ? (
               <LightModeOutlined sx={{ fontSize: "25px" }} />
             ) : (
