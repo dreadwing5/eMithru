@@ -18,12 +18,17 @@ function App() {
         <div className="app">
           <main className="content">
             <Routes>
-              <Route element={Layout}>
-                <Route path="/" element={DashBoard} />
+              <Route element={<Layout />}>
+                <Route
+                  path="/"
+                  element={
+                    user ? <DashBoard /> : <Navigate replace to="/login" />
+                  }
+                />
               </Route>
               <Route
                 path="/login"
-                element={user ? <Navigate replace to="/" /> : <Login />}
+                element={user ? <Navigate replace to="/" /> : <LogIn />}
               />
             </Routes>
           </main>
