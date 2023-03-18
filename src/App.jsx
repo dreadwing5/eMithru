@@ -7,6 +7,8 @@ import DashBoard from "./scenes/dashboard/Dashboard";
 import { AuthContext } from "./context/AuthContext";
 
 import Layout from "./scenes/layout/Layout";
+import Messenger from "./scenes/messenger/Messenger";
+import CreateAccount from "./scenes/profile/CreateAccount";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -23,6 +25,16 @@ function App() {
                   path="/"
                   element={
                     user ? <DashBoard /> : <Navigate replace to="/login" />
+                  }
+                />
+                <Route
+                  path="/messenger"
+                  element={!user ? <Navigate replace to="/" /> : <Messenger />}
+                />
+                <Route
+                  path="/create-account"
+                  element={
+                    user ? <CreateAccount /> : <Navigate replace to="/login" />
                   }
                 />
               </Route>
