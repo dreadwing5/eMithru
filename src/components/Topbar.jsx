@@ -1,6 +1,8 @@
 import { useContext, createRef, useEffect } from "react";
 import { ColorModeContext } from "../context/ThemeContext";
 
+import { useNavigate } from "react-router-dom";
+import { logoutCall } from "../apiCalls";
 import {
   LightModeOutlined,
   DarkModeOutlined,
@@ -31,8 +33,16 @@ const Topbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
 
+  const navigate = useNavigate();
+
   const handleClick = () => {
     colorMode.toggleColorMode();
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    logoutCall({ type: "LOGOUT" });
+    navigate("/login");
   };
 
   return (
@@ -66,6 +76,9 @@ const Topbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         {/* RIGHT SIDE */}
 
         <FlexBetween gap="1.5rem">
+          <IconButton style={{ color: "red" }} onClick={handleLogout}>
+            Logout
+          </IconButton>
           <IconButton onClick={handleClick}>
             {theme.palette.mode === "light" ? (
               <LightModeOutlined sx={{ fontSize: "25px" }} />
