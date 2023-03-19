@@ -1,3 +1,4 @@
+import * as React from "react";
 import { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import { formatDate } from "@fullcalendar/core";
@@ -5,6 +6,14 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import listPlugin from "@fullcalendar/list";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+
 import {
   Box,
   List,
@@ -18,9 +27,21 @@ import {
 const Calendar = () => {
   const theme = useTheme();
   const [currentEvents, setCurrentEvents] = useState([]);
+  const [open, setOpen] = React.useState(false);
+  const [selected, setSelected] = useState({});
 
   const handleDateClick = (selected) => {
-    const title = prompt("Please enter a new title for your event");
+    setSelected(selected);
+    setOpen(true);
+  };
+
+  const Close = () => {
+    setOpen(false);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    const title = "Test";
     const calendarApi = selected.view.calendar;
     calendarApi.unselect();
 
@@ -122,6 +143,75 @@ const Calendar = () => {
             ]}
           />
         </Box>
+
+        <Dialog open={open} onClose={handleClose}>
+          <DialogTitle>New Event</DialogTitle>
+          <DialogContent>
+            {/* <TextField
+          margin="dense"
+          label="Size"
+          id="outlined-size-small"
+          defaultValue="Small"
+          size="small"
+        /> */}
+            <Box
+              component="form"
+              sx={{
+                "& .MuiTextField-root": { m: 1, width: "25ch" },
+              }}
+              noValidate
+              autoComplete="off"
+            >
+              <div>
+                <TextField
+                  label="Title"
+                  id="standard-size-small"
+                  defaultValue=""
+                  size="small"
+                  variant="standard"
+                />
+                <TextField
+                  label="Location"
+                  id="standard-size-small"
+                  defaultValue="mall"
+                  size="small"
+                  variant="standard"
+                />{" "}
+              </div>
+              <div>
+                <TextField
+                  id="date"
+                  label="Start Date"
+                  type="date"
+                  defaultValue="2017-05-24"
+                  size="small"
+                  variant="standard"
+                />
+                <TextField
+                  id="date"
+                  label="End Date"
+                  type="date"
+                  defaultValue="2017-05-24"
+                  size="small"
+                  variant="standard"
+                />
+              </div>
+              <div>
+                <TextField
+                  label="Type Of Meeting"
+                  id="standard-size-small"
+                  defaultValue=""
+                  size="small"
+                  variant="standard"
+                />
+              </div>
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={Close}>Cancel</Button>
+            <Button onClick={handleClose}>Save</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Box>
   );
