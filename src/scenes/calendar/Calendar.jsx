@@ -54,6 +54,11 @@ const Calendar = () => {
         allDay: selected.allDay,
       });
     }
+
+    //Time wise : 9:30 - 10:50 (documentation)
+    //Event -> Backend log
+    // Save Type of meeting
+    // User claendar _> use Effect-> Events fetch
   };
 
   const handleEventClick = (selected) => {
@@ -133,7 +138,7 @@ const Calendar = () => {
               {
                 id: "12315",
                 title: "All-day event",
-                date: "2022-09-14",
+                date: "2023-03-19",
               },
               {
                 id: "5123",

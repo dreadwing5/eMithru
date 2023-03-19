@@ -7,8 +7,9 @@ import DashBoard from "./scenes/dashboard/Dashboard";
 import { AuthContext } from "./context/AuthContext";
 import Layout from "./scenes/layout/Layout";
 import Messenger from "./scenes/messenger/Messenger";
-import CreateAccount from "./scenes/profile/CreateAccount";
 import Calendar from "./scenes/calendar/Calendar";
+import UserCreate from "./scenes/UserCreate";
+import UserProfile from "./scenes/UserProfile";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -32,9 +33,15 @@ function App() {
                   element={!user ? <Navigate replace to="/" /> : <Messenger />}
                 />
                 <Route
-                  path="/create-account"
+                  path="/create-user"
                   element={
-                    user ? <CreateAccount /> : <Navigate replace to="/login" />
+                    user ? <UserCreate /> : <Navigate replace to="/login" />
+                  }
+                />
+                <Route
+                  path="/profile"
+                  element={
+                    user ? <UserProfile /> : <Navigate replace to="/login" />
                   }
                 />
                 <Route path="/calendar" element={<Calendar />} />
