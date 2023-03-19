@@ -1,8 +1,7 @@
 import { useContext, createRef, useEffect } from "react";
 import { ColorModeContext } from "../context/ThemeContext";
-
 import { useNavigate } from "react-router-dom";
-import { logoutCall } from "../apiCalls";
+
 import {
   LightModeOutlined,
   DarkModeOutlined,
@@ -12,6 +11,7 @@ import {
   ArrowDropDownOutlined,
   NotificationsOutlined,
   PersonOutlined,
+  LogoutOutlined,
 } from "@mui/icons-material";
 
 import {
@@ -29,9 +29,12 @@ import {
 
 import FlexBetween from "./FlexBetween";
 
+import { AuthContext } from "../context/AuthContext";
+
 const Topbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const theme = useTheme();
   const colorMode = useContext(ColorModeContext);
+  const { dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -40,8 +43,7 @@ const Topbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem("user");
-    logoutCall({ type: "LOGOUT" });
+    dispatch({ type: "LOGOUT" });
     navigate("/login");
   };
 
@@ -76,8 +78,8 @@ const Topbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
         {/* RIGHT SIDE */}
 
         <FlexBetween gap="1.5rem">
-          <IconButton style={{ color: "red" }} onClick={handleLogout}>
-            Logout
+          <IconButton onClick={handleLogout}>
+            <LogoutOutlined sx={{ fontSize: "25px" }} />
           </IconButton>
           <IconButton onClick={handleClick}>
             {theme.palette.mode === "light" ? (
