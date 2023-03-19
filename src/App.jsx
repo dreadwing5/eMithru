@@ -5,10 +5,10 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import LogIn from "./scenes/login/Login";
 import DashBoard from "./scenes/dashboard/Dashboard";
 import { AuthContext } from "./context/AuthContext";
-
 import Layout from "./scenes/layout/Layout";
 import Messenger from "./scenes/messenger/Messenger";
 import CreateAccount from "./scenes/profile/CreateAccount";
+import Calendar from "./scenes/calendar/Calendar";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -37,6 +37,7 @@ function App() {
                     user ? <CreateAccount /> : <Navigate replace to="/login" />
                   }
                 />
+                <Route path="/calendar" element={<Calendar />} />
               </Route>
               <Route
                 path="/login"

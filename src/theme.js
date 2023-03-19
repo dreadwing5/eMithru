@@ -40,6 +40,17 @@ export const tokensDark = {
     800: "#665429",
     900: "#332a14",
   },
+  greenAccent: {
+    100: "#dbf5ee",
+    200: "#b7ebde",
+    300: "#94e2cd",
+    400: "#70d8bd",
+    500: "#4cceac",
+    600: "#3da58a",
+    700: "#2e7c67",
+    800: "#1e5245",
+    900: "#0f2922",
+  },
 };
 
 // function that reverses the color palette
@@ -84,6 +95,9 @@ export const themeSettings = (mode) => {
               default: tokensDark.primary[600],
               alt: tokensDark.primary[500],
             },
+            greenAccent: {
+              ...tokensDark.greenAccent,
+            },
           }
         : {
             // palette values for light mode
@@ -104,6 +118,9 @@ export const themeSettings = (mode) => {
             background: {
               default: tokensDark.grey[0],
               alt: tokensDark.grey[50],
+            },
+            greenAccent: {
+              ...tokensLight.greenAccent,
             },
           }),
     },
