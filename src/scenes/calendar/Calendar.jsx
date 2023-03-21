@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import FullCalendar from "@fullcalendar/react";
 import { formatDate } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -13,6 +13,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
 
 import {
   Box,
@@ -29,6 +33,17 @@ const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = useState({});
+  const [startTime, setStartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
+  // const [meetings, setMeetings] = useState([]);
+
+  // [To Be Used after posting the meetings]
+  // useEffect(() => {
+  //   fetch(import.meta.env.VITE_API_URL + "/meetings") // replace with your API endpoint
+  //     .then((response) => response.json())
+  //     .then((data) => setCurrentEvents(data))
+  //     .catch((error) => console.error(error));
+  // }, []);
 
   const handleDateClick = (selected) => {
     setSelected(selected);
@@ -59,6 +74,31 @@ const Calendar = () => {
     //Event -> Backend log
     // Save Type of meeting
     // User claendar _> use Effect-> Events fetch
+
+    //TASKS
+    // newMeeting
+    //test if post is working
+    //testing if all meetings are coming or not
+    //display the array of meetings on the left
+    const createMeeting = async (meeting) => {
+      const requestOptions = {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(meeting),
+      };
+
+      try {
+        const response = await fetch(
+          import.meta.env.VITE_API_URL + "/createmeeting",
+          requestOptions
+        );
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    createMeeting(newMeeting);
   };
 
   const handleEventClick = (selected) => {
@@ -178,28 +218,37 @@ const Calendar = () => {
                 <TextField
                   label="Location"
                   id="standard-size-small"
-                  defaultValue="mall"
+                  defaultValue="college"
                   size="small"
                   variant="standard"
                 />{" "}
               </div>
               <div>
-                <TextField
-                  id="date"
-                  label="Start Date"
-                  type="date"
-                  defaultValue="2017-05-24"
-                  size="small"
-                  variant="standard"
-                />
-                <TextField
-                  id="date"
-                  label="End Date"
-                  type="date"
-                  defaultValue="2017-05-24"
-                  size="small"
-                  variant="standard"
-                />
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                  <DemoContainer
+                    components={["MobileTimePicker"]}
+                    sx={{ minWidth: 210 }}
+                  >
+                    <MobileTimePicker
+                      label={"Starting Time"}
+                      views={["hours", "minutes", "seconds"]}
+                      value={startTime}
+                      onChange={(end) => {
+                        setStartTime(end);
+                      }}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                    <MobileTimePicker
+                      label={"Ending Time"}
+                      views={["hours", "minutes", "seconds"]}
+                      value={endTime}
+                      onChange={(end) => {
+                        setEndTime(end);
+                      }}
+                      renderInput={(params) => <TextField {...params} />}
+                    />
+                  </DemoContainer>
+                </LocalizationProvider>
               </div>
               <div>
                 <TextField
