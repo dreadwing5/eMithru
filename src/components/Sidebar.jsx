@@ -70,7 +70,7 @@ const navItems = [
     icon: <TodayOutlined />,
   },
   {
-    text: "Support Bot",
+    text: "ChatBot",
     icon: <TodayOutlined />,
   },
 
