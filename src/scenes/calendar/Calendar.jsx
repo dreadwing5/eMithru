@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import FullCalendar from "@fullcalendar/react";
 import { formatDate } from "@fullcalendar/core";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -33,18 +33,21 @@ const Calendar = () => {
   const [currentEvents, setCurrentEvents] = useState([]);
   const [open, setOpen] = React.useState(false);
   const [selected, setSelected] = useState({});
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
+  const startTime = useRef();
+  const endTime = useRef();
+  const titleRef = useRef();
+  const locationRef = useRef();
+  const meetingType = useRef();
   // const [meetings, setMeetings] = useState([]);
 
   // [To Be Used after posting the meetings]
-  // useEffect(() => {
-  //   fetch(import.meta.env.VITE_API_URL + "/meetings") // replace with your API endpoint
-  //     .then((response) => response.json())
-  //     .then((data) => setCurrentEvents(data))
-  //     .catch((error) => console.error(error));
-  // }, []);
-
+  useEffect(() => {
+    fetch(import.meta.env.VITE_API_URL + "/meetings/meetings") // replace with your API endpoint
+      .then((response) => response.json())
+      .then((data) => setCurrentEvents(data))
+      .catch((error) => console.error(error));
+  }, []);
+  console.log(currentEvents);
   const handleDateClick = (selected) => {
     setSelected(selected);
     setOpen(true);
@@ -56,10 +59,20 @@ const Calendar = () => {
 
   const handleClose = () => {
     setOpen(false);
-    const title = "Test";
+    const title = titleRef.current.value;
+    const newMeeting = {
+      title: titleRef.current.value,
+      start: startTime.current.value,
+      end: endTime.current.value,
+      type: meetingType.current.value,
+      location: locationRef.current.value,
+    };
+
+    console.log(newMeeting);
+
     const calendarApi = selected.view.calendar;
     calendarApi.unselect();
-
+    // console.log(start);
     if (title) {
       calendarApi.addEvent({
         id: `${selected.dateStr}-${title}`,
@@ -89,7 +102,7 @@ const Calendar = () => {
 
       try {
         const response = await fetch(
-          import.meta.env.VITE_API_URL + "/createmeeting",
+          import.meta.env.VITE_API_URL + "/meetings/createmeeting",
           requestOptions
         );
         const data = await response.json();
@@ -174,18 +187,18 @@ const Calendar = () => {
             select={handleDateClick}
             eventClick={handleEventClick}
             eventsSet={(events) => setCurrentEvents(events)}
-            initialEvents={[
-              {
-                id: "12315",
-                title: "All-day event",
-                date: "2023-03-19",
-              },
-              {
-                id: "5123",
-                title: "Timed event",
-                date: "2022-09-28",
-              },
-            ]}
+            initialEvents={currentEvents}
+            //   {
+            //     id: "12315",
+            //     title: "All-day event",
+            //     date: "2023-03-19",
+            //   },
+            //   {
+            //     id: "5123",
+            //     title: "Timed event",
+            //     date: "2022-09-28",
+            //   },
+            // ]}
           />
         </Box>
 
@@ -214,6 +227,7 @@ const Calendar = () => {
                   defaultValue=""
                   size="small"
                   variant="standard"
+                  inputRef={titleRef}
                 />
                 <TextField
                   label="Location"
@@ -221,33 +235,21 @@ const Calendar = () => {
                   defaultValue="college"
                   size="small"
                   variant="standard"
+                  inputRef={locationRef}
                 />{" "}
               </div>
               <div>
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
-                  <DemoContainer
-                    components={["MobileTimePicker"]}
-                    sx={{ minWidth: 210 }}
-                  >
-                    <MobileTimePicker
-                      label={"Starting Time"}
-                      views={["hours", "minutes", "seconds"]}
-                      value={startTime}
-                      onChange={(end) => {
-                        setStartTime(end);
-                      }}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                    <MobileTimePicker
-                      label={"Ending Time"}
-                      views={["hours", "minutes", "seconds"]}
-                      value={endTime}
-                      onChange={(end) => {
-                        setEndTime(end);
-                      }}
-                      renderInput={(params) => <TextField {...params} />}
-                    />
-                  </DemoContainer>
+                  <MobileTimePicker
+                    label={"Starting Time"}
+                    views={["hours", "minutes", "seconds"]}
+                    inputRef={startTime}
+                  />
+                  <MobileTimePicker
+                    label={"Ending Time"}
+                    views={["hours", "minutes", "seconds"]}
+                    inputRef={endTime}
+                  />
                 </LocalizationProvider>
               </div>
               <div>
@@ -257,6 +259,7 @@ const Calendar = () => {
                   defaultValue=""
                   size="small"
                   variant="standard"
+                  inputRef={meetingType}
                 />
               </div>
             </Box>
