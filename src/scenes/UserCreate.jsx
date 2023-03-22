@@ -12,6 +12,7 @@ const UserCreate = () => {
         component="form"
         sx={{
           "& .MuiTextField-root": { m: 3, ml: 8, width: "55ch" },
+          "& .MuiButton-root": { m: 3, ml: 8, width: "80%" },
         }}
         noValidate
         autoComplete="off"
@@ -48,22 +49,13 @@ const UserCreate = () => {
         </div>
         <div>
           <TextField
-            sx={{
-              width: { sm: 300, md: 300 },
-              "& .MuiInputBase-root": {
-                width: 1030,
-              },
-            }}
             label="Phone"
             id="outlined-size-small"
             defaultValue=""
             size="small"
           />
         </div>
-
-        <Button sx={{ m: 3, ml: 8, p: 1, width: "137ch" }} variant="contained">
-          Add User
-        </Button>
+        <Button variant="contained">Add User</Button>
       </Box>
     </>
   );
