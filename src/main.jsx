@@ -7,15 +7,18 @@ import "./index.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
 import { SettingsProvider } from "./context/SettingsContext";
+import { CollapseDrawerProvider } from "./context/CollapseDrawerContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthContextProvider>
-      <Router>
+      <CollapseDrawerProvider>
         <SettingsProvider>
-          <App />
+          <Router>
+            <App />
+          </Router>
         </SettingsProvider>
-      </Router>
+      </CollapseDrawerProvider>
     </AuthContextProvider>
   </React.StrictMode>,
   document.getElementById("root")
