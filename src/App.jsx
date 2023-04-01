@@ -10,6 +10,7 @@ import Messenger from "./scenes/messenger/Messenger";
 import Calendar from "./scenes/calendar/Calendar";
 import UserCreate from "./scenes/UserCreate";
 import UserProfile from "./scenes/UserProfile";
+import Chat from "./components/chat/Chat";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -30,7 +31,7 @@ function App() {
                 />
                 <Route
                   path="/messenger"
-                  element={!user ? <Navigate replace to="/" /> : <Messenger />}
+                  element={!user ? <Navigate replace to="/" /> : <Chat />}
                 />
                 <Route
                   path="/create-user"

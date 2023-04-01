@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
 import { formatDistanceToNowStrict } from "date-fns";
+
 // @mui
 import { styled } from "@mui/material/styles";
 import { Avatar, Box, Typography } from "@mui/material";
 // components
-import Image from "../Image";
 
 const RootStyle = styled("div")(({ theme }) => ({
   display: "flex",
@@ -30,14 +30,9 @@ const InfoStyle = styled(Typography)(({ theme }) => ({
 ChatMessageItem.propTypes = {
   message: PropTypes.object.isRequired,
   conversation: PropTypes.object.isRequired,
-  onOpenLightbox: PropTypes.func,
 };
 
-export default function ChatMessageItem({
-  message,
-  conversation,
-  onOpenLightbox,
-}) {
+export default function ChatMessageItem({ message, conversation }) {
   const sender = conversation.participants.find(
     (participant) => participant.id === message.senderId
   );
@@ -45,9 +40,7 @@ export default function ChatMessageItem({
     message.senderId === "8864c717-587d-472a-929a-8e5f298024da-0"
       ? { type: "me" }
       : { avatar: sender?.avatar, name: sender?.name };
-
   const isMe = senderDetails.type === "me";
-  const isImage = message.contentType === "image";
   const firstName = senderDetails.name && senderDetails.name.split(" ")[0];
 
   return (
@@ -84,23 +77,9 @@ export default function ChatMessageItem({
           <ContentStyle
             sx={{
               ...(isMe && { color: "grey.800", bgcolor: "primary.lighter" }),
-              ...(isImage && { p: 0 }),
             }}
           >
-            {isImage ? (
-              <Image
-                alt="attachment"
-                src={message.body}
-                onClick={() => onOpenLightbox(message.body)}
-                sx={{
-                  borderRadius: 1,
-                  cursor: "pointer",
-                  "&:hover": { opacity: 0.8 },
-                }}
-              />
-            ) : (
-              <Typography variant="body2">{message.body}</Typography>
-            )}
+            <Typography variant="body2">{message.body}</Typography>
           </ContentStyle>
         </div>
       </Box>
