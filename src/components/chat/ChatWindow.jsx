@@ -40,7 +40,7 @@ const conversation = {
   ],
 };
 
-const activeConversationId = 123;
+const activeConversationId = "123";
 const handleSendMessage = (message) => {
   console.log(`Sending message: ${message}`);
 };

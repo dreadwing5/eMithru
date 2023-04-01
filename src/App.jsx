@@ -1,7 +1,6 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useContext } from "react";
-import { ColorModeContext, useMode } from "./context/ThemeContext";
-import { CssBaseline, ThemeProvider } from "@mui/material";
+import ThemeProvider from "./theme";
 import LogIn from "./scenes/login/Login";
 import DashBoard from "./scenes/dashboard/Dashboard";
 import { AuthContext } from "./context/AuthContext";
@@ -13,49 +12,45 @@ import UserProfile from "./scenes/UserProfile";
 import Chat from "./components/chat/Chat";
 
 function App() {
-  const [theme, colorMode] = useMode();
   const { user } = useContext(AuthContext);
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <div className="app">
-          <main className="content">
-            <Routes>
-              <Route element={<Layout />}>
-                <Route
-                  path="/"
-                  element={
-                    user ? <DashBoard /> : <Navigate replace to="/login" />
-                  }
-                />
-                <Route
-                  path="/messenger"
-                  element={!user ? <Navigate replace to="/" /> : <Chat />}
-                />
-                <Route
-                  path="/create-user"
-                  element={
-                    user ? <UserCreate /> : <Navigate replace to="/login" />
-                  }
-                />
-                <Route
-                  path="/profile"
-                  element={
-                    user ? <UserProfile /> : <Navigate replace to="/login" />
-                  }
-                />
-                <Route path="/calendar" element={<Calendar />} />
-              </Route>
+    <ThemeProvider>
+      <div className="app">
+        <main className="content">
+          <Routes>
+            <Route element={<Layout />}>
               <Route
-                path="/login"
-                element={user ? <Navigate replace to="/" /> : <LogIn />}
+                path="/"
+                element={
+                  user ? <DashBoard /> : <Navigate replace to="/login" />
+                }
               />
-            </Routes>
-          </main>
-        </div>
-      </ThemeProvider>
-    </ColorModeContext.Provider>
+              <Route
+                path="/messenger"
+                element={!user ? <Navigate replace to="/" /> : <Chat />}
+              />
+              <Route
+                path="/create-user"
+                element={
+                  user ? <UserCreate /> : <Navigate replace to="/login" />
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  user ? <UserProfile /> : <Navigate replace to="/login" />
+                }
+              />
+              <Route path="/calendar" element={<Calendar />} />
+            </Route>
+            <Route
+              path="/login"
+              element={user ? <Navigate replace to="/" /> : <LogIn />}
+            />
+          </Routes>
+        </main>
+      </div>
+    </ThemeProvider>
   );
 }
 

@@ -1,5 +1,5 @@
 import { useContext, createRef, useEffect } from "react";
-import { ColorModeContext } from "../context/ThemeContext";
+// import { useMode } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -30,16 +30,18 @@ import {
 import FlexBetween from "./FlexBetween";
 
 import { AuthContext } from "../context/AuthContext";
+import useSettings from "../hooks/useSettings";
 
 const Topbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const theme = useTheme();
-  const colorMode = useContext(ColorModeContext);
+  const { onToggleMode } = useSettings();
+
   const { dispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   const handleClick = () => {
-    colorMode.toggleColorMode();
+    onToggleMode.toggleThemeMode();
   };
 
   const handleLogout = () => {
