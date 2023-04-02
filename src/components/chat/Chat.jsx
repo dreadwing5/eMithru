@@ -13,8 +13,8 @@ import ChatWindow from "./ChatWindow";
 export default function Chat() {
   return (
     // <Page title="Chat">
-    <Container maxWidth="xl">
-      <Card sx={{ height: "72vh", display: "flex" }}>
+    <Container maxWidth="lg">
+      <Card sx={{ height: "90vh", display: "flex" }}>
         {/* <ChatSidebar /> */}
         <ChatWindow />
       </Card>

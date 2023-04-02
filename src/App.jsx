@@ -25,7 +25,7 @@ function App() {
           <div className="app">
             <main className="content">
               <Routes>
-                <Route element={<Layout />}>
+                <Route element={<DashboardLayout />}>
                   <Route
                     path="/"
                     element={

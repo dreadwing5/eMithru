@@ -4,21 +4,20 @@ import App from "./App";
 
 import "./index.css";
 
+import "simplebar-react/dist/simplebar.min.css";
+
 import { BrowserRouter as Router } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
 import { SettingsProvider } from "./context/SettingsContext";
-import { CollapseDrawerProvider } from "./context/CollapseDrawerContext";
 
 ReactDOM.render(
   <React.StrictMode>
     <AuthContextProvider>
-      <CollapseDrawerProvider>
-        <SettingsProvider>
-          <Router>
-            <App />
-          </Router>
-        </SettingsProvider>
-      </CollapseDrawerProvider>
+      <SettingsProvider>
+        <Router>
+          <App />
+        </Router>
+      </SettingsProvider>
     </AuthContextProvider>
   </React.StrictMode>,
   document.getElementById("root")

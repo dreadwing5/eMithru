@@ -16,6 +16,8 @@ import {
 import AccountPopover from "./AccountPopover";
 import NotificationsPopover from "./NotificationsPopover";
 
+import FlexBetween from "../../components/FlexBetween";
+
 import {
   AppBar,
   Button,
@@ -29,10 +31,8 @@ import {
   useTheme,
 } from "@mui/material";
 
-import FlexBetween from "./FlexBetween";
-
-import { AuthContext } from "../context/AuthContext";
-import useSettings from "../hooks/useSettings";
+import { AuthContext } from "../../context/AuthContext";
+import useSettings from "../../hooks/useSettings";
 
 const DashboardHeader = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const theme = useTheme();

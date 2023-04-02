@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import SideBar from "./sidebar/Sidebar";
+import Sidebar from "./sidebar/Sidebar";
 import DashboardHeader from "./header/DashboardHeader";
 
 const DashboardLayout = () => {
