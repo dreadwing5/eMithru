@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Box, useMediaQuery } from "@mui/material";
 import { Outlet } from "react-router-dom";
-import Topbar from "../../components/topbar";
-import Sidebar from "../../components/sidebar";
+import SideBar from "./sidebar/Sidebar";
+import DashboardHeader from "./header/DashboardHeader";
 
-const Layout = () => {
+const DashboardLayout = () => {
   const isNonMobile = useMediaQuery("(min-width : 600px)");
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
 
@@ -17,7 +17,7 @@ const Layout = () => {
         setIsSidebarOpen={setIsSidebarOpen}
       />
       <Box flexGrow={1}>
-        <Topbar
+        <DashboardHeader
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
@@ -27,4 +27,4 @@ const Layout = () => {
   );
 };
 
-export default Layout;
+export default DashboardLayout;

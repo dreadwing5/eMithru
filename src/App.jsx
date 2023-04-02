@@ -3,11 +3,8 @@ import { useContext } from "react";
 import ThemeProvider from "./theme";
 import LogIn from "./scenes/login/Login";
 import DashBoard from "./scenes/dashboard/Dashboard";
-import { AuthContext } from "./context/AuthContext";
-// import Layout from "./scenes/layout/Layout";
 
-import DashboardLayout from "./layouts";
-
+import DashboardLayout from "./layouts/DashBoardLayout";
 import Messenger from "./scenes/messenger/Messenger";
 import Calendar from "./scenes/calendar/Calendar";
 import UserCreate from "./scenes/UserCreate";
@@ -16,6 +13,8 @@ import Chat from "./components/chat/Chat";
 
 import MotionLazyContainer from "./components/animate/MotionLazyContainer";
 import NotistackProvider from "./components/NotistackProvider";
+
+import { AuthContext } from "./context/AuthContext";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -26,7 +25,7 @@ function App() {
           <div className="app">
             <main className="content">
               <Routes>
-                <Route element={<DashboardLayout />}>
+                <Route element={<Layout />}>
                   <Route
                     path="/"
                     element={

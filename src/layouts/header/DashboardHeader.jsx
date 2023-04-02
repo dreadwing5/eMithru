@@ -1,5 +1,4 @@
 import { useContext, createRef, useEffect } from "react";
-// import { useMode } from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -13,6 +12,9 @@ import {
   PersonOutlined,
   LogoutOutlined,
 } from "@mui/icons-material";
+
+import AccountPopover from "./AccountPopover";
+import NotificationsPopover from "./NotificationsPopover";
 
 import {
   AppBar,
@@ -32,7 +34,7 @@ import FlexBetween from "./FlexBetween";
 import { AuthContext } from "../context/AuthContext";
 import useSettings from "../hooks/useSettings";
 
-const Topbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
+const DashboardHeader = ({ isSidebarOpen, setIsSidebarOpen }) => {
   const theme = useTheme();
   const { onToggleMode } = useSettings();
 
@@ -90,19 +92,12 @@ const Topbar = ({ isSidebarOpen, setIsSidebarOpen }) => {
               <DarkModeOutlined sx={{ fontSize: "25px" }} />
             )}
           </IconButton>
-          <IconButton>
-            <NotificationsOutlined sx={{ fontSize: "25px" }} />
-          </IconButton>
-          <IconButton>
-            <SettingsOutlined sx={{ fontSize: "25px" }} />
-          </IconButton>
-          <IconButton>
-            <PersonOutlined sx={{ fontSize: "25px" }} />
-          </IconButton>
+          <NotificationsPopover />
+          <AccountPopover />
         </FlexBetween>
       </Toolbar>
     </AppBar>
   );
 };
 
-export default Topbar;
+export default DashboardHeader;

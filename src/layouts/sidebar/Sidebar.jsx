@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import FlexBetween from "./FlexBetween";
+import FlexBetween from "../../components/FlexBetween";
 import {
   Box,
   Divider,
@@ -84,7 +84,7 @@ const navItems = [
   },
 ];
 
-const SideBar = ({
+const Sidebar = ({
   drawerWidth,
   isSidebarOpen,
   setIsSidebarOpen,
@@ -189,4 +189,4 @@ const SideBar = ({
   );
 };
 
-export default SideBar;
+export default Sidebar;
