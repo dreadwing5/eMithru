@@ -137,7 +137,10 @@ const Sidebar = ({
               {navItems.map(({ text, icon }) => {
                 if (!icon) {
                   return (
-                    <Typography key={text} sx={{ m: "2.25rem 0 1rem 3rem" }}>
+                    <Typography
+                      key={text}
+                      sx={{ m: "2.25rem 0 1rem 3rem", fontSize: "0.9rem" }}
+                    >
                       {text}
                     </Typography>
                   );
