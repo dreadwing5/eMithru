@@ -57,6 +57,7 @@ export default function AccountGeneral() {
 
   const onSubmit = async () => {
     try {
+      console.log(methods.getValues());
       await new Promise((resolve) => setTimeout(resolve, 500));
       enqueueSnackbar("Update success!");
     } catch (error) {

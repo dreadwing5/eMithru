@@ -10,6 +10,7 @@ import Calendar from "./scenes/calendar/Calendar";
 import UserCreate from "./scenes/UserCreate";
 import UserProfile from "./scenes/UserProfile";
 import Chat from "./components/chat/Chat";
+import UserAccount from "./scenes/dashboard/UserAccount";
 
 import MotionLazyContainer from "./components/animate/MotionLazyContainer";
 import NotistackProvider from "./components/NotistackProvider";
@@ -49,6 +50,10 @@ function App() {
                     }
                   />
                   <Route path="/calendar" element={<Calendar />} />
+                  <Route
+                    path="/dashboard/user/account"
+                    element={<UserAccount />}
+                  />
                 </Route>
                 <Route
                   path="/login"
