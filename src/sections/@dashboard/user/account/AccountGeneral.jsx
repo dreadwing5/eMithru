@@ -1,43 +1,46 @@
-import * as Yup from 'yup';
-import { useSnackbar } from 'notistack';
-import { useCallback } from 'react';
+import * as Yup from "yup";
+import { useSnackbar } from "notistack";
+import { useCallback } from "react";
 // form
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 // @mui
-import { Box, Grid, Card, Stack, Typography } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-// hooks
-import useAuth from '../../../../hooks/useAuth';
+import { Box, Grid, Card, Stack, Typography } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+
 // utils
-import { fData } from '../../../../utils/formatNumber';
+import { fData } from "../../../../utils/formatNumber";
 // _mock
-import { countries } from '../../../../_mock';
+import { countries } from "../../../../_mock";
 // components
-import { FormProvider, RHFSwitch, RHFSelect, RHFTextField, RHFUploadAvatar } from '../../../../components/hook-form';
+import {
+  FormProvider,
+  RHFSwitch,
+  RHFSelect,
+  RHFTextField,
+  RHFUploadAvatar,
+} from "../../../../components/hook-form";
 
 // ----------------------------------------------------------------------
 
 export default function AccountGeneral() {
   const { enqueueSnackbar } = useSnackbar();
 
-  const { user } = useAuth();
-
   const UpdateUserSchema = Yup.object().shape({
-    displayName: Yup.string().required('Name is required'),
+    displayName: Yup.string().required("Name is required"),
   });
 
   const defaultValues = {
-    displayName: user?.displayName || '',
-    email: user?.email || '',
-    photoURL: user?.photoURL || '',
-    phoneNumber: user?.phoneNumber || '',
-    country: user?.country || '',
-    address: user?.address || '',
-    state: user?.state || '',
-    city: user?.city || '',
-    zipCode: user?.zipCode || '',
-    about: user?.about || '',
+    displayName: user?.displayName || "",
+    email: user?.email || "",
+    photoURL: user?.photoURL || "",
+    phoneNumber: user?.phoneNumber || "",
+    country: user?.country || "",
+    address: user?.address || "",
+    state: user?.state || "",
+    city: user?.city || "",
+    zipCode: user?.zipCode || "",
+    about: user?.about || "",
     isPublic: user?.isPublic || false,
   };
 
@@ -55,7 +58,7 @@ export default function AccountGeneral() {
   const onSubmit = async () => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 500));
-      enqueueSnackbar('Update success!');
+      enqueueSnackbar("Update success!");
     } catch (error) {
       console.error(error);
     }
@@ -67,7 +70,7 @@ export default function AccountGeneral() {
 
       if (file) {
         setValue(
-          'photoURL',
+          "photoURL",
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
@@ -81,7 +84,7 @@ export default function AccountGeneral() {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Card sx={{ py: 10, px: 3, textAlign: 'center' }}>
+          <Card sx={{ py: 10, px: 3, textAlign: "center" }}>
             <RHFUploadAvatar
               name="photoURL"
               accept="image/*"
@@ -92,10 +95,10 @@ export default function AccountGeneral() {
                   variant="caption"
                   sx={{
                     mt: 2,
-                    mx: 'auto',
-                    display: 'block',
-                    textAlign: 'center',
-                    color: 'text.secondary',
+                    mx: "auto",
+                    display: "block",
+                    textAlign: "center",
+                    color: "text.secondary",
                   }}
                 >
                   Allowed *.jpeg, *.jpg, *.png, *.gif
@@ -104,7 +107,12 @@ export default function AccountGeneral() {
               }
             />
 
-            <RHFSwitch name="isPublic" labelPlacement="start" label="Public Profile" sx={{ mt: 5 }} />
+            <RHFSwitch
+              name="isPublic"
+              labelPlacement="start"
+              label="Public Profile"
+              sx={{ mt: 5 }}
+            />
           </Card>
         </Grid>
 
@@ -112,10 +120,13 @@ export default function AccountGeneral() {
           <Card sx={{ p: 3 }}>
             <Box
               sx={{
-                display: 'grid',
+                display: "grid",
                 rowGap: 3,
                 columnGap: 2,
-                gridTemplateColumns: { xs: 'repeat(1, 1fr)', sm: 'repeat(2, 1fr)' },
+                gridTemplateColumns: {
+                  xs: "repeat(1, 1fr)",
+                  sm: "repeat(2, 1fr)",
+                },
               }}
             >
               <RHFTextField name="displayName" label="Name" />
@@ -142,7 +153,11 @@ export default function AccountGeneral() {
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
               <RHFTextField name="about" multiline rows={4} label="About" />
 
-              <LoadingButton type="submit" variant="contained" loading={isSubmitting}>
+              <LoadingButton
+                type="submit"
+                variant="contained"
+                loading={isSubmitting}
+              >
                 Save Changes
               </LoadingButton>
             </Stack>
