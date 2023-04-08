@@ -31,17 +31,17 @@ export default function AccountGeneral() {
   });
 
   const defaultValues = {
-    displayName: user?.displayName || "",
-    email: user?.email || "",
-    photoURL: user?.photoURL || "",
-    phoneNumber: user?.phoneNumber || "",
-    country: user?.country || "",
-    address: user?.address || "",
-    state: user?.state || "",
-    city: user?.city || "",
-    zipCode: user?.zipCode || "",
-    about: user?.about || "",
-    isPublic: user?.isPublic || false,
+    displayName: "Ali" || "",
+    email: "ali@example.com" || "",
+    photoURL: "https://example.com/ali.jpg" || "",
+    phoneNumber: "555-1234" || "",
+    country: "USA" || "",
+    address: "123 Main St" || "",
+    state: "CA" || "",
+    city: "San Francisco" || "",
+    zipCode: "94111" || "",
+    about: "I'm a software engineer." || "",
+    isPublic: false || false,
   };
 
   const methods = useForm({
