@@ -18,6 +18,8 @@ import Iconify from "../../components/Iconify";
 import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs";
 // sections
 import { AccountGeneral } from "../../sections/@dashboard/user/account";
+import PrevAcademic from "../../sections/@dashboard/user/account/PrevAcademic";
+import AdmissionDetails from "../../sections/@dashboard/user/account/AdmissionDetails";
 
 // ----------------------------------------------------------------------
 
@@ -30,7 +32,20 @@ export default function UserAccount() {
       icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
       component: <AccountGeneral />,
     },
+  
+  
+    {
+      value: "previous academic result",
+      icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
+      component: <PrevAcademic/>,
+    },
+    {
+      value: "Admission Details",
+      icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
+      component: <AdmissionDetails/>,
+    }
   ];
+ 
 
   return (
     <Page title="User: Account Settings">
