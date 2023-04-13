@@ -6,6 +6,9 @@ import { Box, Divider, Stack } from "@mui/material";
 import ChatMessageList from "./ChatMessageList";
 import ChatMessageInput from "./ChatMessageInput";
 
+import { useTheme } from "@mui/material/styles";
+import { styled } from "@mui/system";
+
 // ----------------------------------------------------------------------
 
 const conversation = {
@@ -67,6 +70,24 @@ const conversation = {
       body: "Hey, I'm good thanks. How about you?",
       createdAt: "2022-03-31T09:31:00.000Z",
     },
+    {
+      id: "8864c717-587d-472a-929a-8e5f298024da-2",
+      senderId: "8864c717-587d-472a-929a-8e5f298024da-1",
+      body: "Hey, I'm good thanks. How about you?",
+      createdAt: "2022-03-31T09:31:00.000Z",
+    },
+    {
+      id: "8864c717-587d-472a-929a-8e5f298024da-2",
+      senderId: "8864c717-587d-472a-929a-8e5f298024da-1",
+      body: "Hey, I'm good thanks. How about you?",
+      createdAt: "2022-03-31T09:31:00.000Z",
+    },
+    {
+      id: "8864c717-587d-472a-929a-8e5f298024da-2",
+      senderId: "8864c717-587d-472a-929a-8e5f298024da-1",
+      body: "Hey, I'm good thanks. How about you?",
+      createdAt: "2022-03-31T09:31:00.000Z",
+    },
   ],
 };
 
@@ -79,8 +100,10 @@ export default function ChatWindow() {
   return (
     <Stack sx={{ flexGrow: 1, minWidth: "1px" }}>
       <Divider />
-      <Box sx={{ flexGrow: 1, display: "flex", overflow: "hidden" }}>
-        <Stack sx={{ flexGrow: 1 }}>
+      <Box
+        sx={{ flexGrow: 1, display: "flex", overflow: "hidden", minWidth: "0" }}
+      >
+        <Stack sx={{ flexGrow: 1, flexShrink: 0 }}>
           <ChatMessageList conversation={conversation} />
           <Divider />
           <ChatMessageInput

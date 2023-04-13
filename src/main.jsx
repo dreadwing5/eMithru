@@ -3,8 +3,6 @@ import ReactDOM from "react-dom";
 import App from "./App";
 
 import "./index.css";
-
-import "simplebar-react/dist/simplebar.min.css";
 import { HelmetProvider } from "react-helmet-async";
 
 import { BrowserRouter as Router } from "react-router-dom";

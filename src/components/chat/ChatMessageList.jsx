@@ -11,20 +11,14 @@ export default function ChatMessageList({ conversation }) {
   const scrollRef = useRef(null);
 
   useEffect(() => {
-    const scrollMessagesToBottom = () => {
-      if (scrollRef.current) {
-        scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
-      }
-    };
-    scrollMessagesToBottom();
+    if (scrollRef.current) {
+      scrollRef.current.scrollToBottom();
+    }
   }, [conversation.messages]);
 
   return (
     <>
-      <Scrollbar
-        scrollableNodeProps={{ ref: scrollRef }}
-        sx={{ p: 3, height: 1 }}
-      >
+      <Scrollbar sx={{ p: 3 }} ref={scrollRef}>
         {conversation.messages.map((message) => (
           <ChatMessageItem
             key={message.id}

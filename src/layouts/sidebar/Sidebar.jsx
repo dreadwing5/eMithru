@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "../../components/FlexBetween";
+import Scrollbar from "../../components/Scrollbar";
 import {
   Box,
   Divider,
@@ -108,21 +109,22 @@ const Sidebar = ({
           variant="persistent"
           anchor="left"
           sx={{
+            flexShrink: 0,
             width: drawerWidth,
             "& .MuiDrawer-paper": {
-              color: theme.palette.secondary[200],
-              backgroundColor: theme.palette.background.alt,
-              boxSizing: "border-box",
-              borderWidth: isNonMobile ? 0 : "2px",
               width: drawerWidth,
             },
           }}
         >
-          <Box width="100%">
+          <Scrollbar>
             <Box m="1.5rem 2rem 2rem 3rem">
               <FlexBetween color={theme.palette.secondary.main}>
                 <Box display="flex" alignItems="center" gap="0.5rem">
-                  <Typography variant="h4" fontWeight="bold">
+                  <Typography
+                    variant="h4"
+                    fontWeight="bold"
+                    sx={{ color: theme.palette.primary.main }}
+                  >
                     CMRIT
                   </Typography>
                 </Box>
@@ -133,6 +135,7 @@ const Sidebar = ({
                 )}
               </FlexBetween>
             </Box>
+
             <List>
               {navItems.map(({ text, icon }) => {
                 if (!icon) {
@@ -176,7 +179,19 @@ const Sidebar = ({
                       >
                         {icon}
                       </ListItemIcon>
-                      <ListItemText primary={text} />
+                      <ListItemText
+                        primary={
+                          <Typography
+                            sx={{
+                              fontSize: theme.typography.body2.fontSize,
+                              fontWeight: theme.typography.body2.fontWeight,
+                              color: theme.palette.text,
+                            }}
+                          >
+                            {text}
+                          </Typography>
+                        }
+                      />{" "}
                       {active === lcText && (
                         <ChevronRightOutlined sx={{ ml: "auto" }} />
                       )}
@@ -185,7 +200,7 @@ const Sidebar = ({
                 );
               })}
             </List>
-          </Box>
+          </Scrollbar>
         </Drawer>
       )}
     </Box>
