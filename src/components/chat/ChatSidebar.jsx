@@ -1,235 +1,125 @@
-import { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-// @mui
+import { io } from "socket.io-client";
+import axios from "axios";
+import { Box, Stack, Drawer, IconButton, Divider } from "@mui/material";
 import { useTheme, styled } from "@mui/material/styles";
-import { Box, Stack, Drawer, IconButton } from "@mui/material";
-// hooks
-import useResponsive from "../../../hooks/useResponsive";
 
-// components
-import Iconify from "../../../components/Iconify";
-import Scrollbar from "../../../components/Scrollbar";
-//
-import ChatSearchResults from "./ChatSearchResults";
-import ChatContactSearch from "./ChatContactSearch";
-import ChatConversationList from "./ChatConversationList";
+import { useContext, useEffect, useRef, useState } from "react";
+import { AuthContext } from "../../context/AuthContext";
 
-// ----------------------------------------------------------------------
+import { BASE_URL, SOCKET_URL } from "../../config";
 
-const ToggleButtonStyle = styled((props) => (
-  <IconButton disableRipple {...props} />
-))(({ theme }) => ({
-  left: 0,
-  zIndex: 9,
-  width: 32,
-  height: 32,
-  position: "absolute",
-  top: theme.spacing(13),
-  borderRadius: `0 12px 12px 0`,
-  color: theme.palette.primary.contrastText,
-  backgroundColor: theme.palette.primary.main,
-  boxShadow: theme.customShadows.primary,
-  "&:hover": {
-    backgroundColor: theme.palette.primary.darker,
-  },
-}));
-
-// ----------------------------------------------------------------------
-
+import Conversation from "../conversation";
+import Scrollbar from "../Scrollbar";
 const SIDEBAR_WIDTH = 320;
 const SIDEBAR_COLLAPSE_WIDTH = 96;
 
 export default function ChatSidebar() {
   const theme = useTheme();
+  const [conversations, setConversations] = useState([]);
+  const [currentChat, setCurrentChat] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
+  const [arrivalMessage, setArrivalMessage] = useState(null);
+  const socket = useRef();
 
-  const navigate = useNavigate();
-
-  const [openSidebar, setOpenSidebar] = useState(true);
-
-  const [searchQuery, setSearchQuery] = useState("");
-
-  const [searchResults, setSearchResults] = useState([]);
-
-  const [isSearchFocused, setSearchFocused] = useState(false);
-
-  // const { conversations, activeConversationId } = useSelector(
-  //   (state) => state.chat
-  // );
-
-  const isDesktop = useResponsive("up", "md");
-
-  const displayResults = searchQuery && isSearchFocused;
-
-  const isCollapse = isDesktop && !openSidebar;
+  const {
+    user: {
+      data: { user: userInfo },
+    },
+  } = useContext(AuthContext);
+  const scrollRef = useRef();
+  useEffect(() => {
+    socket.current = io(SOCKET_URL);
+    socket.current.on("getMessage", (data) => {
+      setArrivalMessage({
+        senderId: data.sender,
+        body: data.body,
+        sendTime: Date.now(),
+      });
+    });
+  }, []);
 
   useEffect(() => {
-    if (!isDesktop) {
-      return handleCloseSidebar();
-    }
-    return handleOpenSidebar();
-  }, [isDesktop, pathname]);
+    arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
+  }, [arrivalMessage, currentChat]);
 
-  // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (!openSidebar) {
-      return setSearchFocused(false);
-    }
-  }, [openSidebar]);
+    const getConversations = async () => {
+      try {
+        const res = await axios.get(`${BASE_URL}/conversations/`);
 
-  const handleOpenSidebar = () => {
-    setOpenSidebar(true);
-  };
+        setConversations(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
 
-  const handleCloseSidebar = () => {
-    setOpenSidebar(false);
-  };
+    getConversations();
+  }, []);
 
-  const handleToggleSidebar = () => {
-    setOpenSidebar((prev) => !prev);
-  };
+  useEffect(() => {
+    const getMessages = async () => {
+      console.log(currentChat);
+      try {
+        const res = await axios.get(
+          `${BASE_URL}/messages/${currentChat?.conversationId}`
+        );
+        setMessages(res.data);
+        currentChat &&
+          socket.current.emit("join_room", currentChat.conversationId);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    currentChat && getMessages();
+    return () => {
+      socket.current.emit("leave_room", currentChat?.conversationId);
+    };
+  }, [currentChat]);
 
-  const handleClickAwaySearch = () => {
-    setSearchFocused(false);
-    setSearchQuery("");
-  };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const message = {
+      senderId: userInfo._id,
+      body: newMessage,
+      conversationId: currentChat.conversationId,
+    };
+    socket.current.emit("sendMessage", {
+      sender: userInfo._id,
+      body: newMessage,
+      room: currentChat.conversationId,
+    });
 
-  const handleChangeSearch = async (event) => {
     try {
-      const { value } = event.target;
-      setSearchQuery(value);
-      console.log("SEARCHING" + value);
-      // if (value) {
-      //   const response = await axios.get("/api/chat/search", {
-      //     params: { query: value },
-      //   });
-      // setSearchResults(response.data.results);
-      // } else {
-      //   setSearchResults([]);
-      // }
-    } catch (error) {
-      console.error(error);
+      const res = await axios.post(`${BASE_URL}/messages`, message);
+      setMessages([...messages, res.data]);
+      setNewMessage("");
+    } catch (err) {
+      console.log(err);
     }
   };
 
-  const handleSearchFocus = () => {
-    setSearchFocused(true);
-  };
-
-  const handleSearchSelect = (username) => {
-    setSearchFocused(false);
-    setSearchQuery("");
-    // navigate(PATH_DASHBOARD.chat.view(username));
-  };
-
-  const handleSelectContact = (result) => {
-    if (handleSearchSelect) {
-      handleSearchSelect(result.username);
-    }
-  };
-
-  const renderContent = (
-    <>
-      <Box sx={{ py: 2, px: 3 }}>
-        <Stack direction="row" alignItems="center" justifyContent="center">
-          {/* {!isCollapse && (
-            <>
-              <ChatAccount />
-              <Box sx={{ flexGrow: 1 }} />
-            </>
-          )} */}
-
-          <IconButton onClick={handleToggleSidebar}>
-            <Iconify
-              width={20}
-              height={20}
-              icon={
-                openSidebar
-                  ? "eva:arrow-ios-back-fill"
-                  : "eva:arrow-ios-forward-fill"
-              }
-            />
-          </IconButton>
-
-          {/* {!isCollapse && (
-            <IconButton onClick={() => navigate(PATH_DASHBOARD.chat.new)}>
-              <Iconify icon={"eva:edit-fill"} width={20} height={20} />
-            </IconButton>
-          )} */}
-        </Stack>
-
-        {!isCollapse && (
-          <ChatContactSearch
-            query={searchQuery}
-            onFocus={handleSearchFocus}
-            onChange={handleChangeSearch}
-            onClickAway={handleClickAwaySearch}
-          />
-        )}
-      </Box>
-
-      <Scrollbar>
-        {!displayResults ? (
-          <ChatConversationList
-            conversations={conversations}
-            isOpenSidebar={openSidebar}
-            activeConversationId={activeConversationId}
-            sx={{ ...(isSearchFocused && { display: "none" }) }}
-          />
-        ) : (
-          <ChatSearchResults
-            query={searchQuery}
-            results={searchResults}
-            onSelectContact={handleSelectContact}
-          />
-        )}
-      </Scrollbar>
-    </>
-  );
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
 
   return (
-    <>
-      {!isDesktop && (
-        <ToggleButtonStyle onClick={handleToggleSidebar}>
-          <Iconify width={16} height={16} icon={"eva:people-fill"} />
-        </ToggleButtonStyle>
-      )}
-
-      {isDesktop ? (
-        <Drawer
-          open={openSidebar}
-          variant="persistent"
-          sx={{
-            width: SIDEBAR_WIDTH,
-            transition: theme.transitions.create("width"),
-            "& .MuiDrawer-paper": {
-              position: "static",
-              width: SIDEBAR_WIDTH,
-            },
-            ...(isCollapse && {
-              width: SIDEBAR_COLLAPSE_WIDTH,
-              "& .MuiDrawer-paper": {
-                width: SIDEBAR_COLLAPSE_WIDTH,
-                position: "static",
-                transform: "none !important",
-                visibility: "visible !important",
-              },
-            }),
-          }}
-        >
-          {renderContent}
-        </Drawer>
-      ) : (
-        <Drawer
-          ModalProps={{ keepMounted: true }}
-          open={openSidebar}
-          onClose={handleCloseSidebar}
-          sx={{
-            "& .MuiDrawer-paper": { width: SIDEBAR_WIDTH },
-          }}
-        >
-          {renderContent}
-        </Drawer>
-      )}
-    </>
+    <Box sx={{ py: 2, px: 3 }}>
+      <Stack direction="column" alignItems="center" justifyContent="center">
+        <Scrollbar>
+          {conversations.map((c, i) => (
+            <Box
+              key={i}
+              sx={{
+                cursor: "pointer",
+              }}
+              onClick={() => setCurrentChat(c)}
+            >
+              <Conversation conversation={c} />
+            </Box>
+          ))}
+        </Scrollbar>
+      </Stack>
+    </Box>
   );
 }

@@ -99,7 +99,6 @@ const handleSendMessage = (message) => {
 export default function ChatWindow() {
   return (
     <Stack sx={{ flexGrow: 1, minWidth: "1px" }}>
-      <Divider />
       <Box
         sx={{ flexGrow: 1, display: "flex", overflow: "hidden", minWidth: "0" }}
       >
