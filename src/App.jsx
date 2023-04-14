@@ -1,16 +1,21 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import ThemeProvider from "./theme";
-import LogIn from "./scenes/login/Login";
-import DashBoard from "./scenes/dashboard/Dashboard";
+// import LogIn from "./scenes/login/Login";
+// import DashBoard from "./scenes/dashboard/Dashboard";
+
+import Dashboard from "./pages/Dashboard";
 
 import DashboardLayout from "./layouts/DashBoardLayout";
-import Messenger from "./scenes/messenger/Messenger";
-import Calendar from "./scenes/calendar/Calendar";
-import UserCreate from "./scenes/UserCreate";
-import UserProfile from "./scenes/UserProfile";
-import Chat from "./components/chat/Chat";
-import UserAccount from "./scenes/dashboard/UserAccount";
+import MeetingCalendar from "./pages/MeetingCalendar";
+import Chat from "./pages/Chat";
+import Login from "./pages/Login";
+import UserForm from "./pages/Users/UserForm";
+// import Calendar from "./scenes/calendar/Calendar";
+// import UserCreate from "./scenes/UserCreate";
+// import UserProfile from "./scenes/UserProfile";
+// import Chat from "./components/chat/Chat";
+// import UserAccount from "./scenes/dashboard/UserAccount";
 
 import MotionLazyContainer from "./components/animate/MotionLazyContainer";
 import NotistackProvider from "./components/NotistackProvider";
@@ -27,37 +32,14 @@ function App() {
             <main className="content">
               <Routes>
                 <Route element={<DashboardLayout />}>
-                  <Route
-                    path="/"
-                    element={
-                      user ? <DashBoard /> : <Navigate replace to="/login" />
-                    }
-                  />
-                  <Route
-                    path="/messenger"
-                    element={!user ? <Navigate replace to="/" /> : <Chat />}
-                  />
-                  <Route
-                    path="/create-user"
-                    element={
-                      user ? <UserCreate /> : <Navigate replace to="/login" />
-                    }
-                  />
-                  <Route
-                    path="/profile"
-                    element={
-                      user ? <UserProfile /> : <Navigate replace to="/login" />
-                    }
-                  />
-                  <Route path="/calendar" element={<Calendar />} />
-                  <Route
-                    path="/dashboard/user/account"
-                    element={<UserAccount />}
-                  />
+                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/chat" element={<Chat />} />
+                  <Route path="/meetings" element={<MeetingCalendar />} />
+                  <Route path="/users" element={<UserForm />} />
                 </Route>
                 <Route
                   path="/login"
-                  element={user ? <Navigate replace to="/" /> : <LogIn />}
+                  element={user ? <Navigate replace to="/" /> : <Login />}
                 />
               </Routes>
             </main>

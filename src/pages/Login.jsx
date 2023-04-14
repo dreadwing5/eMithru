@@ -14,13 +14,13 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import { useContext, useRef } from "react";
-import { loginCall } from "../../apiCalls";
-import { AuthContext } from "../../context/AuthContext";
+import { loginCall } from "../apiCalls";
+import { AuthContext } from "../context/AuthContext";
 import CircularProgress from "@mui/material/CircularProgress";
 
 const theme = createTheme();
 
-const LogIn = () => {
+const Login = () => {
   const email = useRef();
   const password = useRef();
   const { isFetching, dispatch } = useContext(AuthContext);
@@ -103,4 +103,4 @@ const LogIn = () => {
   );
 };
 
-export default LogIn;
+export default Login;

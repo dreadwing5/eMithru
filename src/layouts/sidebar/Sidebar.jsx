@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
+
+// import { purple } from "@mui/material/colors'";
 import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "../../components/FlexBetween";
 import Scrollbar from "../../components/Scrollbar";
+
+import logo from "../../public/logo.png";
+
 import {
   Box,
   Divider,
+  Avatar,
   Drawer,
   IconButton,
   List,
@@ -20,70 +26,82 @@ import {
   SettingsOutlined,
   ChevronLeft,
   ChevronRightOutlined,
-  HomeOutlined,
-  ShoppingCartOutlined,
-  Groups2Outlined,
-  ReceiptLongOutlined,
-  PublicOutlined,
-  PointOfSaleOutlined,
-  TodayOutlined,
-  CalendarMonthOutlined,
-  AdminPanelSettingsOutlined,
-  TrendingUpOutlined,
-  PieChartOutlined,
+  AccountCircleOutlined,
 } from "@mui/icons-material";
+
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 const navItems = [
   {
     text: "Dashboard",
-    icon: <HomeOutlined />,
-  },
-  {
-    text: "Profile",
-    icon: null,
-  },
-  {
-    text: "View",
-    icon: <ShoppingCartOutlined />,
-  },
-  {
-    text: "Update",
-    icon: <Groups2Outlined />,
+    icon: <HomeOutlinedIcon />,
+    link: "/",
   },
   {
     text: "Meetings",
-    icon: null,
+    icon: <EventOutlinedIcon />,
+    link: "/meetings",
   },
   {
-    text: "Schedule Meetings",
-    icon: <PointOfSaleOutlined />,
+    text: "Chat",
+    icon: <ChatOutlinedIcon />,
+    link: "/chat",
   },
   {
-    text: "Upcoming Meeting",
-    icon: <TodayOutlined />,
+    text: "Users",
+    icon: <AccountCircleOutlined />,
+    link: "/users",
   },
   {
-    text: "Conversation",
-    icon: null,
-  },
-  {
-    text: "Private Conversation",
-    icon: <TodayOutlined />,
-  },
-  {
-    text: "ChatBot",
-    icon: <TodayOutlined />,
-  },
-
-  {
-    text: "Attendance",
-    icon: null,
-  },
-  {
-    text: "View Attendance",
-    icon: <TodayOutlined />,
+    text: "Info Bot",
+    icon: <InfoOutlinedIcon />,
+    link: "/info-bot",
   },
 ];
+
+const LoggedInUserAvatar = ({ name, role, theme }) => {
+  return (
+    <Box
+      display="flex"
+      alignItems="center"
+      gap={2}
+      bgcolor={
+        theme.palette.mode === "light"
+          ? theme.palette.background.default
+          : "rgba(145, 158, 171, 0.12)"
+      }
+      p={2}
+      boxShadow={
+        theme.palette.mode === "light" ? "0 0 6px rgba(0, 0, 0, 0.1)" : "none"
+      }
+      borderRadius={1}
+      width="100%"
+      m={1}
+    >
+      <Avatar
+        sx={{ bgcolor: theme.palette.secondary.main, width: 48, height: 48 }}
+      />
+      <Box>
+        <Typography
+          variant="subtitle1"
+          fontWeight="bold"
+          sx={{ color: theme.palette.text.primary }}
+        >
+          {name}
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{ color: theme.palette.text.secondary }}
+        >
+          {role}
+        </Typography>
+      </Box>
+    </Box>
+  );
+};
 
 const Sidebar = ({
   drawerWidth,
@@ -93,11 +111,17 @@ const Sidebar = ({
 }) => {
   const { pathname } = useLocation(); //keep track of url path
   const navigate = useNavigate();
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState("dashboard");
   const theme = useTheme();
+  const backgroundColor =
+    theme.palette.mode === "light" ? "#a8dadc" : "rgb(254, 214, 128)";
 
   useEffect(() => {
-    setActive(pathname.substring(1));
+    if (pathname === "/") {
+      setActive("dashboard");
+    } else {
+      setActive(pathname.substring(1));
+    }
   }, [pathname]);
 
   return (
@@ -111,96 +135,117 @@ const Sidebar = ({
           sx={{
             flexShrink: 0,
             width: drawerWidth,
+            boxShadow:
+              theme.palette.mode === "light"
+                ? "0 0 6px rgba(0, 0, 0, 0.1)"
+                : "none",
             "& .MuiDrawer-paper": {
               width: drawerWidth,
+              borderRight: "none",
+              boxShadow:
+                theme.palette.mode === "light"
+                  ? "0 0 6px rgba(0, 0, 0, 0.1)"
+                  : "none",
             },
           }}
         >
-          <Scrollbar>
-            <Box m="1.5rem 2rem 2rem 3rem">
-              <FlexBetween color={theme.palette.secondary.main}>
-                <Box display="flex" alignItems="center" gap="0.5rem">
-                  <Typography
-                    variant="h4"
-                    fontWeight="bold"
-                    sx={{ color: theme.palette.primary.main }}
-                  >
-                    CMRIT
-                  </Typography>
-                </Box>
-                {!isNonMobile && (
-                  <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
-                    <ChevronLeft />
-                  </IconButton>
-                )}
-              </FlexBetween>
-            </Box>
+          {/* <Scrollbar> */}
 
-            <List>
-              {navItems.map(({ text, icon }) => {
-                if (!icon) {
-                  return (
-                    <Typography
-                      key={text}
-                      sx={{ m: "2.25rem 0 1rem 3rem", fontSize: "0.9rem" }}
-                    >
-                      {text}
-                    </Typography>
-                  );
-                }
+          <Box display="flex" alignSelf="center">
+            <img
+              src={logo}
+              alt="CMRIT Logo"
+              width="100"
+              style={{ transform: "scale(2)" }}
+            />
+          </Box>
 
-                const lcText = text.toLowerCase();
+          <FlexBetween color={theme.palette.secondary.main}>
+            <LoggedInUserAvatar name="Sachin" role="admin" theme={theme} />
+
+            {!isNonMobile && (
+              <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
+                <ChevronLeft />
+              </IconButton>
+            )}
+          </FlexBetween>
+
+          <List
+            sx={{
+              "& .MuiListItem-root:not(:last-child)": {
+                marginBottom: "1.5rem", // Increase gap between list items
+              },
+            }}
+          >
+            {navItems.map(({ text, icon, link }) => {
+              if (!icon) {
                 return (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton
-                      onClick={() => {
-                        navigate(`/${lcText}`);
-                        setActive(lcText);
-                      }}
+                  <Typography
+                    sx={{
+                      fontSize: "1.1rem", // Increase font size
+                      fontWeight: theme.typography.body2.fontWeight,
+                      color: theme.palette.text,
+                    }}
+                  >
+                    {text}
+                  </Typography>
+                );
+              }
+
+              const lcText = text.toLowerCase();
+              return (
+                <ListItem key={text} disablePadding>
+                  <ListItemButton
+                    onClick={() => {
+                      navigate(link);
+                      setActive(lcText);
+                    }}
+                    sx={{
+                      backgroundColor:
+                        active === lcText ? backgroundColor : "transparent",
+                      color:
+                        active === lcText
+                          ? theme.palette.primary[200]
+                          : theme.palette.secondary[200],
+                      "&:hover": {
+                        backgroundColor: theme.palette.secondary[400],
+                        color: theme.palette.primary[600],
+                      },
+                    }}
+                  >
+                    <ListItemIcon
                       sx={{
-                        backgroundColor:
-                          active === lcText
-                            ? theme.palette.secondary[400]
-                            : "transparent",
+                        ml: "2rem",
                         color:
                           active === lcText
                             ? theme.palette.primary[600]
                             : theme.palette.secondary[200],
                       }}
                     >
-                      <ListItemIcon
-                        sx={{
-                          ml: "2rem",
-                          color:
-                            active === lcText
-                              ? theme.palette.primary[600]
-                              : theme.palette.secondary[200],
-                        }}
-                      >
-                        {icon}
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={
-                          <Typography
-                            sx={{
-                              fontSize: theme.typography.body2.fontSize,
-                              fontWeight: theme.typography.body2.fontWeight,
-                              color: theme.palette.text,
-                            }}
-                          >
-                            {text}
-                          </Typography>
-                        }
-                      />{" "}
-                      {active === lcText && (
-                        <ChevronRightOutlined sx={{ ml: "auto" }} />
-                      )}
-                    </ListItemButton>
-                  </ListItem>
-                );
-              })}
-            </List>
-          </Scrollbar>
+                      {icon}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={
+                        <Typography
+                          sx={{
+                            fontSize: theme.typography.body2.fontSize,
+                            fontWeight: theme.typography.body2.fontWeight,
+                            color: theme.palette.text,
+                          }}
+                        >
+                          {text}
+                        </Typography>
+                      }
+                    />{" "}
+                    {active === lcText && (
+                      <ChevronRightOutlined sx={{ ml: "auto" }} />
+                    )}
+                  </ListItemButton>
+                </ListItem>
+              );
+            })}
+          </List>
+          {/* </Scrollbar> */}
         </Drawer>
       )}
     </Box>

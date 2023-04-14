@@ -7,10 +7,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 // @mui
 import { Box, Grid, Card, Stack, Typography } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import Divider from '@mui/material/Divider';
+import Divider from "@mui/material/Divider";
 
 // utils
-import { fData } from "../../../../utils/formatNumber";
+import { fData } from "../../utils/formatNumber";
 // _mock
 import { countries } from "../../../../_mock";
 // components
@@ -20,11 +20,11 @@ import {
   RHFSelect,
   RHFTextField,
   RHFUploadAvatar,
-} from "../../../../components/hook-form";
+} from "../../components/hook-form";
 
 // ----------------------------------------------------------------------
 
-export default function AccountGeneral() {
+export default function PersonalDetails() {
   const { enqueueSnackbar } = useSnackbar();
 
   const UpdateUserSchema = Yup.object().shape({
@@ -44,7 +44,6 @@ export default function AccountGeneral() {
     about: "",
     isPublic: false || false,
   };
-
 
   const methods = useForm({
     resolver: yupResolver(UpdateUserSchema),
@@ -86,8 +85,8 @@ export default function AccountGeneral() {
   return (
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
-        <Grid item  xs={12} md={4}>
-          <Card sx={{height:'300px', py: 10, px: 3, textAlign: "center" }}>
+        <Grid item xs={12} md={4}>
+          <Card sx={{ height: "300px", py: 10, px: 3, textAlign: "center" }}>
             <RHFUploadAvatar
               name="photoURL"
               accept="image/*"
@@ -109,8 +108,6 @@ export default function AccountGeneral() {
                 </Typography>
               }
             />
-
-           
           </Card>
         </Grid>
 
@@ -129,19 +126,16 @@ export default function AccountGeneral() {
             >
               <RHFTextField name="displayName" label="Name" />
               <RHFTextField name="email" label="Email Address" />
-              <RHFSelect name="Gender" label="Gender" placeholder="Gender"/>
+              <RHFSelect name="Gender" label="Gender" placeholder="Gender" />
               <RHFTextField name="phoneNumber" label="Phone Number" />
               <RHFTextField name="address" label="Address" />
               <RHFTextField name="nationality" label="Nationality" />
-              </Box>
-        
+            </Box>
           </Card>
         </Grid>
 
-
-
         <Grid item xs={12} md={12}>
-        <Card sx={{ p: 3 }}>
+          <Card sx={{ p: 3 }}>
             <Box
               sx={{
                 display: "grid",
@@ -155,23 +149,40 @@ export default function AccountGeneral() {
             >
               <RHFTextField name="displayName" label="Name" />
               <RHFTextField name="email" label="Email Address" />
-              <RHFSelect name="Gender" label="Gender" placeholder="Gender"/>
+              <RHFSelect name="Gender" label="Gender" placeholder="Gender" />
               <RHFTextField name="phoneNumber" label="Phone Number" />
               <RHFTextField name="address" label="Address" />
               <RHFTextField name="nationality" label="Nationality" />
               <RHFTextField name="fathersname" label="Father's Name" />
               <RHFTextField name="fathersemail" label="Father's Email" />
               <RHFTextField name="occupation" label="Father's Occupation" />
-              <RHFTextField name="office address" multiline rows={4} label="Office Address" />
+              <RHFTextField
+                name="office address"
+                multiline
+                rows={4}
+                label="Office Address"
+              />
               <RHFTextField name="Mothersname" label="Mother's Name" />
               <RHFTextField name="Mothersemail" label="Mother's Email" />
               <RHFTextField name="occupation" label="Mother's Occupation" />
-              <RHFTextField name="office address" multiline rows={4} label="Office Address" />
-              <RHFTextField name="Permanent address" multiline rows={4} label="Permanent Address" />
-              <RHFTextField name="brotherssister" multiline rows={4} label="How many brothers and sisters do you have and what are they doing?" />
-
-
-
+              <RHFTextField
+                name="office address"
+                multiline
+                rows={4}
+                label="Office Address"
+              />
+              <RHFTextField
+                name="Permanent address"
+                multiline
+                rows={4}
+                label="Permanent Address"
+              />
+              <RHFTextField
+                name="brotherssister"
+                multiline
+                rows={4}
+                label="How many brothers and sisters do you have and what are they doing?"
+              />
 
               <RHFSelect name="country" label="Country" placeholder="Country">
                 <option value="" />
@@ -186,22 +197,18 @@ export default function AccountGeneral() {
 
               <RHFTextField name="city" label="City" />
               <RHFTextField name="zipCode" label="Zip/Code" />
-           
             </Box>
 
-     <Divider sx={{mt:3}}/>
-            <h3 >Local Guardian's Details</h3>
+            <Divider sx={{ mt: 3 }} />
+            <h3>Local Guardian's Details</h3>
 
             <Divider />
-            
-          
 
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-            <RHFTextField name="GuardiansName" label="Name" />
+              <RHFTextField name="GuardiansName" label="Name" />
               <RHFTextField name="Guardiansemail" label="Email Address" />
-           <RHFTextField name="GuardiansphoneNumber" label="Phone Number" />
+              <RHFTextField name="GuardiansphoneNumber" label="Phone Number" />
               <RHFTextField name="Guardiansaddress" label="Address" />
-            
 
               <LoadingButton
                 type="submit"
@@ -211,12 +218,8 @@ export default function AccountGeneral() {
                 Save Changes
               </LoadingButton>
             </Stack>
-      
           </Card>
-
         </Grid>
-
-
       </Grid>
     </FormProvider>
   );

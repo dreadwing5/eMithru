@@ -4,7 +4,7 @@ import { useTheme, styled } from "@mui/material/styles";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../../context/AuthContext";
 
-import Conversation from "../conversation";
+import Conversation from "./Conversation";
 import Scrollbar from "../Scrollbar";
 import ChatContext from "../../context/ChatContext";
 

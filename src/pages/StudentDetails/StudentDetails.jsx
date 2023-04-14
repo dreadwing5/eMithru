@@ -32,20 +32,18 @@ export default function UserAccount() {
       icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
       component: <AccountGeneral />,
     },
-  
-  
+
     {
       value: "previous academic result",
       icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-      component: <PrevAcademic/>,
+      component: <PrevAcademic />,
     },
     {
       value: "Admission Details",
       icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-      component: <AdmissionDetails/>,
-    }
+      component: <AdmissionDetails />,
+    },
   ];
- 
 
   return (
     <Page title="User: Account Settings">

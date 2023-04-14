@@ -21,7 +21,7 @@ export default function ChatMessageList({ conversation, messages }) {
       <Scrollbar sx={{ p: 3 }} ref={scrollRef}>
         {messages.map((message) => (
           <ChatMessageItem
-            key={message.id}
+            key={message._id}
             message={message}
             conversation={conversation}
           />

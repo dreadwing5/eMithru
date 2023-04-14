@@ -6,12 +6,11 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 
-const UserProfile = () => {
+const UserDetails = () => {
   return (
     <>
       <div>
-        <h1>User Profile</h1>
-
+        <h1>User Details</h1>
         <Box
           component="form"
           sx={{

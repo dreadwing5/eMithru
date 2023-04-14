@@ -28,7 +28,7 @@ import {
 } from "@mui/material";
 // import Header from "../../components/Header";
 
-const Calendar = () => {
+const MeetingCalendar = () => {
   const theme = useTheme();
   const [currentEvents, setCurrentEvents] = useState([]);
   const [open, setOpen] = React.useState(false);
@@ -274,4 +274,4 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default MeetingCalendar;
