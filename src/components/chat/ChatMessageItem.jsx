@@ -33,15 +33,16 @@ ChatMessageItem.propTypes = {
 };
 
 export default function ChatMessageItem({ message, conversation }) {
-  const sender = conversation.participants.find(
-    (participant) => participant.id === message.senderId
-  );
-  const senderDetails =
-    message.senderId === "8864c717-587d-472a-929a-8e5f298024da-0"
-      ? { type: "me" }
-      : { avatar: sender?.avatar, name: sender?.name };
-  const isMe = senderDetails.type === "me";
-  const firstName = senderDetails.name && senderDetails.name.split(" ")[0];
+  // const sender = conversation.participants.find(
+  //   (participant) => participant.id === message.senderId
+  // );
+  // const senderDetails =
+  //   message.senderId === "8864c717-587d-472a-929a-8e5f298024da-0"
+  //     ? { type: "me" }
+  //     : { avatar: sender?.avatar, name: sender?.name };
+  // const isMe = senderDetails.type === "me";
+  const isMe = true;
+  // const firstName = senderDetails.name && senderDetails.name.split(" ")[0];
 
   return (
     <RootStyle>
@@ -53,26 +54,23 @@ export default function ChatMessageItem({ message, conversation }) {
           }),
         }}
       >
-        {senderDetails.type !== "me" && (
-          <Avatar
-            alt={senderDetails.name}
-            src={senderDetails.avatar}
-            sx={{ width: 32, height: 32, mr: 2 }}
-          />
-        )}
+        <Avatar
+          src="https://images.unsplash.com/photo-1488161628813-04466f872be2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1528&q=80"
+          sx={{ width: 32, height: 32, mr: 2 }}
+        />
 
         <div>
-          <InfoStyle
+          {/* <InfoStyle
             variant="caption"
             sx={{
               ...(isMe && { justifyContent: "flex-end" }),
             }}
           >
             {!isMe && `${firstName},`}&nbsp;
-            {formatDistanceToNowStrict(new Date(message.createdAt), {
+            {formatDistanceToNowStrict(new Date(message.sendTime), {
               addSuffix: true,
             })}
-          </InfoStyle>
+          </InfoStyle> */}
 
           <ContentStyle
             sx={{

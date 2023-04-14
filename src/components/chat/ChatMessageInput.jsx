@@ -1,5 +1,7 @@
 import PropTypes from "prop-types";
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
+
+import ChatContext from "../../context/ChatContext";
 // @mui
 import { styled } from "@mui/material/styles";
 import {
@@ -32,6 +34,7 @@ export default function ChatMessageInput({ disabled, conversationId, onSend }) {
   const fileInputRef = useRef(null);
   const [message, setMessage] = useState("");
 
+  const { sendMessage } = useContext(ChatContext);
   const handleAttach = () => {
     fileInputRef.current?.click();
   };
@@ -46,19 +49,9 @@ export default function ChatMessageInput({ disabled, conversationId, onSend }) {
     if (!message) {
       return "";
     }
-    console.log(message);
-    // if (onSend && conversationId) {
-    //   onSend({
-    //     conversationId,
-    //     messageId: uuidv4(),
-    //     message,
-    //     contentType: "text",
-    //     attachments: [],
-    //     createdAt: new Date(),
-    //     senderId: "8864c717-587d-472a-929a-8e5f298024da-0",
-    //   });
-    // }
-    return setMessage("");
+
+    sendMessage(message);
+    setMessage("");
   };
 
   return (
