@@ -79,7 +79,7 @@ const LoggedInUserAvatar = ({ name, role, theme }) => {
       }
       borderRadius={1}
       width="100%"
-      m={1}
+      m={2}
     >
       <Avatar
         sx={{ bgcolor: theme.palette.secondary.main, width: 48, height: 48 }}
@@ -113,8 +113,9 @@ const Sidebar = ({
   const navigate = useNavigate();
   const [active, setActive] = useState("dashboard");
   const theme = useTheme();
-  const backgroundColor =
-    theme.palette.mode === "light" ? "#a8dadc" : "rgb(254, 214, 128)";
+
+  const navButtonBackgrounColor =
+    theme.palette.mode === "dark" ? "#37404a" : "#e9eaeb";
 
   useEffect(() => {
     if (pathname === "/") {
@@ -141,7 +142,7 @@ const Sidebar = ({
                 : "none",
             "& .MuiDrawer-paper": {
               width: drawerWidth,
-              borderRight: "none",
+              borderRight: "1px dashed rgba(145, 158, 171, 0.2)",
               boxShadow:
                 theme.palette.mode === "light"
                   ? "0 0 6px rgba(0, 0, 0, 0.1)"
@@ -156,7 +157,13 @@ const Sidebar = ({
               src={logo}
               alt="CMRIT Logo"
               width="100"
-              style={{ transform: "scale(2)" }}
+              style={{
+                transform: "scale(2)",
+                filter:
+                  theme.palette.mode === "dark"
+                    ? "invert(100%) hue-rotate(180deg)"
+                    : "none",
+              }}
             />
           </Box>
 
@@ -170,20 +177,14 @@ const Sidebar = ({
             )}
           </FlexBetween>
 
-          <List
-            sx={{
-              "& .MuiListItem-root:not(:last-child)": {
-                marginBottom: "1.5rem", // Increase gap between list items
-              },
-            }}
-          >
+          <List>
             {navItems.map(({ text, icon, link }) => {
               if (!icon) {
                 return (
                   <Typography
                     sx={{
                       fontSize: "1.1rem", // Increase font size
-                      fontWeight: theme.typography.body2.fontWeight,
+                      fontWeight: theme.typography.body1.fontWeight,
                       color: theme.palette.text,
                     }}
                   >
@@ -194,18 +195,26 @@ const Sidebar = ({
 
               const lcText = text.toLowerCase();
               return (
-                <ListItem key={text} disablePadding>
+                <ListItem
+                  key={text}
+                  sx={{
+                    textAlign: "center",
+                  }}
+                >
                   <ListItemButton
                     onClick={() => {
                       navigate(link);
                       setActive(lcText);
                     }}
                     sx={{
+                      borderRadius: "8px",
                       backgroundColor:
-                        active === lcText ? backgroundColor : "transparent",
+                        active === lcText
+                          ? navButtonBackgrounColor
+                          : "transparent",
                       color:
                         active === lcText
-                          ? theme.palette.primary[200]
+                          ? theme.palette.primary[600]
                           : theme.palette.secondary[200],
                       "&:hover": {
                         backgroundColor: theme.palette.secondary[400],
@@ -215,7 +224,7 @@ const Sidebar = ({
                   >
                     <ListItemIcon
                       sx={{
-                        ml: "2rem",
+                        ml: "1rem",
                         color:
                           active === lcText
                             ? theme.palette.primary[600]
@@ -228,7 +237,7 @@ const Sidebar = ({
                       primary={
                         <Typography
                           sx={{
-                            fontSize: theme.typography.body2.fontSize,
+                            fontSize: "0.9rem",
                             fontWeight: theme.typography.body2.fontWeight,
                             color: theme.palette.text,
                           }}
@@ -236,7 +245,7 @@ const Sidebar = ({
                           {text}
                         </Typography>
                       }
-                    />{" "}
+                    />
                     {active === lcText && (
                       <ChevronRightOutlined sx={{ ml: "auto" }} />
                     )}
