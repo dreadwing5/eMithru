@@ -33,6 +33,13 @@ const UserSchema = Yup.object().shape({
     .oneOf([Yup.ref("password"), null], "Passwords must match"),
 });
 
+const options = [
+  { label: "Admin", value: "admin" },
+  { label: "Mentor", value: "Mentor" },
+  { label: "Mentee", value: "Mentee" },
+  { label: "HOD", value: "hod" },
+];
+
 export default function UserForm() {
   const { enqueueSnackbar } = useSnackbar();
   const [avatar, setAvatar] = useState(null);
@@ -100,7 +107,7 @@ export default function UserForm() {
     <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
       <Grid container spacing={3}>
         <Grid item xs={12} md={4}>
-          <Card sx={{ height: "300px", py: 10, px: 3, textAlign: "center" }}>
+          <Card sx={{ height: "500px", py: 10, px: 3, textAlign: "center" }}>
             <RHFUploadAvatar
               name="avatar"
               accept="image/*"
@@ -125,7 +132,7 @@ export default function UserForm() {
           </Card>
         </Grid>
         <Grid item xs={12} md={8}>
-          <Card sx={{ p: 3 }}>
+          <Card sx={{ p: 3, height: "500px" }}>
             <Stack spacing={3}>
               <RHFTextField
                 name="name"
@@ -150,36 +157,45 @@ export default function UserForm() {
                 fullWidth
                 autoComplete="tel"
               />
-              <RHFTextField
-                name="password"
-                label="Password"
-                type="password"
-                required
-                fullWidth
-                autoComplete="new-password"
-              />
-              <RHFTextField
-                name="passwordConfirm"
-                label="Confirm Password"
-                type="password"
-                required
-                fullWidth
-                autoComplete="new-password"
-              />
-              <RHFSelect
-                name="role"
-                label="Role"
-                fullWidth
-                required
-                options={[
-                  { label: "Admin", value: "admin" },
-                  { label: "User", value: "user" },
-                ]}
-              />
-              <Divider sx={{ my: 2 }} />
+              <RHFSelect name="role" label="Role" fullWidth required>
+                {options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </RHFSelect>
+              <Box
+                sx={{
+                  display: "grid",
+                  rowGap: 5,
+                  columnGap: 2,
+                  gridTemplateColumns: {
+                    xs: "repeat(1, 1fr)",
+                    sm: "repeat(2, 1fr)",
+                  },
+                }}
+              >
+                <RHFTextField
+                  name="password"
+                  label="Password"
+                  type="password"
+                  required
+                  fullWidth
+                  autoComplete="new-password"
+                />
+                <RHFTextField
+                  name="passwordConfirm"
+                  label="Confirm Password"
+                  type="password"
+                  required
+                  fullWidth
+                  autoComplete="new-password"
+                />
+              </Box>
+            </Stack>
+            <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
               <LoadingButton
                 type="submit"
-                fullWidth
                 variant="contained"
                 loading={isSubmitting}
               >

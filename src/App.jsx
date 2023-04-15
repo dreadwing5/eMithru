@@ -10,7 +10,7 @@ import DashboardLayout from "./layouts/DashBoardLayout";
 import MeetingCalendar from "./pages/MeetingCalendar";
 import Chat from "./pages/Chat";
 import Login from "./pages/Login";
-import UserForm from "./pages/Users/UserForm";
+import User from "./pages/Users/User";
 // import Calendar from "./scenes/calendar/Calendar";
 // import UserCreate from "./scenes/UserCreate";
 // import UserProfile from "./scenes/UserProfile";
@@ -35,7 +35,7 @@ function App() {
                   <Route path="/" element={<Dashboard />} />
                   <Route path="/chat" element={<Chat />} />
                   <Route path="/meetings" element={<MeetingCalendar />} />
-                  <Route path="/users" element={<UserForm />} />
+                  <Route path="/users" element={<User />} />
                 </Route>
                 <Route
                   path="/login"
