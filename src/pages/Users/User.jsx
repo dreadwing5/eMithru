@@ -13,6 +13,7 @@ import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs";
 // sections
 
 import UserForm from "./UserForm";
+import UserList from "./UserList";
 
 // ----------------------------------------------------------------------
 
@@ -28,7 +29,7 @@ export default function User() {
     {
       value: "User List",
       icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-      component: <UserForm />,
+      component: <UserList />,
     },
   ];
 
