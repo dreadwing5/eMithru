@@ -1,5 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
+
 import App from "./App";
 
 import { HelmetProvider } from "react-helmet-async";
@@ -8,7 +9,10 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
 import { SettingsProvider } from "./context/SettingsContext";
 
-ReactDOM.render(
+const domNode = document.getElementById("root");
+const root = createRoot(domNode);
+
+root.render(
   <React.StrictMode>
     <AuthContextProvider>
       <HelmetProvider>
@@ -19,6 +23,5 @@ ReactDOM.render(
         </SettingsProvider>
       </HelmetProvider>
     </AuthContextProvider>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );

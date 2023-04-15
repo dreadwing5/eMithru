@@ -2,7 +2,8 @@ import { useState } from "react";
 import * as Yup from "yup";
 import { useSnackbar } from "notistack";
 import { useCallback } from "react";
-import axios from "axios";
+
+import api from "../../utils/axios";
 
 // form
 import { useForm } from "react-hook-form";
@@ -35,8 +36,8 @@ const UserSchema = Yup.object().shape({
 
 const options = [
   { label: "Admin", value: "admin" },
-  { label: "Mentor", value: "Mentor" },
-  { label: "Mentee", value: "Mentee" },
+  { label: "Mentor", value: "mentor" },
+  { label: "Mentee", value: "mentee" },
   { label: "HOD", value: "hod" },
 ];
 
@@ -70,9 +71,7 @@ export default function UserForm() {
           avatar,
         };
         console.log(userData);
-
-        await axios.post("/api/users", userData);
-
+        await api.post("/users", userData);
         enqueueSnackbar("User created successfully!", { variant: "success" });
         methods.reset();
         setAvatar(null);
