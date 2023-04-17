@@ -13,15 +13,13 @@ const domNode = document.getElementById("root");
 const root = createRoot(domNode);
 
 root.render(
-  <React.StrictMode>
-    <AuthContextProvider>
-      <HelmetProvider>
-        <SettingsProvider>
-          <Router>
-            <App />
-          </Router>
-        </SettingsProvider>
-      </HelmetProvider>
-    </AuthContextProvider>
-  </React.StrictMode>
+  <AuthContextProvider>
+    <HelmetProvider>
+      <SettingsProvider>
+        <Router>
+          <App />
+        </Router>
+      </SettingsProvider>
+    </HelmetProvider>
+  </AuthContextProvider>
 );

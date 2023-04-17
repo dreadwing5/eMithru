@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import {
   Box,
   Table,
@@ -26,6 +26,18 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import ConfirmationDialog from "./ConfirmationDialog";
 import { useEffect } from "react";
+
+import api from "../../utils/axios";
+
+// const users = data.results.map((result, index) => ({
+//   id: index + 1,
+//   name: `${result.name.first} ${result.name.last}`,
+//   email: result.email,
+//   role: "User",
+//   phone: result.phone,
+// }));
+
+// return users;
 
 const generateUsers = async (count) => {
   const response = await fetch(`https://randomuser.me/api/?results=${count}`);
@@ -66,10 +78,26 @@ function UserList({ onEdit }) {
   const tableHeaderColor =
     theme.palette.mode === "dark" ? "#37404a" : "#e9eaeb";
 
-  // Placeholder until we can fetvh our own user
+  const getAllUsers = useCallback(async () => {
+    try {
+      const response = await api("/users");
+      const { status, data } = await response.data;
+      if (status === "success") {
+        const users = data.users;
+        console.log(users);
+        setUsers(users);
+      } else {
+        throw new Error("Error fetching users");
+      }
+    } catch (error) {
+      console.log(error);
+      enqueueSnackbar("Error fetching users", { variant: "error" });
+    }
+  }, [enqueueSnackbar]);
+
   useEffect(() => {
-    generateUsers(15).then((users) => setUsers(users));
-  }, []);
+    getAllUsers();
+  }, [getAllUsers]);
 
   const handleEdit = (user) => {
     onEdit(user);
@@ -81,13 +109,12 @@ function UserList({ onEdit }) {
   };
 
   const handleCloseDialog = () => {
-    console.log("CLOSING");
     setOpenDialog(false);
     handleClose();
   };
 
   const handleConfirmDelete = () => {
-    // Perform delete operation (e.g., call API to delete user)
+    // Perform delete operation (e.g., call API to delete user
     setUsers((prevUsers) =>
       prevUsers.filter((user) => user.id !== selectedUser.id)
     );
@@ -124,7 +151,7 @@ function UserList({ onEdit }) {
               {users
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user) => (
-                  <TableRow key={user.id}>
+                  <TableRow key={user._id}>
                     <TableCell>
                       <Box
                         sx={{
@@ -137,7 +164,6 @@ function UserList({ onEdit }) {
                       >
                         <Avatar
                           alt={user.name}
-                          src="/broken-image.jpg"
                           sx={{ width: 50, height: 50 }}
                         />
                         <Typography sx={{ ml: 1 }}>{user.name}</Typography>
@@ -191,7 +217,7 @@ function UserList({ onEdit }) {
             <TablePagination
               rowsPerPageOptions={rowsPerPageOptions}
               component="div"
-              count={users.length}
+              count={users?.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}
@@ -212,4 +238,4 @@ function UserList({ onEdit }) {
   );
 }
 
-export default UserList;
+export default React.memo(UserList);
