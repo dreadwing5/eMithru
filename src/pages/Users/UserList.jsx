@@ -29,16 +29,6 @@ import { useEffect } from "react";
 
 import api from "../../utils/axios";
 
-// const users = data.results.map((result, index) => ({
-//   id: index + 1,
-//   name: `${result.name.first} ${result.name.last}`,
-//   email: result.email,
-//   role: "User",
-//   phone: result.phone,
-// }));
-
-// return users;
-
 const generateUsers = async (count) => {
   const response = await fetch(`https://randomuser.me/api/?results=${count}`);
   const data = await response.json();
@@ -113,15 +103,26 @@ function UserList({ onEdit }) {
     handleClose();
   };
 
-  const handleConfirmDelete = () => {
-    // Perform delete operation (e.g., call API to delete user
-    setUsers((prevUsers) =>
-      prevUsers.filter((user) => user.id !== selectedUser.id)
-    );
+  const handleConfirmDelete = async () => {
+    try {
+      // Perform delete operation (e.g., call API to delete user)
+      const response = await api.delete(`users/${selectedUser._id}`, {
+        // add any required headers or request data
+      });
 
-    enqueueSnackbar("User deleted successfully", { variant: "success" });
-    setOpenDialog(false);
-    handleClose();
+      setUsers((prevUsers) =>
+        prevUsers.filter((user) => user._id !== selectedUser._id)
+      );
+
+      enqueueSnackbar("User deleted successfully", { variant: "success" });
+      setOpenDialog(false);
+      handleClose();
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar(error.message || "Failed to delete user", {
+        variant: "error",
+      });
+    }
   };
 
   const handleClick = (event, user) => {
