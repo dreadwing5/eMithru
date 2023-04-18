@@ -1,4 +1,6 @@
 import { capitalCase } from "change-case";
+
+import { useState } from "react";
 // @mui
 import { Container, Tab, Box, Tabs } from "@mui/material";
 // routes
@@ -14,22 +16,31 @@ import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs";
 
 import UserForm from "./UserForm";
 import UserList from "./UserList";
+import React from "react";
 
 // ----------------------------------------------------------------------
 
 export default function User() {
+  const [editingUser, setEditingUser] = useState(null);
   const { currentTab, onChangeTab } = useTabs("Create User");
 
   const ACCOUNT_TABS = [
     {
       value: "Create User",
       icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-      component: <UserForm />,
+      component: <UserForm editingUser={editingUser} />,
     },
     {
       value: "User List",
       icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-      component: <UserList />,
+      component: (
+        <UserList
+          onEdit={(user) => {
+            setEditingUser(user);
+            onChangeTab(null, "Create User");
+          }}
+        />
+      ),
     },
   ];
 

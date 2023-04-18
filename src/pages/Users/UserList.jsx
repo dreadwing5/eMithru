@@ -29,21 +29,6 @@ import { useEffect } from "react";
 
 import api from "../../utils/axios";
 
-const generateUsers = async (count) => {
-  const response = await fetch(`https://randomuser.me/api/?results=${count}`);
-  const data = await response.json();
-
-  const users = data.results.map((result, index) => ({
-    id: index + 1,
-    name: `${result.name.first} ${result.name.last}`,
-    email: result.email,
-    role: "User",
-    phone: result.phone,
-  }));
-
-  return users;
-};
-
 function UserList({ onEdit }) {
   const theme = useTheme();
   const [users, setUsers] = useState([]);

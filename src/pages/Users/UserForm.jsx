@@ -24,15 +24,30 @@ import {
 } from "../../components/hook-form";
 
 // validation schema
-const UserSchema = Yup.object().shape({
-  name: Yup.string().required("Name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  phone: Yup.string().required("Phone number is required"),
-  password: Yup.string().required("Password is required"),
-  passwordConfirm: Yup.string()
-    .required("Please confirm your password")
-    .oneOf([Yup.ref("password"), null], "Passwords must match"),
-});
+const getUserSchema = (editingUser) => {
+  const baseSchema = {
+    name: Yup.string().required("Name is required"),
+    email: Yup.string().email("Email is invalid").required("Email is required"),
+    phone: Yup.string().required("Phone is required"),
+    role: Yup.string().required("Role is required"),
+  };
+
+  const passwordSchema = {
+    password: Yup.string().required("Password is required"),
+    passwordConfirm: Yup.string()
+      .required("Please confirm your password")
+      .oneOf([Yup.ref("password"), null], "Passwords must match"),
+  };
+
+  return Yup.object().shape(
+    editingUser
+      ? baseSchema
+      : {
+          ...baseSchema,
+          ...passwordSchema,
+        }
+  );
+};
 
 const options = [
   { label: "Admin", value: "admin" },
@@ -41,25 +56,26 @@ const options = [
   { label: "HOD", value: "hod" },
 ];
 
-export default function UserForm() {
+export default function UserForm({ editingUser }) {
   const { enqueueSnackbar } = useSnackbar();
   const [avatar, setAvatar] = useState(null);
 
   const methods = useForm({
-    resolver: yupResolver(UserSchema),
+    resolver: yupResolver(getUserSchema(editingUser)),
     defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
+      name: editingUser?.name || "",
+      email: editingUser?.email || "",
+      phone: editingUser?.phone || "",
       password: "",
       passwordConfirm: "",
-      role: "admin",
+      role: editingUser?.role || "admin",
     },
   });
 
   const {
     setValue,
     handleSubmit,
+    reset,
     formState: { isSubmitting },
   } = methods;
 
@@ -71,18 +87,25 @@ export default function UserForm() {
           avatar,
         };
         console.log(userData);
-        await api.post("/users", userData);
-        enqueueSnackbar("User created successfully!", { variant: "success" });
-        methods.reset();
-        setAvatar(null);
+
+        if (editingUser) {
+          const { password, passwordConfirm, ...updateData } = userData;
+          await api.patch(`/users/${editingUser._id}`, updateData);
+          enqueueSnackbar("User updated successfully!", { variant: "success" });
+        } else {
+          await api.post("/users", userData);
+          enqueueSnackbar("User created successfully!", { variant: "success" });
+          reset();
+          setAvatar(null);
+        }
       } catch (error) {
         console.error(error);
-        enqueueSnackbar("An error occurred while creating the user", {
+        enqueueSnackbar("An error occurred while processing the request", {
           variant: "error",
         });
       }
     },
-    [enqueueSnackbar, methods, avatar]
+    [methods, editingUser]
   );
 
   const handleDrop = useCallback(
@@ -178,28 +201,50 @@ export default function UserForm() {
                   name="password"
                   label="Password"
                   type="password"
-                  required
+                  required={!!editingUser}
                   fullWidth
                   autoComplete="new-password"
+                  disabled={!!editingUser}
                 />
                 <RHFTextField
                   name="passwordConfirm"
                   label="Confirm Password"
                   type="password"
-                  required
+                  required={!!editingUser}
                   fullWidth
                   autoComplete="new-password"
+                  disabled={!!editingUser}
                 />
               </Box>
             </Stack>
             <Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
-              <LoadingButton
-                type="submit"
-                variant="contained"
-                loading={isSubmitting}
-              >
-                Create User
-              </LoadingButton>
+              <Box display="flex" gap={1}>
+                {!editingUser && (
+                  <LoadingButton
+                    variant="outlined"
+                    onClick={() => {
+                      reset({
+                        name: "",
+                        email: "",
+                        phone: "",
+                        password: "",
+                        passwordConfirm: "",
+                        role: "admin",
+                      });
+                      setAvatar(null);
+                    }}
+                  >
+                    Reset
+                  </LoadingButton>
+                )}
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  loading={isSubmitting}
+                >
+                  {editingUser ? "Update User" : "Create User"}
+                </LoadingButton>
+              </Box>
             </Stack>
           </Card>
         </Grid>
