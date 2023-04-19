@@ -29,7 +29,7 @@ This platform provides comprehensive tools for educators, mentors, and mentees a
 `git clone https://github.com/dreadwing5/cmrit-mentoring-tool-frontend.git
 cd cmrit-mentoring-tool-frontend`
 
-### 2. Install dependencies`
+### 2. Install dependencies
 
 `yarn install`
 
