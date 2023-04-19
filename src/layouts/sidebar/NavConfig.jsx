@@ -27,13 +27,13 @@ const NavConfig = [
     link: "/users",
   },
   {
-    text: "Student Profile",
+    text: "Student",
     icon: <AccountCircleOutlinedIcon />,
-    link: "/student-profile",
+    link: "/student",
     dropdownItems: [
-      { text: "Profile", link: "/student-profile/profile" },
-      { text: "Academic", link: "/student-profile/academic" },
-      { text: "Admission", link: "/student-profile/admission" },
+      { text: "Profile", link: "/student/profile" },
+      { text: "Academic", link: "/student/academic" },
+      { text: "Admission", link: "/student/admission" },
     ],
   },
   {

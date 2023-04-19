@@ -1,5 +1,5 @@
 import { List } from "@mui/material";
-import NavigationItem from "./NavigationItem";
+import NavigationItem from "./NavigationItem/NavigationItem";
 
 const NavItemsList = ({ navConfig, active, setActive }) => {
   return (
