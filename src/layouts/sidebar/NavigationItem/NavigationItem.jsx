@@ -1,8 +1,7 @@
 import { ListItem, Box, List, useTheme } from "@mui/material";
+import DropdownItem from "./DropDownItem";
 import NavItemButton from "./NavItemButton";
-import DropdownItem from "./DropdownItem";
 import { useNavigate } from "react-router-dom";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
 const NavigationItem = ({
   text,
