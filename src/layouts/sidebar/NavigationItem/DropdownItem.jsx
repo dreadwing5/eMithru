@@ -14,14 +14,13 @@ const DropdownItem = ({ itemText, itemLink, icon, active, setActive }) => {
   const theme = useTheme();
 
   return (
-    <ListItem key={itemText} sx={{ textAlign: "center" }}>
+    <ListItem key={itemText}>
       <ListItemButton
         onClick={() => {
           navigate(itemLink);
         }}
         sx={{
           borderRadius: "8px",
-          gap: 2,
           backgroundColor: "transparent",
           color: theme.palette.secondary[200],
           "&:hover": {
@@ -30,6 +29,7 @@ const DropdownItem = ({ itemText, itemLink, icon, active, setActive }) => {
           },
           "& .MuiListItemIcon-root": {
             minWidth: 0,
+            marginRight: theme.spacing(1),
           },
         }}
       >
@@ -45,10 +45,11 @@ const DropdownItem = ({ itemText, itemLink, icon, active, setActive }) => {
           />
         </ListItemIcon>
         <ListItemText
+          inset
           primary={
             <Typography
               sx={{
-                fontSize: "0.9rem",
+                fontSize: "0.8rem",
                 fontWeight: theme.typography.body2.fontWeight,
                 color: theme.palette.text,
               }}

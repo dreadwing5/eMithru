@@ -1,8 +1,6 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import ThemeProvider from "./theme";
-// import LogIn from "./scenes/login/Login";
-// import DashBoard from "./scenes/dashboard/Dashboard";
 
 import Dashboard from "./pages/Dashboard";
 
@@ -11,15 +9,9 @@ import MeetingCalendar from "./pages/MeetingCalendar";
 import Chat from "./pages/Chat";
 import Login from "./pages/Login";
 import User from "./pages/Users/User";
-// import Calendar from "./scenes/calendar/Calendar";
-// import UserCreate from "./scenes/UserCreate";
-// import UserProfile from "./scenes/UserProfile";
-// import Chat from "./components/chat/Chat";
-// import UserAccount from "./scenes/dashboard/UserAccount";
-
+import StudentProfile from "./pages/Student/StudentProfile";
 import MotionLazyContainer from "./components/animate/MotionLazyContainer";
 import NotistackProvider from "./components/NotistackProvider";
-
 import { AuthContext } from "./context/AuthContext";
 
 function App() {
@@ -36,6 +28,7 @@ function App() {
                   <Route path="/chat" element={<Chat />} />
                   <Route path="/meetings" element={<MeetingCalendar />} />
                   <Route path="/users" element={<User />} />
+                  <Route path="/student/profile" element={<StudentProfile />} />
                 </Route>
                 <Route
                   path="/login"
