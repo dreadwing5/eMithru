@@ -20,7 +20,12 @@ This platform provides comprehensive tools for educators, mentors, and mentees a
 
 ## Prerequisites
 
-- Node.js (version 14.x or higher)## Getting Started### 1. Clone the repository `
+- Node.js (version 14.x or higher)
+
+## Getting Started
+
+### 1. Clone the repository `
+
 git clone https://github.com/dreadwing5/cmrit-mentoring-tool-frontend.git
 cd cmrit-mentoring-tool-frontend`
 
