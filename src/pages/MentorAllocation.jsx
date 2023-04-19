@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import Autocomplete from "@mui/material/Autocomplete";
+
 import {
   Box,
   Table,
@@ -109,6 +111,7 @@ export default function MentorAllocation() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedMentor, setSelectedMentor] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
 
   const theme = useTheme();
   const tableHeaderColor =
@@ -140,6 +143,16 @@ export default function MentorAllocation() {
     // TODO: Update mentor assignment for selected student in the backend using an API call
     console.log("Save mentor assignment", selectedMentor);
     setDialogOpen(false);
+  };
+  const handleMentorNameChange = (event) => {
+    const value = event.target.value.trim();
+    setSelectedMentor(value);
+    setAnchorEl(event.currentTarget);
+    setSuggestions(
+      mockMentors.filter((mentor) =>
+        mentor.name.toLowerCase().includes(value.toLowerCase())
+      )
+    );
   };
 
   const handleCancel = () => {
@@ -199,8 +212,10 @@ export default function MentorAllocation() {
       <Dialog
         open={dialogOpen}
         onClose={handleCancel}
-        onKeyDown={handleKeyDown}
         aria-labelledby="mentor-dialog-title"
+        maxWidth="md"
+        fullWidth={true}
+        sx={{ "& .MuiPaper-root": { maxWidth: 500 } }}
       >
         <DialogTitle id="mentor-dialog-title">Assign Mentor</DialogTitle>
         <DialogContent>
@@ -211,33 +226,28 @@ export default function MentorAllocation() {
             type="text"
             fullWidth
             value={selectedMentor || ""}
-            onChange={(event) => setSelectedMentor(event.target.value.trim())}
+            onChange={handleMentorNameChange}
             InputProps={{
-              endAdornment: (
+              endAdornment: selectedMentor && (
                 <Menu
                   id="mentor-suggestion-menu"
                   anchorEl={anchorEl}
                   keepMounted
-                  open={Boolean(anchorEl && selectedMentor)}
+                  open={Boolean(anchorEl)}
                   onClose={handleClose}
                 >
-                  {mockMentors
-                    .filter((mentor) =>
-                      mentor.name
-                        .toLowerCase()
-                        .includes(selectedMentor?.toLowerCase() || "")
-                    )
-                    .map((mentor) => (
-                      <MenuItem
-                        key={mentor.id}
-                        onClick={() => {
-                          handleMentorSelect(mentor.name);
-                          handleClose();
-                        }}
-                      >
-                        {mentor.name}
-                      </MenuItem>
-                    ))}
+                  {suggestions.map((mentor) => (
+                    <MenuItem
+                      key={mentor.id}
+                      onClick={() => {
+                        setSelectedMentor(mentor.name);
+                        handleClose();
+                        setSuggestions([]);
+                      }}
+                    >
+                      {mentor.name}
+                    </MenuItem>
+                  ))}
                 </Menu>
               ),
             }}
