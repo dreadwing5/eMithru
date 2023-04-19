@@ -29,7 +29,6 @@ function App() {
                   <Route path="/meetings" element={<MeetingCalendar />} />
                   <Route path="/users" element={<User />} />
                   <Route path="/student/profile" element={<StudentProfile />} />
-                  <Route path="/mentor" element={<User />} />
                 </Route>
                 <Route
                   path="/login"
