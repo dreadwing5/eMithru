@@ -13,6 +13,7 @@ import StudentProfile from "./pages/Student/StudentProfile";
 import MotionLazyContainer from "./components/animate/MotionLazyContainer";
 import NotistackProvider from "./components/NotistackProvider";
 import { AuthContext } from "./context/AuthContext";
+import MentorAllocation from "./pages/MentorAllocation";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -29,7 +30,7 @@ function App() {
                   <Route path="/meetings" element={<MeetingCalendar />} />
                   <Route path="/users" element={<User />} />
                   <Route path="/student/profile" element={<StudentProfile />} />
-                  <Route path="/mentor" element={<User />} />
+                  <Route path="/mentor" element={<MentorAllocation />} />
                 </Route>
                 <Route
                   path="/login"
