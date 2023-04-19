@@ -24,9 +24,9 @@ This platform provides comprehensive tools for educators, mentors, and mentees a
 
 ## Getting Started
 
-### 1. Clone the repository `
+### 1. Clone the repository
 
-git clone https://github.com/dreadwing5/cmrit-mentoring-tool-frontend.git
+`git clone https://github.com/dreadwing5/cmrit-mentoring-tool-frontend.git
 cd cmrit-mentoring-tool-frontend`
 
 ### 2. Install dependencies`
