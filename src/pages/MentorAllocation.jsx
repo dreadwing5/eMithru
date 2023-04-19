@@ -109,6 +109,7 @@ export default function MentorAllocation() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedMentor, setSelectedMentor] = useState(null);
+
   const theme = useTheme();
   const tableHeaderColor =
     theme.palette.mode === "dark" ? "#37404a" : "#e9eaeb";
@@ -124,15 +125,6 @@ export default function MentorAllocation() {
   //   };
   //   fetchStudents();
   // }, []);
-
-  const handleClick = (event, student) => {
-    setSelectedStudent(student);
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const handleEdit = (student) => {
     setSelectedStudent(student);
@@ -161,6 +153,14 @@ export default function MentorAllocation() {
     }
   };
 
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
     <Page title="User: Account Settings">
       <Container maxWidth="lg">
@@ -184,22 +184,9 @@ export default function MentorAllocation() {
                     <TableCell>{student.usn}</TableCell>
                     <TableCell>{student.allocatedMentor}</TableCell>
                     <TableCell>
-                      <IconButton
-                        onClick={(event) => handleClick(event, student)}
-                      >
+                      <IconButton onClick={() => handleEdit(student)}>
                         <EditIcon />
                       </IconButton>
-                      <Menu
-                        id="simple-menu"
-                        anchorEl={anchorEl}
-                        keepMounted
-                        open={Boolean(anchorEl && selectedStudent === student)}
-                        onClose={handleClose}
-                      >
-                        <MenuItem onClick={() => handleEdit(selectedStudent)}>
-                          Edit
-                        </MenuItem>
-                      </Menu>
                     </TableCell>
                   </TableRow>
                 ))}

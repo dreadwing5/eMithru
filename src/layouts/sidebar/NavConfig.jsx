@@ -41,6 +41,11 @@ const NavConfig = [
     icon: <InfoOutlinedIcon />,
     link: "/info-bot",
   },
+  {
+    text: "Mentor Allocation",
+    icon: <PersonOutlinedIcon />,
+    link: "/mentor",
+  },
 ];
 
 export default NavConfig;
