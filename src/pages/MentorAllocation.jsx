@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Autocomplete from "@mui/material/Autocomplete";
+import { Select } from "@mui/material";
 
 import {
   Box,
@@ -112,6 +112,7 @@ export default function MentorAllocation() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [selectedMentor, setSelectedMentor] = useState(null);
   const [suggestions, setSuggestions] = useState([]);
+  const [filterOption, setFilterOption] = useState("all");
 
   const theme = useTheme();
   const tableHeaderColor =
@@ -173,6 +174,15 @@ export default function MentorAllocation() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const filteredStudents = students.filter((student) => {
+    if (filterOption === "all") {
+      return true;
+    } else if (filterOption === "assigned") {
+      return student.allocatedMentor !== null;
+    } else {
+      return student.allocatedMentor === null;
+    }
+  });
 
   return (
     <Page title="User: Account Settings">
@@ -181,6 +191,15 @@ export default function MentorAllocation() {
           <Box
             sx={{ display: "flex", flexDirection: "column", height: "100%" }}
           >
+            <Select
+              value={filterOption}
+              onChange={(e) => setFilterOption(e.target.value)}
+            >
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="assigned">Assigned Mentors</MenuItem>
+              <MenuItem value="unassigned">Unassigned Mentors</MenuItem>
+            </Select>
+
             <Table>
               <TableHead sx={{ backgroundColor: tableHeaderColor }}>
                 <TableRow>
@@ -191,7 +210,7 @@ export default function MentorAllocation() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {students.map((student) => (
+                {filteredStudents.map((student) => (
                   <TableRow key={student._id}>
                     <TableCell>{student.name}</TableCell>
                     <TableCell>{student.usn}</TableCell>
