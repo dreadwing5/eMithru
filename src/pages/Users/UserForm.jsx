@@ -51,8 +51,8 @@ const getUserSchema = (editingUser) => {
 
 const options = [
   { label: "Admin", value: "admin" },
-  { label: "Mentor", value: "mentor" },
-  { label: "Mentee", value: "mentee" },
+  { label: "Faculty", value: "faculty" },
+  { label: "Student", value: "student" },
   { label: "HOD", value: "hod" },
 ];
 

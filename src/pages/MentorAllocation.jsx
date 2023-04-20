@@ -42,71 +42,71 @@ const mockMentors = [
   { id: "9", name: "Prof. Remus Lupin" },
   { id: "10", name: "Prof. Severus Snape" },
 ];
-const students1 = [
-  {
-    _id: "1",
-    name: "John Smith",
-    usn: "1RV18CS001",
-    allocatedMentor: "Dr. Jane Doe",
-  },
-  {
-    _id: "2",
-    name: "Jane Doe",
-    usn: "1RV18CS002",
-    allocatedMentor: "Dr. John Smith",
-  },
-  {
-    _id: "3",
-    name: "Bob Johnson",
-    usn: "1RV18CS003",
-    allocatedMentor: "Dr. Sarah Johnson",
-  },
-  {
-    _id: "4",
-    name: "Sarah Johnson",
-    usn: "1RV18CS004",
-    allocatedMentor: "Dr. Bob Johnson",
-  },
-  {
-    _id: "5",
-    name: "Alice Brown",
-    usn: "1RV18CS005",
-    allocatedMentor: "Dr. Tom Green",
-  },
-  {
-    _id: "6",
-    name: "Tom Green",
-    usn: "1RV18CS006",
-    allocatedMentor: "Dr. Alice Brown",
-  },
-  {
-    _id: "7",
-    name: "Harry Potter",
-    usn: "1RV18CS007",
-    allocatedMentor: "Prof. Albus Dumbledore",
-  },
-  {
-    _id: "8",
-    name: "Hermione Granger",
-    usn: "1RV18CS008",
-    allocatedMentor: "Prof. Minerva McGonagall",
-  },
-  {
-    _id: "9",
-    name: "Ron Weasley",
-    usn: "1RV18CS009",
-    allocatedMentor: "Prof. Remus Lupin",
-  },
-  {
-    _id: "10",
-    name: "Draco Malfoy",
-    usn: "1RV18CS010",
-    allocatedMentor: "Prof. Severus Snape",
-  },
-];
+// const students1 = [
+//   {
+//     _id: "1",
+//     name: "John Smith",
+//     usn: "1RV18CS001",
+//     allocatedMentor: "Dr. Jane Doe",
+//   },
+//   {
+//     _id: "2",
+//     name: "Jane Doe",
+//     usn: "1RV18CS002",
+//     allocatedMentor: "Dr. John Smith",
+//   },
+//   {
+//     _id: "3",
+//     name: "Bob Johnson",
+//     usn: "1RV18CS003",
+//     allocatedMentor: "Dr. Sarah Johnson",
+//   },
+//   {
+//     _id: "4",
+//     name: "Sarah Johnson",
+//     usn: "1RV18CS004",
+//     allocatedMentor: "Dr. Bob Johnson",
+//   },
+//   {
+//     _id: "5",
+//     name: "Alice Brown",
+//     usn: "1RV18CS005",
+//     allocatedMentor: "Dr. Tom Green",
+//   },
+//   {
+//     _id: "6",
+//     name: "Tom Green",
+//     usn: "1RV18CS006",
+//     allocatedMentor: "Dr. Alice Brown",
+//   },
+//   {
+//     _id: "7",
+//     name: "Harry Potter",
+//     usn: "1RV18CS007",
+//     allocatedMentor: "Prof. Albus Dumbledore",
+//   },
+//   {
+//     _id: "8",
+//     name: "Hermione Granger",
+//     usn: "1RV18CS008",
+//     allocatedMentor: "Prof. Minerva McGonagall",
+//   },
+//   {
+//     _id: "9",
+//     name: "Ron Weasley",
+//     usn: "1RV18CS009",
+//     allocatedMentor: "Prof. Remus Lupin",
+//   },
+//   {
+//     _id: "10",
+//     name: "Draco Malfoy",
+//     usn: "1RV18CS010",
+//     allocatedMentor: "Prof. Severus Snape",
+//   },
+// ];
 
 export default function MentorAllocation() {
-  const [students, setStudents] = useState(students1);
+  const [students, setStudents] = useState([]);
   const [selectedStudent, setSelectedStudent] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -118,17 +118,19 @@ export default function MentorAllocation() {
   const tableHeaderColor =
     theme.palette.mode === "dark" ? "#37404a" : "#e9eaeb";
 
-  // useEffect(() => {
-  //   const fetchStudents = async () => {
-  //     try {
-  //       const response = await api.get("/students"); // Update the API endpoint as per your backend API
-  //       setStudents(response.data);
-  //     } catch (error) {
-  //       console.error(error);
-  //     }
-  //   };
-  //   fetchStudents();
-  // }, []);
+  useEffect(() => {
+    const fetchStudents = async () => {
+      try {
+        const response = await api.get("/students"); // Update the API endpoint as per your backend API
+        const { students } = response.data;
+        console.log(students);
+        setStudents(students);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchStudents();
+  }, []);
 
   const handleEdit = (student) => {
     setSelectedStudent(student);
@@ -214,7 +216,11 @@ export default function MentorAllocation() {
                   <TableRow key={student._id}>
                     <TableCell>{student.name}</TableCell>
                     <TableCell>{student.usn}</TableCell>
-                    <TableCell>{student.allocatedMentor}</TableCell>
+                    <TableCell>
+                      {student.mentor && student.mentor.name
+                        ? student.mentor.name
+                        : "Unassigned"}
+                    </TableCell>
                     <TableCell>
                       <IconButton onClick={() => handleEdit(student)}>
                         <EditIcon />
