@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -8,45 +8,65 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
-
+import axios from "axios";
 import MentorSuggestionMenu from "./MentorSuggestionMenu";
 
-const mockMentors = [
-  { id: "1", name: "Dr. Jane Doe" },
-  { id: "2", name: "Dr. John Smith" },
-  { id: "3", name: "Dr. Sarah Johnson" },
-  { id: "4", name: "Dr. Bob Johnson" },
-  { id: "5", name: "Dr. Tom Green" },
-  { id: "6", name: "Dr. Alice Brown" },
-  { id: "7", name: "Prof. Albus Dumbledore" },
-  { id: "8", name: "Prof. Minerva McGonagall" },
-  { id: "9", name: "Prof. Remus Lupin" },
-  { id: "10", name: "Prof. Severus Snape" },
-];
+import api from "../../utils/axios";
 
 const MentorAssignmentDialog = ({ open, student, onClose }) => {
-  const [selectedMentor, setSelectedMentor] = useState(null);
+  const [selectedMentor, setSelectedMentor] = useState({});
   const [anchorEl, setAnchorEl] = useState(null);
-  const [suggestions, setSuggestions] = useState(mockMentors);
+  const [mentors, setMentors] = useState([]);
+  const [suggestions, setSuggestions] = useState([]);
+
+  useEffect(() => {
+    const fetchMentors = async () => {
+      try {
+        const response = await api.get("/users?role=faculty");
+        const { data } = response.data;
+        console.log(data);
+        setMentors(data.users);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchMentors();
+  }, []);
 
   const handleMentorNameChange = (event) => {
     const value = event.target.value.trim();
-    setSelectedMentor(value);
-    setAnchorEl(event.currentTarget);
-    setSuggestions(
-      mockMentors.filter((mentor) =>
-        mentor.name.toLowerCase().includes(value.toLowerCase())
-      )
-    );
+    if (value !== "") {
+      setSuggestions(
+        // Convert the list of names to a list of mentor objects
+        mentors.filter((mentor) =>
+          mentor.name.toLowerCase().startsWith(value.toLowerCase())
+        )
+      );
+
+      setAnchorEl(event.target);
+    } else {
+      setSuggestions([]);
+    }
+    setSelectedMentor(event.target.value);
   };
 
-  const handleSave = () => {
-    // TODO: Update mentor assignment for selected student in the backend using an API call
-    console.log("Save mentor assignment", selectedMentor);
-    onClose();
+  const handleSave = async () => {
+    try {
+      const response = await api.post("/mentors", {
+        mentorId: selectedMentor._id,
+        menteeId: student._id,
+        startDate: new Date().toISOString(),
+      });
+      console.log(response.data.message);
+      onClose();
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleCancel = () => {
+    setSelectedMentor({});
     onClose();
   };
 
@@ -71,22 +91,18 @@ const MentorAssignmentDialog = ({ open, student, onClose }) => {
           label="Mentor Name"
           type="text"
           fullWidth
-          value={selectedMentor || ""}
+          value={selectedMentor ? selectedMentor.name : ""}
           onChange={handleMentorNameChange}
-          InputProps={{
-            endAdornment: selectedMentor && (
-              <IconButton onClick={handleClose}>
-                <MentorSuggestionMenu
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleClose}
-                  suggestions={suggestions}
-                  onMentorSelect={setSelectedMentor}
-                />
-              </IconButton>
-            ),
-          }}
         />
+        {suggestions.length > 0 && (
+          <MentorSuggestionMenu
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleClose}
+            suggestions={suggestions}
+            onMentorSelect={setSelectedMentor}
+          />
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleCancel}>Cancel</Button>
