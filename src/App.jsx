@@ -13,7 +13,7 @@ import StudentProfile from "./pages/Student/StudentProfile";
 import MotionLazyContainer from "./components/animate/MotionLazyContainer";
 import NotistackProvider from "./components/NotistackProvider";
 import { AuthContext } from "./context/AuthContext";
-import MentorAllocation from "./pages/MentorAllocation";
+import MentorAllocation from "./pages/MentorAllocation/MentorAllocation";
 
 function App() {
   const { user } = useContext(AuthContext);
