@@ -42,11 +42,12 @@ const MeetingCalendar = () => {
 
   // [To Be Used after posting the meetings]
   useEffect(() => {
-    fetch(import.meta.env.VITE_API_URL + "/meetings/meetings") // replace with your API endpoint
+    fetch(import.meta.env.VITE_API_URL + "/meetings") // replace with your API endpoint
       .then((response) => response.json())
       .then((data) => setCurrentEvents(data))
       .catch((error) => console.error(error));
   }, []);
+
   console.log(currentEvents);
   const handleDateClick = (selected) => {
     setSelected(selected);
@@ -83,16 +84,6 @@ const MeetingCalendar = () => {
       });
     }
 
-    //Time wise : 9:30 - 10:50 (documentation)
-    //Event -> Backend log
-    // Save Type of meeting
-    // User claendar _> use Effect-> Events fetch
-
-    //TASKS
-    // newMeeting
-    //test if post is working
-    //testing if all meetings are coming or not
-    //display the array of meetings on the left
     const createMeeting = async (meeting) => {
       const requestOptions = {
         method: "POST",
@@ -102,7 +93,7 @@ const MeetingCalendar = () => {
 
       try {
         const response = await fetch(
-          import.meta.env.VITE_API_URL + "/meetings/createmeeting",
+          import.meta.env.VITE_API_URL + "/meetings/",
           requestOptions
         );
         const data = await response.json();
@@ -142,7 +133,7 @@ const MeetingCalendar = () => {
               <ListItem
                 key={event.id}
                 sx={{
-                  backgroundColor: theme.palette.greenAccent[500],
+                  // backgroundColor: theme.palette.greenAccent[500],
                   margin: "10px 0",
                   borderRadius: "2px",
                 }}
@@ -160,6 +151,7 @@ const MeetingCalendar = () => {
                   }
                 />
               </ListItem>
+              // {console.log("Inside" + events)}
             ))}
           </List>
         </Box>
@@ -186,7 +178,7 @@ const MeetingCalendar = () => {
             dayMaxEvents={true}
             select={handleDateClick}
             eventClick={handleEventClick}
-            eventsSet={(events) => setCurrentEvents(events)}
+            eventsSet={(events) => setCurrentEvents([...events])}
             initialEvents={currentEvents}
             //   {
             //     id: "12315",
