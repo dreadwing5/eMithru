@@ -31,7 +31,7 @@ export default function NotificationsPopover() {
   const { unreadNotifications, markAllAsRead } = useUnreadNotifications();
 
   const totalUnRead = unreadNotifications.filter(
-    (item) => item.isUnRead === true
+    (item) => item.isUnread === true
   ).length;
 
   const [open, setOpen] = useState(null);
@@ -72,7 +72,7 @@ export default function NotificationsPopover() {
 
           {totalUnRead > 0 && (
             <Tooltip title=" Mark all as read">
-              <IconButtonAnimate color="primary" onClick={handleMarkAllAsRead}>
+              <IconButtonAnimate color="primary" onClick={markAllAsRead}>
                 <Iconify icon="eva:done-all-fill" width={20} height={20} />
               </IconButtonAnimate>
             </Tooltip>
