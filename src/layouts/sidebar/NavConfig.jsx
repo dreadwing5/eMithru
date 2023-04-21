@@ -37,14 +37,14 @@ const NavConfig = [
     ],
   },
   {
-    text: "Info Bot",
-    icon: <InfoOutlinedIcon />,
-    link: "/info-bot",
-  },
-  {
-    text: "Mentor Allocation",
+    text: "Mentor",
     icon: <PersonOutlinedIcon />,
     link: "/mentor",
+  },
+  {
+    text: "Campus Buddy",
+    icon: <InfoOutlinedIcon />,
+    link: "/campus-buddy",
   },
 ];
 

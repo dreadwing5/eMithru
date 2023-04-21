@@ -13,7 +13,12 @@ const NavigationItem = ({
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
-  const lcText = text.toLowerCase();
+
+  const normalizeText = (text) => {
+    return text.toLowerCase().replace(/[\s_-]/g, "");
+  };
+  const lcText = normalizeText(text);
+
   const isDropdown = dropdownItems && dropdownItems.length > 0;
   const navButtonBackgroundColor =
     theme.palette.mode === "dark" ? "#37404a" : "#e9eaeb";
