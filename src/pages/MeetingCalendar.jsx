@@ -85,6 +85,20 @@ const MeetingCalendar = () => {
     }
 
     const createMeeting = async (meeting) => {
+      try {
+        const MentorResponse = await fetch(
+          import.meta.env.VITE_API_URL + "/mentors/" + userId,
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+        const mentor = await MentorResponse.json();
+        meeting.recipients.faculty = mentor;
+        meeting.recipients.student = userId;
+        // console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -98,6 +112,26 @@ const MeetingCalendar = () => {
         );
         const data = await response.json();
         console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+
+      try {
+        const notificationResponse = await fetch(
+          import.meta.env.VITE_API_URL + "/notifications/",
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              userId,
+              title: meeting.title,
+              description: meeting.description,
+              type: meeting.type,
+            }),
+          }
+        );
+        const notification = await notificationResponse.json();
+        console.log(notification);
       } catch (error) {
         console.error(error);
       }
