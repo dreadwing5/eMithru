@@ -21,11 +21,15 @@ const Sidebar = ({
   const [active, setActive] = useState("dashboard");
   const theme = useTheme();
 
+  const normalizeText = (text) => {
+    return text.toLowerCase().replace(/[\s_-]/g, "");
+  };
+
   useEffect(() => {
     if (pathname === "/") {
       setActive("dashboard");
     } else {
-      setActive(pathname.substring(1));
+      setActive(normalizeText(pathname.substring(1)));
     }
   }, [pathname]);
 
