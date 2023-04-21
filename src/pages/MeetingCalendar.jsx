@@ -17,6 +17,9 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
+import api from "../utils/axios";
+import { Snackbar } from "@mui/material";
+import { useSnackbar } from "notistack";
 
 import {
   Box,
@@ -38,6 +41,10 @@ const MeetingCalendar = () => {
   const titleRef = useRef();
   const locationRef = useRef();
   const meetingType = useRef();
+  const userId = "6440827f7b7d9337a2202d16";
+
+  const { enqueueSnackbar } = useSnackbar();
+
   // const [meetings, setMeetings] = useState([]);
 
   // [To Be Used after posting the meetings]
@@ -45,7 +52,7 @@ const MeetingCalendar = () => {
     fetch(import.meta.env.VITE_API_URL + "/meetings") // replace with your API endpoint
       .then((response) => response.json())
       .then((data) => setCurrentEvents(data))
-      .catch((error) => console.error(error));
+      .catch((error) => consconole.error(error));
   }, []);
 
   console.log(currentEvents);
@@ -58,85 +65,77 @@ const MeetingCalendar = () => {
     setOpen(false);
   };
 
-  const handleClose = () => {
+  const onHandleSave = async () => {
     setOpen(false);
+
     const title = titleRef.current.value;
-    const newMeeting = {
-      title: titleRef.current.value,
-      start: startTime.current.value,
-      end: endTime.current.value,
-      type: meetingType.current.value,
-      location: locationRef.current.value,
-    };
+    const start = startTime.current.value;
+    const end = endTime.current.value;
+    const type = meetingType.current.value;
+    const location = locationRef.current.value;
 
-    console.log(newMeeting);
-
-    const calendarApi = selected.view.calendar;
-    calendarApi.unselect();
-    // console.log(start);
-    if (title) {
-      calendarApi.addEvent({
-        id: `${selected.dateStr}-${title}`,
-        title,
-        start: selected.startStr,
-        end: selected.endStr,
-        allDay: selected.allDay,
-      });
+    // Check for validation
+    if (!title || !start || !end || !type || !location) {
+      enqueueSnackbar("Please fill in all fields", { variant: "error" });
+      return;
     }
 
-    const createMeeting = async (meeting) => {
-      try {
-        const MentorResponse = await fetch(
-          import.meta.env.VITE_API_URL + "/mentors/" + userId,
-          {
-            headers: { "Content-Type": "application/json" },
-          }
-        );
-        const mentor = await MentorResponse.json();
-        meeting.recipients.faculty = mentor;
-        meeting.recipients.student = userId;
-        // console.log(data);
-      } catch (error) {
-        console.error(error);
-      }
-      const requestOptions = {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(meeting),
+    // Send request to create meeting
+    try {
+      const meeting = {
+        title,
+        start,
+        end,
+        type,
+        location,
       };
 
-      try {
-        const response = await fetch(
-          import.meta.env.VITE_API_URL + "/meetings/",
-          requestOptions
-        );
-        const data = await response.json();
-        console.log(data);
-      } catch (error) {
-        console.error(error);
+      const calendarApi = selected.view.calendar;
+      calendarApi.unselect();
+      // console.log(start);
+      if (title) {
+        calendarApi.addEvent({
+          id: `${selected.dateStr}-${title}`,
+          title,
+          start: selected.startStr,
+          end: selected.endStr,
+          allDay: selected.allDay,
+        });
       }
 
-      try {
-        const notificationResponse = await fetch(
-          import.meta.env.VITE_API_URL + "/notifications/",
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              userId,
-              title: meeting.title,
-              description: meeting.description,
-              type: meeting.type,
-            }),
-          }
-        );
-        const notification = await notificationResponse.json();
-        console.log(notification);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    createMeeting(newMeeting);
+      await createMeeting(meeting);
+      enqueueSnackbar("Meeting created successfully", { variant: "success" });
+    } catch (error) {
+      console.error(error);
+      enqueueSnackbar(error.message || "Failed to create meeting", {
+        variant: "error",
+      });
+    }
+  };
+
+  const createMeeting = async (meeting) => {
+    try {
+      const mentorResponse = await api.get(`/mentors/${userId}`);
+      const mentor = mentorResponse.data.mentor;
+      meeting.recipients = [mentor, userId];
+
+      const response = await api.post("/meetings", meeting);
+      console.log(response.data);
+
+      const notification = {
+        userId,
+        title: meeting.title,
+        description: meeting.type,
+        type: "meeting",
+      };
+      const notificationResponse = await api.post(
+        "/notifications",
+        notification
+      );
+      console.log(notificationResponse.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleEventClick = (selected) => {
@@ -228,7 +227,7 @@ const MeetingCalendar = () => {
           />
         </Box>
 
-        <Dialog open={open} onClose={handleClose}>
+        <Dialog open={open}>
           <DialogTitle>New Event</DialogTitle>
           <DialogContent>
             {/* <TextField
@@ -292,7 +291,7 @@ const MeetingCalendar = () => {
           </DialogContent>
           <DialogActions>
             <Button onClick={Close}>Cancel</Button>
-            <Button onClick={handleClose}>Save</Button>
+            <Button onClick={onHandleSave}>Save</Button>
           </DialogActions>
         </Dialog>
       </Box>
