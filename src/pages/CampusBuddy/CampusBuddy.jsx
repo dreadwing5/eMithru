@@ -4,18 +4,11 @@ import {
   Stack,
   Paper,
   TextField,
-  AppBar,
-  Toolbar,
-  Divider,
   Typography,
-  Button,
   IconButton,
-  Snackbar,
-  Alert,
   Card,
   Container,
   Avatar,
-  InputAdornment,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { deepOrange } from "@mui/material/colors";
@@ -86,6 +79,7 @@ const CampusBuddy = () => {
   };
 
   const handleSendMessage = () => {
+    console.log(messageInput);
     if (messageInput.trim().length > 0) {
       setMessages([...messages, { body: messageInput, sender: "user" }]);
       setMessageInput("");
@@ -127,7 +121,7 @@ const CampusBuddy = () => {
             <Box sx={{ p: 3 }}>
               <ChatMessageInput
                 messageInput={messageInput}
-                handleMessageInput={handleMessageInput}
+                setMessageInput={setMessageInput}
                 handleSendMessage={handleSendMessage}
                 handleKeyPress={handleKeyPress}
               />
@@ -177,9 +171,13 @@ const ChatMessage = ({ message }) => {
   );
 };
 
-const ChatMessageInput = ({ handleSendMessage, handleKeyPress }) => {
+const ChatMessageInput = ({
+  handleSendMessage,
+  handleKeyPress,
+  messageInput,
+  setMessageInput,
+}) => {
   const [isDisabled, setIsDisabled] = useState(true);
-  const [messageInput, setMessageInput] = useState("");
 
   const handleInput = (e) => {
     const { value } = e.target;
