@@ -95,7 +95,7 @@ export default function NotificationsPopover() {
           >
             {unreadNotifications.slice(0, 2).map((notification) => (
               <NotificationItem
-                key={notification.id}
+                key={notification._id}
                 notification={notification}
               />
             ))}

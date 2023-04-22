@@ -51,7 +51,9 @@ const CampusBuddyHeader = () => {
       sx={{
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
+        mt: 2,
+        mb: 1,
+        ml: 5,
         height: "5vh",
         width: "100%",
       }}
