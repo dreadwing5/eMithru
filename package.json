@@ -28,6 +28,7 @@
     "dayjs": "^1.11.7",
     "framer-motion": "6.2.8",
     "fullcalendar": "^6.1.4",
+    "mui-image": "^1.0.7",
     "notistack": "^3.0.1",
     "numeral": "^2.0.6",
     "react": "latest",
