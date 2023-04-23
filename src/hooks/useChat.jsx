@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useContext } from "react";
 import { io } from "socket.io-client";
-import axios from "axios";
 import { AuthContext } from "../context/AuthContext";
 import { BASE_URL, SOCKET_URL } from "../config";
 import ChatContext from "../context/ChatContext";
+
+import api from "../utils/axios";
 
 export default function ChatProvider({ children }) {
   const [conversations, setConversations] = useState([]);
@@ -12,11 +13,13 @@ export default function ChatProvider({ children }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const socket = useRef();
 
-  const {
-    user: {
-      data: { user: userInfo },
-    },
-  } = useContext(AuthContext);
+  // const {
+  //   user: {
+  //     data: { user: userInfo },
+  //   },
+  // } = useContext(AuthContext);
+
+  const userId = "6440840795719c38cc99d814";
 
   useEffect(() => {
     socket.current = io(SOCKET_URL);
@@ -37,28 +40,15 @@ export default function ChatProvider({ children }) {
     arrivalMessage && setMessages((prev) => [...prev, arrivalMessage]);
   }, [arrivalMessage, currentChat]);
 
-  useEffect(() => {
-    const getConversations = async () => {
-      try {
-        const res = await axios.get(`${BASE_URL}/conversations/`);
-        setConversations(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    getConversations();
-  }, []);
-
   const joinChat = async (chat) => {
+    console.log("Joining room....");
     setCurrentChat(chat);
     if (!chat) return;
-
+    console.log(chat);
     try {
-      const res = await axios.get(
-        `${BASE_URL}/messages/${chat.conversationId}`
-      );
-      setMessages(res.data);
+      const response = await api.get(`/messages/${chat._id}/?type=private`);
+      const { data } = response.data;
+      setMessages(data.messages);
       socket.current.emit("join_room", chat.conversationId);
     } catch (err) {
       console.log(err);
@@ -73,19 +63,22 @@ export default function ChatProvider({ children }) {
 
   const sendMessage = async (newMessage) => {
     const message = {
-      senderId: userInfo._id,
+      senderId: userId,
       body: newMessage,
-      conversationId: currentChat.conversationId,
     };
     socket.current.emit("sendMessage", {
-      sender: userInfo._id,
+      sender: userId,
       body: newMessage,
-      room: currentChat.conversationId,
+      room: currentChat._id,
     });
 
     try {
-      const res = await axios.post(`${BASE_URL}/messages`, message);
-      setMessages([...messages, res.data]);
+      const response = await api.post(
+        `/messages/${currentChat._id}?type=private`,
+        message
+      );
+      const { data } = response.data;
+      setMessages([...messages, data.message]);
     } catch (err) {
       console.log(err);
     }
@@ -100,6 +93,7 @@ export default function ChatProvider({ children }) {
         joinChat,
         leaveChat,
         sendMessage,
+        setConversations,
       }}
     >
       {children}

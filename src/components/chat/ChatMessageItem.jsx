@@ -1,77 +1,48 @@
-import PropTypes from "prop-types";
+import React from "react";
+import { Box, Avatar, Typography } from "@mui/material";
+import { styled } from "@mui/system";
 import { formatDistanceToNowStrict } from "date-fns";
 
-// @mui
-import { styled } from "@mui/material/styles";
-import { Avatar, Box, Typography } from "@mui/material";
-// components
-
 const RootStyle = styled("div")(({ theme }) => ({
-  display: "flex",
   marginBottom: theme.spacing(3),
 }));
 
 const ContentStyle = styled("div")(({ theme }) => ({
-  maxWidth: 320,
+  maxWidth: 380,
   padding: theme.spacing(1.5),
-  marginTop: theme.spacing(0.5),
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: theme.palette.background.neutral,
+  backgroundColor: theme.palette.grey[500_12],
+  color: theme.palette.text.primary,
 }));
-
-const InfoStyle = styled(Typography)(({ theme }) => ({
-  display: "flex",
-  marginBottom: theme.spacing(0.75),
-  color: theme.palette.text.secondary,
-}));
-
-// ----------------------------------------------------------------------
-
-ChatMessageItem.propTypes = {
-  message: PropTypes.object.isRequired,
-  conversation: PropTypes.object.isRequired,
-};
 
 export default function ChatMessageItem({ message, conversation }) {
-  // const sender = conversation.participants.find(
-  //   (participant) => participant.id === message.senderId
-  // );
-  // const senderDetails =
-  //   message.senderId === "8864c717-587d-472a-929a-8e5f298024da-0"
-  //     ? { type: "me" }
-  //     : { avatar: sender?.avatar, name: sender?.name };
-  // const isMe = senderDetails.type === "me";
-  const isMe = true;
-  // const firstName = senderDetails.name && senderDetails.name.split(" ")[0];
+  const currentUserId = "6440840795719c38cc99d814";
+  const sender = conversation.participants.find(
+    (participant) => participant._id === message.senderId
+  );
+
+  const isMe = message.senderId === currentUserId;
+  const justifyContent = isMe ? "flex-end" : "flex-start";
+
+  const firstName = sender?.name && sender.name.split(" ")[0];
 
   return (
     <RootStyle>
       <Box
         sx={{
           display: "flex",
-          ...(isMe && {
-            ml: "auto",
-          }),
+          justifyContent,
         }}
       >
-        <Avatar
-          src="https://images.unsplash.com/photo-1488161628813-04466f872be2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1528&q=80"
-          sx={{ width: 32, height: 32, mr: 2 }}
-        />
+        {!isMe && (
+          <Avatar
+            alt={sender.name}
+            src={sender.avatar}
+            sx={{ width: 32, height: 32, mr: 2 }}
+          />
+        )}
 
         <div>
-          {/* <InfoStyle
-            variant="caption"
-            sx={{
-              ...(isMe && { justifyContent: "flex-end" }),
-            }}
-          >
-            {!isMe && `${firstName},`}&nbsp;
-            {formatDistanceToNowStrict(new Date(message.sendTime), {
-              addSuffix: true,
-            })}
-          </InfoStyle> */}
-
           <ContentStyle
             sx={{
               ...(isMe && { color: "grey.800", bgcolor: "primary.lighter" }),
@@ -79,6 +50,18 @@ export default function ChatMessageItem({ message, conversation }) {
           >
             <Typography variant="body2">{message.body}</Typography>
           </ContentStyle>
+          <Typography
+            variant="caption"
+            sx={{
+              mt: 0.5,
+              textAlign: isMe ? "right" : "left",
+            }}
+          >
+            {!isMe && `${firstName}, `}
+            {formatDistanceToNowStrict(new Date(message.createdAt), {
+              addSuffix: true,
+            })}
+          </Typography>
         </div>
       </Box>
     </RootStyle>
