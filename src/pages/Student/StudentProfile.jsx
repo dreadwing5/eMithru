@@ -16,6 +16,8 @@ import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs";
 
 import React from "react";
 import StudentDetailsForm from "./StudentDetailsForm";
+import LocalGuardianForm from "./LocalGuardianForm";
+import ParentsDetails from "./ParentsDetails";
 
 // ----------------------------------------------------------------------
 
@@ -30,12 +32,12 @@ export default function StudentProfile() {
     {
       value: "Guardian Details",
       icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-      component: <StudentDetailsForm />,
+      component: <LocalGuardianForm />,
     },
     {
       value: "Parent Details",
       icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-      component: <StudentDetailsForm />,
+      component: <ParentsDetails />,
     },
     {
       value: "Contact Details",
