@@ -187,14 +187,30 @@ export default function LocalGuardianForm() {
     required
   />
 </Grid> */}
-<Grid item xs={12}>
-  <LoadingButton type="submit" variant="contained" color="primary">
-    Submit
-  </LoadingButton>
- 
 
 </Grid>
-</Grid>
+<Stack spacing={3} alignItems="flex-end" sx={{ mt: 3 }}>
+              <Box display="flex" gap={1}>
+                {import.meta.env.MODE === "development" && (
+                  <LoadingButton
+                    variant="outlined"
+                    onClick={handleFillMockData}
+                  >
+                    Fill Mock Data
+                  </LoadingButton>
+                )}
+                <LoadingButton variant="outlined" onClick={handleReset}>
+                  Reset
+                </LoadingButton>
+                <LoadingButton
+                  type="submit"
+                  variant="contained"
+                  loading={isSubmitting}
+                >
+                  Save
+                </LoadingButton>
+              </Box>
+            </Stack>
 </Card>
 
 </FormProvider>

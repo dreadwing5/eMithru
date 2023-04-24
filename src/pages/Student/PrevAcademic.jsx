@@ -25,7 +25,7 @@ import {
   RHFSelect,
   RHFTextField,
   RHFUploadAvatar,
-} from "../hook-form";
+} from "../../components/hook-form";
 export default function PrevAcademic() {
   const { enqueueSnackbar } = useSnackbar();
 

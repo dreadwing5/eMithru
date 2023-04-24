@@ -393,7 +393,7 @@ export default function ParentsDetails() {
         </Grid>
 
        <Grid item xs={12} md={12}>
-        <Card sx={{p:2}}>
+        <Card sx={{p:3}}>
         <Stack spacing={3} alignItems="flex-end" >
               <Box display="flex" gap={1}>
                 {import.meta.env.MODE === "development" && (

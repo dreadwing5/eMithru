@@ -34,6 +34,8 @@ const NavConfig = [
       { text: "Profile", link: "/student/profile" },
       { text: "Academic", link: "/student/academic" },
       { text: "Admission", link: "/student/admission" },
+      { text: "Placement", link: "/student/placement" },
+
     ],
   },
   {
