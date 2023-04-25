@@ -11,7 +11,7 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { MobileTimePicker } from "@mui/x-date-pickers/MobileTimePicker";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useContext } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
@@ -22,6 +22,7 @@ import { useTheme } from "@mui/material";
 import { useSnackbar } from "notistack";
 import dayjs from "dayjs";
 import api from "../../utils/axios";
+import { AuthContext } from "../../context/AuthContext";
 
 const EventList = ({ currentEvents }) => {
   return (
@@ -140,6 +141,10 @@ const MeetingCalendar = () => {
   const meetingType = useRef();
   const userId = "6440827f7b7d9337a2202d16";
   const calendarRef = useRef(null);
+  const { createMeeting } = useMeeting();
+  const { user } = useContext(AuthContext);
+
+  console.log(user);
 
   const getAllMeetings = useCallback(async () => {
     try {
