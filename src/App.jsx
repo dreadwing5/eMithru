@@ -19,6 +19,7 @@ import Academic from "./pages/Student/Academic";
 import AdmissionDetails from "./pages/Student/AdmissionDetails";
 import AdmissionDetailsPage from "./pages/Student/AdmissionDetailsPage";
 import Placement from "./pages/Student/Placement";
+import Ptm from "./pages/ParentsTeacherMeeting/Ptm";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -39,6 +40,7 @@ function App() {
                   <Route path="/student/admission" element={<AdmissionDetailsPage/>} />
                   <Route path="/student/placement" element={<Placement/>} />
                   <Route path="/mentor" element={<MentorAllocation />} />
+                  <Route path="/ptm" element={<Ptm />} />
                   <Route path="/campus-buddy" element={<CampusBuddy />} />
                 </Route>
                 <Route

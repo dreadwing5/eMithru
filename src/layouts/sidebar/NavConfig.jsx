@@ -39,6 +39,11 @@ const NavConfig = [
     ],
   },
   {
+    text: "PTM Record",
+    icon: <PersonOutlinedIcon />,
+    link: "/ptm",
+  },
+  {
     text: "Mentor",
     icon: <PersonOutlinedIcon />,
     link: "/mentor",
