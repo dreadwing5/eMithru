@@ -35,7 +35,6 @@ const NavConfig = [
       { text: "Academic", link: "/student/academic" },
       { text: "Admission", link: "/student/admission" },
       { text: "Placement", link: "/student/placement" },
-
     ],
   },
   {
@@ -52,6 +51,12 @@ const NavConfig = [
     text: "Campus Buddy",
     icon: <InfoOutlinedIcon />,
     link: "/campus-buddy",
+  },
+
+  {
+    text: "Threads",
+    icon: <InfoOutlinedIcon />,
+    link: "/threads",
   },
 ];
 

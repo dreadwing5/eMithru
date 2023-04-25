@@ -20,6 +20,8 @@ import AdmissionDetails from "./pages/Student/AdmissionDetails";
 import AdmissionDetailsPage from "./pages/Student/AdmissionDetailsPage";
 import Placement from "./pages/Student/Placement";
 import Ptm from "./pages/ParentsTeacherMeeting/Ptm";
+import Attendance from "./pages/Student/Attendance";
+import Thread from "./pages/Thread";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -37,11 +39,16 @@ function App() {
                   <Route path="/users" element={<User />} />
                   <Route path="/student/profile" element={<StudentProfile />} />
                   <Route path="/student/academic" element={<Academic />} />
-                  <Route path="/student/admission" element={<AdmissionDetailsPage/>} />
-                  <Route path="/student/placement" element={<Placement/>} />
+                  <Route
+                    path="/student/admission"
+                    element={<AdmissionDetailsPage />}
+                  />
+                  <Route path="/student/placement" element={<Placement />} />
                   <Route path="/mentor" element={<MentorAllocation />} />
                   <Route path="/ptm" element={<Ptm />} />
                   <Route path="/campus-buddy" element={<CampusBuddy />} />
+                  <Route path="/student/attendance" element={<Attendance />} />
+                  <Route path="/threads" element={<Thread />} />
                 </Route>
                 <Route
                   path="/login"
