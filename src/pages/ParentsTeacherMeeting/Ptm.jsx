@@ -1,37 +1,30 @@
-import React from 'react'
 import { Container, Tab, Box, Tabs } from "@mui/material";
 import useTabs from "../../hooks/useTabs";
 import Page from "../../components/Page";
 import Iconify from "../../components/Iconify";
-import PlacementDetails from './PlacementDetails';
-import InternshipDetails from './InternshipDetails';
-import Project from './Project';
-export default function Placement() {
+import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs";
+import React from "react";
+import Counselling from "./Counselling";
+import ParentTeacherMeet from "./ParentTeacherMeet";
 
-    const { currentTab, onChangeTab } = useTabs("Placement Details");
+export default function Ptm() {
+    const { currentTab, onChangeTab } = useTabs("Counselling Record");
     const ACCOUNT_TABS = [
       {
-        value: "Placement Details",
+        value: "Counselling Record",
         icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-        component: < PlacementDetails/>,
+        component: <Counselling />,
       },
       {
-        value: "Internship Details",
+        value: "Parent-Teachers Meet Record",
         icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-        component: <InternshipDetails />,
-      },
-      {
-        value: "Final Year Project Details",
-        icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-        component: < Project/>,
+        component: <ParentTeacherMeet />,
       },
      
     ];
-
-
   return (
     <div>
-       <Page title="Stduent Profile">
+       <Page title="PTM">
       <Container maxWidth="lg">
         <Tabs
           allowScrollButtonsMobile
