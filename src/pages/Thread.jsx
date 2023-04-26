@@ -54,6 +54,11 @@ const TestComponent = ({ thread }) => {
   );
 };
 
+/* FIXME
+The ThreadList component is being rendered many times.
+This can cause performance related isuue
+
+*/
 const ThreadList = ({
   threads,
   onThreadClick,
@@ -64,6 +69,8 @@ const ThreadList = ({
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [anchorEl, setAnchorEl] = useState(false);
   const [selectedThread, setSelectedThread] = useState(null);
+
+  console.log("THREADS", threads);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -134,7 +141,7 @@ const ThreadList = ({
                   <TableCell style={{ display: "flex", cursor: "pointer" }}>
                     {thread.participants.slice(0, 3).map((participant, idx) => (
                       <Tooltip
-                        key={participant._id}
+                        key={idx}
                         title={`${participant.name}`}
                         placement="top"
                       >
@@ -225,19 +232,11 @@ const ThreadList = ({
     </TableContainer>
   );
 };
-const Thread = () => {
+
+const NewThreadDialog = ({ open, onClose, users, userId, onSave }) => {
   const theme = useTheme();
-  const [threads, setThreads] = useState([]);
-  const [selectedThread, setSelectedThread] = useState(null);
-  const [openDialog, setOpenDialog] = useState(false);
-  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredUsers, setFilteredUsers] = useState([]);
-
-  // Todo : Remove userID to the actual logged in userId
-  const userId = "6440827f7b7d9337a2202d16";
-
-  const categories = ["general", "attendance", "performance", "well-being"];
 
   const [newThreadData, setNewThreadData] = useState({
     title: "",
@@ -245,6 +244,196 @@ const Thread = () => {
     createdBy: userId,
     participants: [{ _id: userId, name: "Current User" }],
   });
+
+  const categories = ["general", "attendance", "performance", "well-being"];
+
+  useEffect(() => {
+    if (searchTerm.trim()) {
+      const filtered = users.filter((user) =>
+        user.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
+      );
+      setFilteredUsers(filtered);
+    } else {
+      setFilteredUsers([]);
+    }
+  }, [searchTerm]);
+
+  const handleCloseDialog = () => {
+    onClose();
+    setNewThreadData({
+      title: "",
+      tag: "",
+      createdBy: userId,
+      participants: [{ _id: userId, name: "Current User" }],
+    });
+    setSearchTerm("");
+  };
+
+  const handleNewThreadChange = (e) => {
+    setNewThreadData({ ...newThreadData, [e.target.name]: e.target.value });
+  };
+
+  const handleSearchTermChange = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const handleAddMember = (member) => {
+    if (!newThreadData.participants.find((m) => m._id === member._id)) {
+      setNewThreadData({
+        ...newThreadData,
+        participants: [...newThreadData.participants, member],
+      });
+    }
+  };
+
+  const handleRemoveMember = (memberId) => {
+    if (memberId === userId) {
+      return; // Prevents removal of the current user
+    }
+    setNewThreadData({
+      ...newThreadData,
+      participants: newThreadData.participants.filter(
+        (participant) => participant._id !== memberId
+      ),
+    });
+  };
+
+  const handleSave = () => {
+    onSave(newThreadData);
+    handleCloseDialog();
+  };
+
+  return (
+    <Dialog
+      open={open}
+      onClose={handleCloseDialog}
+      sx={{
+        "& .MuiPaper-root": {
+          width: "50vh",
+        },
+      }}
+    >
+      <DialogTitle>Create a new thread</DialogTitle>
+      <DialogContent>
+        <Box
+          sx={{
+            display: "flex",
+            gap: 1,
+            flexDirection: "column",
+          }}
+        >
+          <Box sx={{ py: 1 }}>
+            <TextField
+              label="Title"
+              name="title"
+              value={newThreadData.title}
+              onChange={handleNewThreadChange}
+              fullWidth
+            />
+          </Box>
+          <Box sx={{ py: 1 }}>
+            <Select
+              label="Category"
+              name="tag"
+              value={newThreadData.tag}
+              onChange={handleNewThreadChange}
+              fullWidth
+            >
+              <MenuItem value="Category" disabled>
+                Category
+              </MenuItem>
+              {categories.map((category, index) => (
+                <MenuItem key={index} value={category}>
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+          <Box sx={{ py: 1 }}>
+            <TextField
+              label="Search user"
+              value={searchTerm}
+              onChange={handleSearchTermChange}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton>
+                      <Search />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              fullWidth
+            />
+          </Box>
+        </Box>
+        <List>
+          {filteredUsers.map((user) => (
+            <ListItem
+              key={user._id}
+              onClick={() => handleAddMember(user)}
+              sx={{
+                "&:hover": { backgroundColor: theme.palette.action.hover },
+              }}
+            >
+              <ListItemAvatar>
+                <Avatar>{user.name[0]}</Avatar>
+              </ListItemAvatar>
+              <ListItemText primary={user.name} />
+            </ListItem>
+          ))}
+        </List>
+        <Typography variant="subtitle1" mt={2}>
+          Members:
+        </Typography>
+        <List>
+          {newThreadData.participants.map((participant) => (
+            <ListItem key={participant._id} sx={{ cursor: "pointer" }}>
+              <Avatar
+                sx={{
+                  position: "relative",
+                  "&:hover > .MuiIconButton-root": {
+                    visibility: "visible",
+                  },
+                }}
+              >
+                {participant.name[0]}
+                <IconButton
+                  sx={{
+                    visibility: "hidden",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                    bgcolor: "rgba(0,0,0,0.5)",
+                  }}
+                  onClick={() => handleRemoveMember(participant._id)}
+                >
+                  <Close sx={{ color: "white" }} />
+                </IconButton>
+              </Avatar>
+              <ListItemText sx={{ ml: 2 }} primary={participant.name} />
+            </ListItem>
+          ))}
+        </List>
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleCloseDialog}>Cancel</Button>
+        <Button onClick={handleSave}>Save</Button>
+      </DialogActions>
+    </Dialog>
+  );
+};
+
+const Thread = () => {
+  const [threads, setThreads] = useState([]);
+  const [selectedThread, setSelectedThread] = useState(null);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  // Todo : Remove userID to the actual logged in userId
+  const userId = "6440827f7b7d9337a2202d16";
 
   const fetchThreads = useCallback(async () => {
     try {
@@ -278,17 +467,6 @@ const Thread = () => {
     fetechUsers();
   }, [fetechUsers]);
 
-  useEffect(() => {
-    if (searchTerm.trim()) {
-      const filtered = users.filter((user) =>
-        user.name.toLowerCase().includes(searchTerm.trim().toLowerCase())
-      );
-      setFilteredUsers(filtered);
-    } else {
-      setFilteredUsers([]);
-    }
-  }, [searchTerm]);
-
   /*   TODO : User should be naviagated to new route when the user clicks on the view thread @critical
 
 */
@@ -297,26 +475,7 @@ const Thread = () => {
     setSelectedThread(thread);
   };
 
-  const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
-
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setNewThreadData({
-      title: "",
-      tag: "",
-      createdBy: userId,
-      participants: [{ _id: userId, name: "Current User" }],
-    });
-    setSearchTerm("");
-  };
-
-  const handleNewThreadChange = (e) => {
-    setNewThreadData({ ...newThreadData, [e.target.name]: e.target.value });
-  };
-
-  const handleAddNewThread = async () => {
+  const handleAddNewThread = async (newThreadData) => {
     try {
       const response = await api.post("threads", newThreadData);
       if (response.data.status === "success") {
@@ -327,31 +486,6 @@ const Thread = () => {
     } catch (error) {
       console.error("Error creating new thread:", error);
     }
-  };
-
-  const handleSearchTermChange = (event) => {
-    setSearchTerm(event.target.value);
-  };
-
-  const handleAddMember = (member) => {
-    if (!newThreadData.participants.find((m) => m._id === member._id)) {
-      setNewThreadData({
-        ...newThreadData,
-        participants: [...newThreadData.participants, member],
-      });
-    }
-  };
-
-  const handleRemoveMember = (memberId) => {
-    if (memberId === userId) {
-      return; // Prevents removal of the current user
-    }
-    setNewThreadData({
-      ...newThreadData,
-      participants: newThreadData.participants.filter(
-        (participant) => participant._id !== memberId
-      ),
-    });
   };
 
   // TODO : Add the Edit Functionality
@@ -369,6 +503,14 @@ const Thread = () => {
     } catch (error) {
       console.error("ERROR OCCURED 💥 ", error);
     }
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false);
+  };
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true);
   };
 
   return (
@@ -400,125 +542,13 @@ const Thread = () => {
           <TestComponent thread={selectedThread} />
         )}
 
-        <Dialog
+        <NewThreadDialog
           open={openDialog}
           onClose={handleCloseDialog}
-          sx={{
-            "& .MuiPaper-root": {
-              width: "50vh",
-            },
-          }}
-        >
-          <DialogTitle>Create a new thread</DialogTitle>
-          <DialogContent>
-            <Box
-              sx={{
-                display: "flex",
-                gap: 1,
-                flexDirection: "column",
-              }}
-            >
-              <Box sx={{ py: 1 }}>
-                <TextField
-                  label="Title"
-                  name="title"
-                  value={newThreadData.title}
-                  onChange={handleNewThreadChange}
-                  fullWidth
-                />
-              </Box>
-              <Box sx={{ py: 1 }}>
-                <Select
-                  label="Category"
-                  name="tag"
-                  value={newThreadData.tag}
-                  onChange={handleNewThreadChange}
-                  fullWidth
-                >
-                  <MenuItem value="Category" disabled>
-                    Category
-                  </MenuItem>
-                  {categories.map((category, index) => (
-                    <MenuItem key={index} value={category}>
-                      {category.charAt(0).toUpperCase() + category.slice(1)}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Box>
-              <Box sx={{ py: 1 }}>
-                <TextField
-                  label="Search user"
-                  value={searchTerm}
-                  onChange={handleSearchTermChange}
-                  InputProps={{
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton>
-                          <Search />
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                  }}
-                  fullWidth
-                />
-              </Box>
-            </Box>
-            <List>
-              {filteredUsers.map((user) => (
-                <ListItem
-                  key={user._id}
-                  onClick={() => handleAddMember(user)}
-                  sx={{
-                    "&:hover": { backgroundColor: theme.palette.action.hover },
-                  }}
-                >
-                  <ListItemAvatar>
-                    <Avatar>{user.name[0]}</Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary={user.name} />
-                </ListItem>
-              ))}
-            </List>
-            <Typography variant="subtitle1" mt={2}>
-              Members:
-            </Typography>
-            <List>
-              {newThreadData.participants.map((participant) => (
-                <ListItem key={participant._id} sx={{ cursor: "pointer" }}>
-                  <Avatar
-                    sx={{
-                      position: "relative",
-                      "&:hover > .MuiIconButton-root": {
-                        visibility: "visible",
-                      },
-                    }}
-                  >
-                    {participant.name[0]}
-                    <IconButton
-                      sx={{
-                        visibility: "hidden",
-                        position: "absolute",
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        bgcolor: "rgba(0,0,0,0.5)",
-                      }}
-                      onClick={() => handleRemoveMember(participant._id)}
-                    >
-                      <Close sx={{ color: "white" }} />
-                    </IconButton>
-                  </Avatar>
-                  <ListItemText sx={{ ml: 2 }} primary={participant.name} />
-                </ListItem>
-              ))}
-            </List>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog}>Cancel</Button>
-            <Button onClick={handleAddNewThread}>Save</Button>
-          </DialogActions>
-        </Dialog>
+          users={users}
+          userId={userId}
+          onSave={handleAddNewThread}
+        />
       </Box>
     </Box>
   );
