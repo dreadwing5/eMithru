@@ -21,7 +21,7 @@ import AdmissionDetailsPage from "./pages/Student/AdmissionDetailsPage";
 import Placement from "./pages/Student/Placement";
 import Ptm from "./pages/ParentsTeacherMeeting/Ptm";
 import Attendance from "./pages/Student/Attendance";
-import Thread from "./pages/Thread";
+import Thread from "./pages/Thread/Thread";
 
 function App() {
   const { user } = useContext(AuthContext);
