@@ -99,7 +99,6 @@ const COMMON = {
   gradients: GRADIENTS,
   divider: GREY[500_24],
   action: {
-    hover: GREY[500_8],
     selected: GREY[500_16],
     disabled: GREY[500_80],
     disabledBackground: GREY[500_24],
