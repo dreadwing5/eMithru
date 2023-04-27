@@ -87,10 +87,6 @@ const Report = () => {
       participant.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    // Check if the thread's category matches the selected category
-    const categoryMatches =
-      !selectedCategory || thread.category === selectedCategory;
-
     // Check if the thread's open date is within the specified date range
     const openDate = new Date(thread.openDate);
     const fromDateObj = fromDate ? new Date(fromDate) : null;
@@ -100,7 +96,7 @@ const Report = () => {
       (!fromDateObj || openDate >= fromDateObj) &&
       (!toDateObj || openDate <= toDateObj);
 
-    return hasMatchingParticipant && categoryMatches && openDateInRange;
+    return hasMatchingParticipant && openDateInRange;
   });
 
   const handleSearchChange = (event) => {
