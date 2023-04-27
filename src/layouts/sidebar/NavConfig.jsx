@@ -5,7 +5,8 @@ import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import QuestionAnswerOutlinedIcon from "@mui/icons-material/QuestionAnswerOutlined";
-
+import ReportOutlinedIcon from "@mui/icons-material/ReportOutlined";
+import CheckCircleOutlinedIcon from "@mui/icons-material/CheckCircleOutlined";
 const NavConfig = [
   {
     text: "Dashboard",
@@ -36,6 +37,11 @@ const NavConfig = [
       { text: "Academic", link: "/student/academic" },
       { text: "Admission", link: "/student/admission" },
       { text: "Placement", link: "/student/placement" },
+      {
+        text: "Attendance",
+        link: "/student/attendance",
+        icon: <CheckCircleOutlinedIcon />,
+      },
     ],
   },
   {
@@ -58,6 +64,12 @@ const NavConfig = [
     text: "Threads",
     icon: <QuestionAnswerOutlinedIcon />,
     link: "/threads",
+  },
+
+  {
+    text: "Report",
+    icon: <ReportOutlinedIcon />,
+    link: "/report",
   },
 ];
 

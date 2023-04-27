@@ -23,6 +23,7 @@ import Ptm from "./pages/ParentsTeacherMeeting/Ptm";
 import Attendance from "./pages/Student/Attendance";
 import Thread from "./pages/Thread/Thread";
 import ThreadWindow from "./pages/Thread/ThreadWindow";
+import Report from "./pages/Report/Report";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -51,6 +52,7 @@ function App() {
                   <Route path="/student/attendance" element={<Attendance />} />
                   <Route path="/threads" element={<Thread />} />
                   <Route path="/threads/:threadId" element={<ThreadWindow />} />
+                  <Route path="/report" element={<Report />} />
                 </Route>
                 <Route
                   path="/login"
