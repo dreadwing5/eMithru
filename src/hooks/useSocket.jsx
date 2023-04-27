@@ -4,21 +4,30 @@ import { io } from "socket.io-client";
 
 const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
-const useSocket = (onReceiveMessage) => {
+const useSocket = (threadId, userId, setMessages) => {
   const socket = useRef();
   useEffect(() => {
-    socket.current = io(SOCKET_URL);
-    socket.current.on("getMessage", onReceiveMessage);
+    socket.current = io(SOCKET_URL, {
+      query: {
+        userId,
+      },
+    });
 
     return () => {
       socket.current.disconnect();
     };
-  }, [onReceiveMessage]);
+  }, [threadId, userId]);
+
+  useEffect(() => {
+    socket.current.on("receiveMessage", (message) => {
+      setMessages((prev) => [...prev, message]);
+    });
+  }, []);
 
   const sendMessage = (message, roomId) => {
     socket.current.emit("sendMessage", {
       ...message,
-      room: roomId,
+      roomId,
     });
   };
 

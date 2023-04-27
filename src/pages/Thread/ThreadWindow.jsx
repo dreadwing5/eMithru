@@ -147,18 +147,12 @@ export default function ThreadWindow() {
   const [thread, setThread] = useState(null);
   const [messages, setMessages] = useState([]);
   const { user } = useContext(AuthContext);
-
-  const { sendMessage, joinRoom, leaveRoom } = useSocket((data) => {
-    const newMessage = {
-      senderId: data.sender,
-      body: data.body,
-      sendTime: Date.now(),
-    };
-
-    sendMessage(newMessage);
-  });
-
   const { threadId } = useParams();
+  const { sendMessage, joinRoom, leaveRoom } = useSocket(
+    threadId,
+    user._id,
+    setMessages
+  );
 
   useEffect(() => {
     joinRoom(threadId);
@@ -193,12 +187,10 @@ export default function ThreadWindow() {
       senderId: user._id,
       body: newMessage,
     };
-
     try {
       const response = await api.post(`/threads/${threadId}/messages`, message);
       const { data } = response.data;
       sendMessage(data.message, threadId); // FIXME : Socket is not working
-      setMessages((prev) => [...prev, data.message]);
     } catch (err) {
       console.log(err);
     }
