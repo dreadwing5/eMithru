@@ -16,7 +16,8 @@ import {
 } from "@mui/material";
 
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+
+import { AuthContext } from "../../context/AuthContext";
 
 import Page from "../../components/Page";
 
@@ -145,8 +146,7 @@ export default function ThreadWindow() {
   const [isLoading, setIsLoading] = useState(false);
   const [thread, setThread] = useState(null);
   const [messages, setMessages] = useState([]);
-
-  const userId = "6440827f7b7d9337a2202d16"; // TODO : Replace with actual user ID
+  const { user } = useContext(AuthContext);
 
   const { sendMessage, joinRoom, leaveRoom } = useSocket((data) => {
     const newMessage = {
@@ -154,6 +154,8 @@ export default function ThreadWindow() {
       body: data.body,
       sendTime: Date.now(),
     };
+
+    sendMessage(newMessage);
   });
 
   const { threadId } = useParams();
@@ -188,7 +190,7 @@ export default function ThreadWindow() {
 
   const handleSendMessage = async (newMessage) => {
     const message = {
-      senderId: userId,
+      senderId: user._id,
       body: newMessage,
     };
 
@@ -256,7 +258,6 @@ export default function ThreadWindow() {
 
                         <MessageInput
                           disabled={!thread}
-                          conversationId={thread._id}
                           onSend={handleSendMessage}
                         />
                       </>

@@ -24,7 +24,7 @@ import {
 } from "@mui/material";
 import { Close, Search } from "@mui/icons-material";
 
-const NewThreadDialog = ({ open, onClose, users, userId, onSave }) => {
+const NewThreadDialog = ({ open, onClose, users, currentUser, onSave }) => {
   const theme = useTheme();
   const { enqueueSnackbar } = useSnackbar();
   const [searchTerm, setSearchTerm] = useState("");
@@ -33,8 +33,8 @@ const NewThreadDialog = ({ open, onClose, users, userId, onSave }) => {
   const [newThreadData, setNewThreadData] = useState({
     title: "",
     tag: "",
-    createdBy: userId,
-    participants: [{ _id: userId, name: "Current User" }],
+    createdBy: currentUser._id,
+    participants: [{ _id: currentUser._id, name: currentUser.name }],
   });
 
   const categories = ["general", "attendance", "performance", "well-being"];
@@ -55,8 +55,8 @@ const NewThreadDialog = ({ open, onClose, users, userId, onSave }) => {
     setNewThreadData({
       title: "",
       tag: "",
-      createdBy: userId,
-      participants: [{ _id: userId, name: "Current User" }],
+      createdBy: currentUser._id,
+      participants: [{ _id: currentUser._id, name: "Current User" }],
     });
     setSearchTerm("");
   };
@@ -79,7 +79,7 @@ const NewThreadDialog = ({ open, onClose, users, userId, onSave }) => {
   };
 
   const handleRemoveMember = (memberId) => {
-    if (memberId === userId) {
+    if (memberId === currentUser._id) {
       return; // Prevents removal of the current user
     }
     setNewThreadData({

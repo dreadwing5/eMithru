@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useContext } from "react";
 import { styled } from "@mui/system";
 import { formatDistanceToNowStrict } from "date-fns";
 import { Box, Avatar, Typography } from "@mui/material";
@@ -6,6 +6,8 @@ import { Stack, Input, Divider, IconButton } from "@mui/material";
 
 import Iconify from "../../../components/Iconify";
 import Scrollbar from "../../../components/Scrollbar";
+
+import { AuthContext } from "../../../context/AuthContext";
 
 const ContentStyle = styled("div")(({ theme }) => ({
   maxWidth: 380,
@@ -16,17 +18,19 @@ const ContentStyle = styled("div")(({ theme }) => ({
 }));
 
 const MessageItem = ({ message, conversation }) => {
+  const { user } = useContext(AuthContext);
+
   const RootStyle = styled("div")(({ theme }) => ({
     marginBottom: theme.spacing(3),
   }));
+
   //FIXME : Remove the hardcoded value
-  const currentUserId = "6440827f7b7d9337a2202d16";
 
   const sender = conversation.participants.find(
     (participant) => participant._id === message.senderId
   );
 
-  const isMe = message.senderId === currentUserId;
+  const isMe = message.senderId === user._id;
   const justifyContent = isMe ? "flex-end" : "flex-start";
 
   const firstName = sender?.name && sender.name.split(" ")[0];
@@ -105,7 +109,7 @@ const RootStyle = styled("div")(({ theme }) => ({
   paddingLeft: theme.spacing(2),
 }));
 
-export function MessageInput({ disabled, conversationId, onSend }) {
+export function MessageInput({ disabled, onSend }) {
   const fileInputRef = useRef(null);
   const [message, setMessage] = useState("");
 
@@ -124,8 +128,6 @@ export function MessageInput({ disabled, conversationId, onSend }) {
       return "";
     }
     onSend(message);
-
-    // sendMessage(message);
     setMessage("");
   };
 

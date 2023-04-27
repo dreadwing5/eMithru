@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import NavConfig from "./NavConfig";
 import SidebarDrawer from "./SidebarDrawer";
@@ -9,6 +9,7 @@ import Scrollbar from "../../components/Scrollbar";
 import logo from "../../public/logo.png";
 import { Box, IconButton, useTheme } from "@mui/material";
 import { ChevronLeft } from "@mui/icons-material";
+import { AuthContext } from "../../context/AuthContext";
 
 const Sidebar = ({
   drawerWidth,
@@ -20,6 +21,7 @@ const Sidebar = ({
 
   const [active, setActive] = useState("dashboard");
   const theme = useTheme();
+  const { user } = useContext(AuthContext);
 
   const normalizeText = (text) => {
     return text.toLowerCase().replace(/[\s_-]/g, "");
@@ -57,7 +59,7 @@ const Sidebar = ({
           </Box>
 
           <FlexBetween color={theme.palette.secondary.main}>
-            <UserAvatar name="Sachin" role="admin" theme={theme} />
+            <UserAvatar name={user.name} role={user.role} theme={theme} />
 
             {!isNonMobile && (
               <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>

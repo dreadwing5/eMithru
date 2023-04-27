@@ -1,6 +1,6 @@
 //TODO : Refactor thread component
 
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -21,14 +21,7 @@ import Page from "../../components/Page";
 import { Add } from "@mui/icons-material";
 import api from "../../utils/axios";
 
-const TestComponent = ({ thread }) => {
-  return (
-    <Box>
-      <Typography variant="h4">{thread.title}</Typography>
-      <Typography variant="body1">{thread.description}</Typography>
-    </Box>
-  );
-};
+import { AuthContext } from "../../context/AuthContext";
 
 /* FIXME
 The ThreadList component is being rendered many times.
@@ -67,16 +60,14 @@ const Thread = () => {
   const [threads, setThreads] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [users, setUsers] = useState([]);
+  const { user } = useContext(AuthContext);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
-
-  // Todo : Remove userID to the actual logged in userId
-  const userId = "6440827f7b7d9337a2202d16";
 
   const fetchThreads = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await api.get(`users/${userId}/threads`);
+      const response = await api.get(`users/${user._id}/threads`);
       if (response.data.status === "success") {
         setThreads(response.data.data.threads);
       }
@@ -90,7 +81,7 @@ const Thread = () => {
       setIsLoading(false);
       console.error("Error fetching threads:", error);
     }
-  }, [userId]);
+  }, [user]);
 
   //TODO : Change this to Fetch only the student of the mentor
 
@@ -215,7 +206,7 @@ const Thread = () => {
             open={openDialog}
             onClose={handleCloseDialog}
             users={users}
-            userId={userId}
+            currentUser={user}
             onSave={handleAddNewThread}
           />
         </Box>
