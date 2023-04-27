@@ -4,6 +4,7 @@ import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import QuestionAnswerOutlinedIcon from "@mui/icons-material/QuestionAnswerOutlined";
 
 const NavConfig = [
   {
@@ -55,7 +56,7 @@ const NavConfig = [
 
   {
     text: "Threads",
-    icon: <InfoOutlinedIcon />,
+    icon: <QuestionAnswerOutlinedIcon />,
     link: "/threads",
   },
 ];

@@ -1,7 +1,7 @@
 import { ListItem, Box, List, useTheme } from "@mui/material";
 import DropdownItem from "./DropDownItem";
 import NavItemButton from "./NavItemButton";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 const NavigationItem = ({
   text,
@@ -14,10 +14,16 @@ const NavigationItem = ({
   const theme = useTheme();
   const navigate = useNavigate();
 
+  const { pathname } = useLocation();
+
   const normalizeText = (text) => {
     return text.toLowerCase().replace(/[\s_-]/g, "");
   };
   const lcText = normalizeText(text);
+
+  //FIXME : This can cause issue with nested item
+  const isActive =
+    pathname === link || pathname.startsWith(`${link}/`) ? lcText : "";
 
   const isDropdown = dropdownItems && dropdownItems.length > 0;
   const navButtonBackgroundColor =
@@ -45,7 +51,7 @@ const NavigationItem = ({
           icon={icon}
           lcText={lcText}
           theme={theme}
-          active={active}
+          active={isActive}
           navButtonBackgroundColor={navButtonBackgroundColor}
           isDropdown={isDropdown}
           onToggleDropdown={

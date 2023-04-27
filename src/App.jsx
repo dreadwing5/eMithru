@@ -22,6 +22,7 @@ import Placement from "./pages/Student/Placement";
 import Ptm from "./pages/ParentsTeacherMeeting/Ptm";
 import Attendance from "./pages/Student/Attendance";
 import Thread from "./pages/Thread/Thread";
+import ThreadWindow from "./pages/Thread/ThreadWindow";
 
 function App() {
   const { user } = useContext(AuthContext);
@@ -49,6 +50,7 @@ function App() {
                   <Route path="/campus-buddy" element={<CampusBuddy />} />
                   <Route path="/student/attendance" element={<Attendance />} />
                   <Route path="/threads" element={<Thread />} />
+                  <Route path="/threads/:threadId" element={<ThreadWindow />} />
                 </Route>
                 <Route
                   path="/login"
