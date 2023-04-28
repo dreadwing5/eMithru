@@ -15,6 +15,7 @@ import {
   MenuItem,
 } from "@mui/material";
 
+import { useSnackbar } from "notistack";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 
 import { AuthContext } from "../../context/AuthContext";
@@ -27,7 +28,7 @@ import { MessageList, MessageInput } from "./Message/Message";
 
 import useSocket from "../../hooks/useSocket";
 
-const ThreadHeader = ({ thread }) => {
+const ThreadHeader = ({ thread, onCloseThread }) => {
   const statusColors = {
     open: "#4caf50",
     "In Progress": "#ff9800",
@@ -66,7 +67,7 @@ const ThreadHeader = ({ thread }) => {
               mr: 1,
             }}
           >
-            Tag:
+            Topic:
           </Typography>
           <Typography
             variant="subtitle2"
@@ -75,7 +76,7 @@ const ThreadHeader = ({ thread }) => {
               mr: 2,
             }}
           >
-            #{thread.tag}
+            #{thread.topic}
           </Typography>
           <Typography
             variant="subtitle2"
@@ -125,18 +126,28 @@ const ThreadHeader = ({ thread }) => {
             </Avatar>
           </Tooltip>
         ))}
-        <IconButton onClick={handleClick}>
-          <MoreVertIcon />
-        </IconButton>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          {thread.status === "open" && (
-            <MenuItem onClick={handleClose}>Mark as closed</MenuItem>
-          )}
-        </Menu>
+
+        {thread.status === "open" && (
+          <Box sx={{ ml: 2 }}>
+            <IconButton onClick={handleClick}>
+              <MoreVertIcon />
+            </IconButton>
+            <Menu
+              anchorEl={anchorEl}
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  onCloseThread();
+                }}
+              >
+                Mark as closed
+              </MenuItem>
+            </Menu>
+          </Box>
+        )}
       </Box>
     </Box>
   );
@@ -153,6 +164,8 @@ export default function ThreadWindow() {
     user._id,
     setMessages
   );
+
+  const { enqueueSnackbar } = useSnackbar();
 
   useEffect(() => {
     joinRoom(threadId);
@@ -196,6 +209,22 @@ export default function ThreadWindow() {
     }
   };
 
+  const handleThreadClose = async () => {
+    try {
+      const response = await api.patch(`/threads/${thread._id}`);
+      if (response.status === 200) {
+        enqueueSnackbar("Successfully marked thread closed!", {
+          variant: "success",
+        });
+      } else {
+        enqueueSnackbar("Thread close request failed!", { variant: "error" });
+      }
+    } catch (error) {
+      enqueueSnackbar("Something went wrong!", { variant: "error" });
+      console.error("ERROR OCCURRED 💥 ", error);
+    }
+  };
+
   //FIXME : ThreadHeader should be displayed when the thread has loaded
 
   /* 
@@ -213,7 +242,12 @@ export default function ThreadWindow() {
                 p: 2,
               }}
             >
-              {thread && <ThreadHeader thread={thread} />}
+              {thread && (
+                <ThreadHeader
+                  thread={thread}
+                  onCloseThread={handleThreadClose}
+                />
+              )}
             </Box>
             <Divider />
 

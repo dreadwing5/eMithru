@@ -128,9 +128,10 @@ const Thread = () => {
     }
   };
 
-  // TODO : Add the Edit Functionality
-  const handleThreadEdit = (thread) => {
-    console.log(`Edit thread ${thread._id}`);
+  // TODO : Add the Thread Edit functionality
+
+  const handleThreadEdit = async (thread) => {
+    console.log("Editing Thread");
   };
 
   const handleThreadDelete = async (thread) => {

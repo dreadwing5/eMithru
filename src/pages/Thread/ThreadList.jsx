@@ -19,7 +19,7 @@ import {
   Paper,
   TablePagination,
 } from "@mui/material";
-import { MoreVert, Edit, Delete } from "@mui/icons-material";
+import { MoreVert, Close, Delete, Edit } from "@mui/icons-material";
 
 const ThreadList = ({
   threads,
@@ -96,9 +96,9 @@ const ThreadList = ({
                       {thread.status}
                     </Typography>
                   </TableCell>
-                  <TableCell>{thread.tag}</TableCell>
+                  <TableCell>{thread.topic}</TableCell>
                   <TableCell>
-                    {new Date(thread.openDate).toLocaleDateString()}
+                    {new Date(thread.createdAt).toLocaleDateString()}
                   </TableCell>
                   <TableCell style={{ display: "flex", cursor: "pointer" }}>
                     {thread.participants.slice(0, 3).map((participant, idx) => (

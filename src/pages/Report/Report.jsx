@@ -285,23 +285,13 @@ const Report = () => {
                         }}
                       >
                         <Typography sx={{ textAlign: "justify" }}>
-                          Lorem, ipsum dolor sit amet consectetur adipisicing
-                          elit. Consequuntur adipisci, illo repellendus
-                          molestias consectetur obcaecati sapiente, et nemo
-                          laudantium dolore tempora soluta dolorum ea deleniti
-                          iste explicabo. Alias, sapiente asperiores.
+                          {thread.description}
                         </Typography>
                       </Box>
                       <Button onClick={handleOpenDialog}>Read more</Button>
                       <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
                         <DialogContent>
-                          <Typography>
-                            Lorem, ipsum dolor sit amet consectetur adipisicing
-                            elit. Consequuntur adipisci, illo repellendus
-                            molestias consectetur obcaecati sapiente, et nemo
-                            laudantium dolore tempora soluta dolorum ea deleniti
-                            iste explicabo. Alias, sapiente asperiores.
-                          </Typography>
+                          <Typography>{thread.description}</Typography>
                         </DialogContent>
                         <DialogActions>
                           <Button onClick={handleCloseDialog}>Close</Button>
@@ -325,11 +315,11 @@ const Report = () => {
                     </TableCell>
                     <TableCell>{thread.topic}</TableCell>
                     <TableCell>
-                      {new Date(thread.openDate).toLocaleDateString()}
+                      {new Date(thread.createdAt).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      {thread.closeAt
-                        ? new Date(thread.closeDate).toLocaleDateString()
+                      {thread.closedAt
+                        ? new Date(thread.closedAt).toLocaleDateString()
                         : "N/A"}
                     </TableCell>
                     <TableCell>{thread.author.name}</TableCell>
