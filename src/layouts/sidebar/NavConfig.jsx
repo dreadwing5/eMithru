@@ -14,6 +14,17 @@ const NavConfig = [
     link: "/",
   },
   {
+    text: "Threads",
+    icon: <QuestionAnswerOutlinedIcon />,
+    link: "/threads",
+  },
+
+  {
+    text: "Report",
+    icon: <ReportOutlinedIcon />,
+    link: "/report",
+  },
+  {
     text: "Meetings",
     icon: <EventOutlinedIcon />,
     link: "/meetings",
@@ -29,6 +40,11 @@ const NavConfig = [
     link: "/users",
   },
   {
+    text: "Campus Buddy",
+    icon: <InfoOutlinedIcon />,
+    link: "/campus-buddy",
+  },
+  {
     text: "Student",
     icon: <AccountCircleOutlinedIcon />,
     link: "/student",
@@ -42,34 +58,17 @@ const NavConfig = [
         link: "/student/attendance",
         icon: <CheckCircleOutlinedIcon />,
       },
+      {
+        text: "PTM Record",
+        icon: <PersonOutlinedIcon />,
+        link: "/student/ptm",
+      },
     ],
-  },
-  {
-    text: "PTM Record",
-    icon: <PersonOutlinedIcon />,
-    link: "/ptm",
   },
   {
     text: "Mentor",
     icon: <PersonOutlinedIcon />,
     link: "/mentor",
-  },
-  {
-    text: "Campus Buddy",
-    icon: <InfoOutlinedIcon />,
-    link: "/campus-buddy",
-  },
-
-  {
-    text: "Threads",
-    icon: <QuestionAnswerOutlinedIcon />,
-    link: "/threads",
-  },
-
-  {
-    text: "Report",
-    icon: <ReportOutlinedIcon />,
-    link: "/report",
   },
 ];
 
