@@ -32,8 +32,8 @@ const NewThreadDialog = ({ open, onClose, users, currentUser, onSave }) => {
 
   const [newThreadData, setNewThreadData] = useState({
     title: "",
-    tag: "",
-    createdBy: currentUser._id,
+    topic: "",
+    owener: currentUser._id,
     participants: [{ _id: currentUser._id, name: currentUser.name }],
   });
 
@@ -54,8 +54,8 @@ const NewThreadDialog = ({ open, onClose, users, currentUser, onSave }) => {
     onClose();
     setNewThreadData({
       title: "",
-      tag: "",
-      createdBy: currentUser._id,
+      topic: "",
+      author: currentUser._id,
       participants: [{ _id: currentUser._id, name: "Current User" }],
     });
     setSearchTerm("");

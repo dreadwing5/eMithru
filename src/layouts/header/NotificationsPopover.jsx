@@ -13,9 +13,6 @@ import {
   ListSubheader,
 } from "@mui/material";
 
-// _mock_
-import { _notifications } from "../../_mock";
-
 import NotificationItem from "../../components/notification/NotificationItem";
 // components
 import Iconify from "../../components/Iconify";
@@ -111,14 +108,7 @@ export default function NotificationsPopover() {
                 Before that
               </ListSubheader>
             }
-          >
-            {_notifications.slice(2, 5).map((notification) => (
-              <NotificationItem
-                key={notification.id}
-                notification={notification}
-              />
-            ))}
-          </List>
+          ></List>
         </Scrollbar>
 
         <Divider sx={{ borderStyle: "dashed" }} />

@@ -82,7 +82,7 @@ const ThreadHeader = ({ thread }) => {
             style={{
               display: "inline-flex",
               alignItems: "center",
-              backgroundColor: statusColors[thread.state],
+              backgroundColor: statusColors[thread.status],
               borderRadius: "12px",
               padding: "0 8px",
               color: "white",
@@ -90,7 +90,7 @@ const ThreadHeader = ({ thread }) => {
               mr: 2,
             }}
           >
-            Status: {thread.state}
+            Status: {thread.status}
           </Typography>
         </Box>
       </Box>
@@ -133,7 +133,7 @@ const ThreadHeader = ({ thread }) => {
           open={Boolean(anchorEl)}
           onClose={handleClose}
         >
-          {thread.state === "open" && (
+          {thread.status === "open" && (
             <MenuItem onClick={handleClose}>Mark as closed</MenuItem>
           )}
         </Menu>

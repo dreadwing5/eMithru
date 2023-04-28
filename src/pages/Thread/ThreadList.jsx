@@ -87,13 +87,13 @@ const ThreadList = ({
                       style={{
                         display: "inline-flex",
                         alignItems: "center",
-                        backgroundColor: statusColors[thread.state],
+                        backgroundColor: statusColors[thread.status],
                         borderRadius: "12px",
                         padding: "0 8px",
                         color: "white",
                       }}
                     >
-                      {thread.state}
+                      {thread.status}
                     </Typography>
                   </TableCell>
                   <TableCell>{thread.tag}</TableCell>

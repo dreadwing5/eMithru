@@ -15,8 +15,7 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 // utils
-// _mock
-import { countries } from "../../_mock";
+
 // components
 import {
   FormProvider,
@@ -88,10 +87,9 @@ export default function AdmissionDetails() {
   return (
     <div>
       <FormProvider methods={methods} onSubmit={handleSubmit(onSubmit)}>
-      <Grid container spacing={2} >
-      <Grid item xs={12} md={12}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={12}>
             <Card sx={{ p: 3 }}>
-              
               <h3>Admission Details at CMRIT</h3>
 
               <Divider sx={{ mb: 3 }} />

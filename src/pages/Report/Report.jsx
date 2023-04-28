@@ -264,9 +264,9 @@ const Report = () => {
                   <TableCell>Description</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Category</TableCell>
-                  <TableCell>Open Date</TableCell>
-                  <TableCell>Close date</TableCell>
-                  <TableCell>Created by</TableCell>
+                  <TableCell>Opened Date</TableCell>
+                  <TableCell>Closed date</TableCell>
+                  <TableCell>Author</TableCell>
                   <TableCell>Members</TableCell>
                 </TableRow>
               </TableHead>
@@ -314,25 +314,25 @@ const Report = () => {
                         style={{
                           display: "inline-flex",
                           alignItems: "center",
-                          backgroundColor: statusColors[thread.state],
+                          backgroundColor: statusColors[thread.status],
                           borderRadius: "12px",
                           padding: "0 8px",
                           color: "white",
                         }}
                       >
-                        {thread.state}
+                        {thread.status}
                       </Typography>
                     </TableCell>
-                    <TableCell>{thread.tag}</TableCell>
+                    <TableCell>{thread.topic}</TableCell>
                     <TableCell>
                       {new Date(thread.openDate).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      {thread.closeDate
+                      {thread.closeAt
                         ? new Date(thread.closeDate).toLocaleDateString()
                         : "N/A"}
                     </TableCell>
-                    <TableCell>{thread.createdBy.name}</TableCell>
+                    <TableCell>{thread.author.name}</TableCell>
                     <TableCell style={{ display: "flex", cursor: "pointer" }}>
                       {thread.participants
                         .slice(0, 3)

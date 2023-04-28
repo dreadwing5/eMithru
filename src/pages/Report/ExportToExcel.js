@@ -13,7 +13,7 @@ function processTableData(data) {
           processedItem[key] = item[key]
             .map((participant) => participant.name)
             .join(", ");
-        } else if (key === "createdBy") {
+        } else if (key === "author") {
           // Include the createdBy name
           processedItem[key] = item[key].name;
         } else if (isDate(item[key])) {
