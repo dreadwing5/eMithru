@@ -29,6 +29,11 @@ import GetApp from "@mui/icons-material/GetApp";
 
 import Page from "../../components/Page";
 import api from "../../utils/axios"; // replace with your actual API path
+import axios from "axios";
+
+const baseURL = import.meta.env.VITE_PYTHON_API;
+
+import processTableData from "./ExportToExcel";
 
 /* 
 TODO : The export to excel button should be on the right side
@@ -133,15 +138,27 @@ const Report = () => {
     closed: "#f44336",
   };
 
-  const handleExportToExcel = () => {
-    const data = threads;
+  const handleExportToExcel = async () => {
+    const data = processTableData(threads);
+    try {
+      const response = await axios.post(`${baseURL}generate_excel`, data, {
+        responseType: "blob",
+      });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(response.data);
+      link.download = "report.xlsx";
+      document.body.appendChild(link); // Append the link to the document
+      link.click();
 
-    // console.log(data);
-    const timestamp = new Date().toISOString();
-
-    exportToExcel(data, `${timestamp}-counselling-report.xlsx`);
-
-    // exportToExcel(data, "threads");
+      // Cleanup
+      URL.revokeObjectURL(link.href);
+      document.body.removeChild(link);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+    // const timestamp = new Date().toISOString();
+    // exportToExcel(threads);
   };
 
   return (

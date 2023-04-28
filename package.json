@@ -26,7 +26,6 @@
     "change-case": "^4.1.2",
     "date-fns": "^2.29.3",
     "dayjs": "^1.11.7",
-    "file-saver": "^2.0.5",
     "framer-motion": "6.2.8",
     "fullcalendar": "^6.1.4",
     "mui-image": "^1.0.7",
@@ -42,7 +41,6 @@
     "simplebar-react": "^3.2.3",
     "socket.io-client": "^4.5.4",
     "timeago.js": "^4.0.2",
-    "xlsx": "^0.18.5",
     "yup": "0.32.11"
   },
   "devDependencies": {
