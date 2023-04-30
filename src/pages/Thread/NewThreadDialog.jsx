@@ -33,11 +33,11 @@ const NewThreadDialog = ({ open, onClose, users, currentUser, onSave }) => {
   const [newThreadData, setNewThreadData] = useState({
     title: "",
     topic: "",
-    owener: currentUser._id,
+    author: currentUser._id,
     participants: [{ _id: currentUser._id, name: currentUser.name }],
   });
 
-  const categories = ["general", "attendance", "performance", "well-being"];
+  const TOPICS = ["general", "attendance", "performance", "well-being"];
 
   useEffect(() => {
     if (searchTerm.trim()) {
@@ -133,22 +133,22 @@ const NewThreadDialog = ({ open, onClose, users, currentUser, onSave }) => {
           </Box>
           <Box sx={{ py: 1 }}>
             <InputLabel shrink htmlFor="tag-select">
-              Category
+              Topic
             </InputLabel>
 
             <Select
-              name="tag"
-              value={newThreadData.tag}
+              name="top"
+              value={newThreadData.topic}
               onChange={handleNewThreadChange}
-              inputProps={{ name: "tag", id: "tag-select" }}
+              inputProps={{ name: "topic", id: "topic-select" }}
               fullWidth
             >
-              <MenuItem value="Category" disabled>
-                Category
+              <MenuItem value="Topic" disabled>
+                Topic
               </MenuItem>
-              {categories.map((category, index) => (
-                <MenuItem key={index} value={category}>
-                  {category.charAt(0).toUpperCase() + category.slice(1)}
+              {TOPICS.map((topic, index) => (
+                <MenuItem key={index} value={topic}>
+                  {topic.charAt(0).toUpperCase() + topic.slice(1)}
                 </MenuItem>
               ))}
             </Select>

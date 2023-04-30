@@ -6,7 +6,6 @@ const SOCKET_URL = import.meta.env.VITE_SOCKET_URL;
 
 const useSocket = (threadId, userId, setMessages) => {
   const socket = useRef();
-
   useEffect(() => {
     socket.current = io(SOCKET_URL, {
       query: {
@@ -17,7 +16,7 @@ const useSocket = (threadId, userId, setMessages) => {
     return () => {
       socket.current.disconnect();
     };
-  }, [threadId, userId]);
+  }, [userId]);
 
   useEffect(() => {
     socket.current.on("receiveMessage", (message) => {

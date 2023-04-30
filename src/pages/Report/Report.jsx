@@ -122,6 +122,7 @@ const Report = () => {
         const response = await api.get("threads");
         if (response.status === 200) {
           const { data } = response.data;
+          console.log(data.threads);
           setThreads(data.threads);
         }
       } catch (error) {
