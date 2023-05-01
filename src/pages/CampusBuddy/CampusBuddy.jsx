@@ -14,29 +14,7 @@ import SendIcon from "@mui/icons-material/Send";
 import { deepOrange } from "@mui/material/colors";
 import AssistantIcon from "@mui/icons-material/Assistant";
 import PersonIcon from "@mui/icons-material/Person";
-
-const mockMessages = [
-  {
-    body: "Hello! I'm your Campus Buddy. How can I help you today?",
-    sender: "ai",
-  },
-  {
-    body: "What's the schedule for today's classes?",
-    sender: "user",
-  },
-  {
-    body: "Today's classes are: Math at 9 am, History at 11 am, and Chemistry at 2 pm.",
-    sender: "ai",
-  },
-  {
-    body: "When is the next Physics exam?",
-    sender: "user",
-  },
-  {
-    body: "The next Physics exam is scheduled for May 10th at 10 am.",
-    sender: "ai",
-  },
-];
+import api from "../../utils/axios";
 
 const CampusBuddyHeader = () => {
   return (
@@ -70,19 +48,45 @@ const CampusBuddyHeader = () => {
   );
 };
 
+const MOCK_MESSAGE = [
+  {
+    body: "Hello! I'm your Campus Buddy. How can I help you today?",
+    sender: "ai",
+  },
+  {
+    body: "What's the schedule for today's classes?",
+    sender: "user",
+  },
+  {
+    body: "Today's classes are: Math at 9 am, History at 11 am, and Chemistry at 2 pm.",
+    sender: "ai",
+  },
+];
+
 const CampusBuddy = () => {
-  const [messages, setMessages] = useState(mockMessages);
+  const [messages, setMessages] = useState(MOCK_MESSAGE);
   const [messageInput, setMessageInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleMessageInput = (e) => {
     setMessageInput(e.target.value);
   };
 
-  const handleSendMessage = () => {
+  // api for communicating with campusBuddy (chatbot)
+  const handleSendMessage = async () => {
     console.log(messageInput);
     if (messageInput.trim().length > 0) {
       setMessages([...messages, { body: messageInput, sender: "user" }]);
+      setIsLoading(true);
+      const response = await api.post("campus-buddy/query", {
+        query: messageInput,
+      });
+
+      const { data } = response.data;
+      console.log(data);
+      setMessages([...messages, { body: data.output, sender: "ai" }]);
       setMessageInput("");
+      setIsLoading(false);
     }
   };
 
@@ -117,6 +121,17 @@ const CampusBuddy = () => {
               {messages.map((message, index) => (
                 <ChatMessage key={index} message={message} />
               ))}
+              {isLoading && (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Typography variant="body1">Thinking...</Typography>
+                </Box>
+              )}
             </Box>
             <Box sx={{ p: 3 }}>
               <ChatMessageInput
@@ -124,6 +139,7 @@ const CampusBuddy = () => {
                 setMessageInput={setMessageInput}
                 handleSendMessage={handleSendMessage}
                 handleKeyPress={handleKeyPress}
+                isLoading={isLoading}
               />
             </Box>
           </Box>
@@ -170,12 +186,12 @@ const ChatMessage = ({ message }) => {
     </Box>
   );
 };
-
 const ChatMessageInput = ({
   handleSendMessage,
   handleKeyPress,
   messageInput,
   setMessageInput,
+  isLoading,
 }) => {
   const [isDisabled, setIsDisabled] = useState(true);
 
@@ -197,7 +213,7 @@ const ChatMessageInput = ({
         onChange={handleInput}
         onKeyPress={handleKeyPress}
         variant="outlined"
-        placeholder="Type a message"
+        placeholder={isLoading ? "Thinking..." : "Type a message"}
         InputProps={{
           endAdornment: (
             <IconButton
