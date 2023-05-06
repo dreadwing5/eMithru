@@ -203,6 +203,7 @@ export default function ThreadWindow() {
     try {
       const response = await api.post(`/threads/${threadId}/messages`, message);
       const { data } = response.data;
+      setMessages((prev) => [...prev, data.message]);
       sendMessage(data.message, threadId); // FIXME : Socket is not working
     } catch (err) {
       console.log(err);
