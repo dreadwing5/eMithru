@@ -53,6 +53,7 @@ function App() {
                   <Route path="/threads" element={<Thread />} />
                   <Route path="/threads/:threadId" element={<ThreadWindow />} />
                   <Route path="/report" element={<Report />} />
+                  <Route path="/login" element={<Login />} />
                 </Route>
                 <Route
                   path="/login"
