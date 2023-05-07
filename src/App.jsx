@@ -3,7 +3,7 @@ import { useContext } from "react";
 import ThemeProvider from "./theme";
 
 import Dashboard from "./pages/Dashboard";
-
+import ProtectedRouteWrapper from "./ProtectedRoute";
 import DashboardLayout from "./layouts/DashboardLayout";
 import MeetingCalendar from "./pages/Meeting/MeetingCalendar";
 import Chat from "./pages/Chat";
@@ -34,30 +34,95 @@ function App() {
           <div className="app">
             <main className="content">
               <Routes>
-                <Route element={<DashboardLayout />}>
-                  <Route path="/" element={<Login />} />
-                  <Route path="/chat" element={<Chat />} />
-                  <Route path="/meetings" element={<MeetingCalendar />} />
-                  <Route path="/users" element={<User />} />
-                  <Route path="/student/profile" element={<StudentProfile />} />
-                  <Route path="/student/academic" element={<Academic />} />
-                  <Route
-                    path="/student/admission"
-                    element={<AdmissionDetailsPage />}
-                  />
-                  <Route path="/student/placement" element={<Placement />} />
-                  <Route path="/mentor" element={<MentorAllocation />} />
-                  <Route path="/ptm" element={<Ptm />} />
-                  <Route path="/campus-buddy" element={<CampusBuddy />} />
-                  <Route path="/student/attendance" element={<Attendance />} />
-                  <Route path="/threads" element={<Thread />} />
-                  <Route path="/threads/:threadId" element={<ThreadWindow />} />
-                  <Route path="/report" element={<Report />} />
-                </Route>
                 <Route
                   path="/login"
                   element={user ? <Navigate replace to="/" /> : <Login />}
                 />
+
+                <Route element={<DashboardLayout />}>
+                  <Route
+                    path="/"
+                    element={
+                      <ProtectedRouteWrapper>
+                        <Dashboard />
+                      </ProtectedRouteWrapper>
+                    }
+                  />
+                  <Route
+                    path="/chat"
+                    element={
+                      <ProtectedRouteWrapper>
+                        <Chat />
+                      </ProtectedRouteWrapper>
+                    }
+                  />
+                  <Route
+                    path="/meetings"
+                    element={
+                      <ProtectedRouteWrapper>
+                        <MeetingCalendar />
+                      </ProtectedRouteWrapper>
+                    }
+                  />
+                  <Route
+                    path="/users"
+                    element={
+                      <ProtectedRouteWrapper>
+                        <User />
+                      </ProtectedRouteWrapper>
+                    }
+                  />
+                  <Route
+                    path="/student/profile"
+                    element={
+                      <ProtectedRouteWrapper>
+                        <StudentProfile />
+                      </ProtectedRouteWrapper>
+                    }
+                  />
+                  {/* <ProtectedRoute path="/" element={<Dashboard />} />
+                  <ProtectedRoute path="/chat" element={<Chat />} />
+                  <ProtectedRoute
+                    path="/meetings"
+                    element={<MeetingCalendar />}
+                  />
+                  <ProtectedRoute path="/users" element={<User />} />
+                  <ProtectedRoute
+                    path="/student/profile"
+                    element={<StudentProfile />}
+                  />
+                  <ProtectedRoute
+                    path="/student/academic"
+                    element={<Academic />}
+                  />
+                  <ProtectedRoute
+                    path="/student/admission"
+                    element={<AdmissionDetailsPage />}
+                  />
+                  <ProtectedRoute
+                    path="/student/placement"
+                    element={<Placement />}
+                  />
+                  <ProtectedRoute
+                    path="/mentor"
+                    element={<MentorAllocation />}
+                  />
+                  <ProtectedRoute path="/ptm" element={<Ptm />} />
+                  <ProtectedRoute
+                    path="/campus-buddy"
+                    element={<CampusBuddy />}
+                  />
+                  <ProtectedRoute
+                    path="/student/attendance"
+                    element={<Attendance />}
+                  />
+                  <ProtectedRoute path="/threads" element={<Thread />} />
+                  <ProtectedRoute
+                    path="/threads/:threadId"
+                    element={<ThreadWindow />}
+                  />
+                  <ProtectedRoute path="/report" element={<Report />} /> */}
+                </Route>
               </Routes>
             </main>
           </div>
