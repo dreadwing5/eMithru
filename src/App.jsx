@@ -53,12 +53,12 @@ function App() {
                   <Route path="/threads" element={<Thread />} />
                   <Route path="/threads/:threadId" element={<ThreadWindow />} />
                   <Route path="/report" element={<Report />} />
-                  <Route path="/login" element={<Login />} />
                 </Route>
-                <Route
+                <Route path="/login" element={<Login />} />
+                {/* <Route
                   path="/login"
                   element={user ? <Navigate replace to="/" /> : <Login />}
-                />
+                /> */}
               </Routes>
             </main>
           </div>
