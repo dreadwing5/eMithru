@@ -35,7 +35,7 @@ function App() {
             <main className="content">
               <Routes>
                 <Route element={<DashboardLayout />}>
-                  <Route path="/" element={<Dashboard />} />
+                  <Route path="/" element={<Login />} />
                   <Route path="/chat" element={<Chat />} />
                   <Route path="/meetings" element={<MeetingCalendar />} />
                   <Route path="/users" element={<User />} />
@@ -54,11 +54,10 @@ function App() {
                   <Route path="/threads/:threadId" element={<ThreadWindow />} />
                   <Route path="/report" element={<Report />} />
                 </Route>
-                <Route path="/login" element={<Login />} />
-                {/* <Route
+                <Route
                   path="/login"
                   element={user ? <Navigate replace to="/" /> : <Login />}
-                /> */}
+                />
               </Routes>
             </main>
           </div>
