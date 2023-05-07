@@ -80,48 +80,86 @@ function App() {
                       </ProtectedRouteWrapper>
                     }
                   />
-                  {/* <ProtectedRoute path="/" element={<Dashboard />} />
-                  <ProtectedRoute path="/chat" element={<Chat />} />
-                  <ProtectedRoute
-                    path="/meetings"
-                    element={<MeetingCalendar />}
-                  />
-                  <ProtectedRoute path="/users" element={<User />} />
-                  <ProtectedRoute
-                    path="/student/profile"
-                    element={<StudentProfile />}
-                  />
-                  <ProtectedRoute
+                  <Route
                     path="/student/academic"
-                    element={<Academic />}
+                    element={
+                      <ProtectedRouteWrapper>
+                        <Academic />
+                      </ProtectedRouteWrapper>
+                    }
                   />
-                  <ProtectedRoute
+                  <Route
                     path="/student/admission"
-                    element={<AdmissionDetailsPage />}
+                    element={
+                      <ProtectedRouteWrapper>
+                        <AdmissionDetailsPage />
+                      </ProtectedRouteWrapper>
+                    }
                   />
-                  <ProtectedRoute
+                  <Route
                     path="/student/placement"
-                    element={<Placement />}
+                    element={
+                      <ProtectedRouteWrapper>
+                        <Placement />
+                      </ProtectedRouteWrapper>
+                    }
                   />
-                  <ProtectedRoute
+                  <Route
                     path="/mentor"
-                    element={<MentorAllocation />}
+                    element={
+                      <ProtectedRouteWrapper>
+                        <MentorAllocation />
+                      </ProtectedRouteWrapper>
+                    }
                   />
-                  <ProtectedRoute path="/ptm" element={<Ptm />} />
-                  <ProtectedRoute
+                  <Route
+                    path="/ptm"
+                    element={
+                      <ProtectedRouteWrapper>
+                        <Ptm />
+                      </ProtectedRouteWrapper>
+                    }
+                  />
+                  <Route
                     path="/campus-buddy"
-                    element={<CampusBuddy />}
+                    element={
+                      <ProtectedRouteWrapper>
+                        <CampusBuddy />
+                      </ProtectedRouteWrapper>
+                    }
                   />
-                  <ProtectedRoute
+                  <Route
                     path="/student/attendance"
-                    element={<Attendance />}
+                    element={
+                      <ProtectedRouteWrapper>
+                        <Attendance />
+                      </ProtectedRouteWrapper>
+                    }
                   />
-                  <ProtectedRoute path="/threads" element={<Thread />} />
-                  <ProtectedRoute
+                  <Route
+                    path="/threads"
+                    element={
+                      <ProtectedRouteWrapper>
+                        <Thread />
+                      </ProtectedRouteWrapper>
+                    }
+                  />
+                  <Route
                     path="/threads/:threadId"
-                    element={<ThreadWindow />}
+                    element={
+                      <ProtectedRouteWrapper>
+                        <ThreadWindow />
+                      </ProtectedRouteWrapper>
+                    }
                   />
-                  <ProtectedRoute path="/report" element={<Report />} /> */}
+                  <Route
+                    path="/report"
+                    element={
+                      <ProtectedRouteWrapper>
+                        <Report />
+                      </ProtectedRouteWrapper>
+                    }
+                  />
                 </Route>
               </Routes>
             </main>
