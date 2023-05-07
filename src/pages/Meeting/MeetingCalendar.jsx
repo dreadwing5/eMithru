@@ -7,6 +7,9 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  InputLabel,
+  Select,
+  MenuItem,
 } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -24,34 +27,34 @@ import dayjs from "dayjs";
 import api from "../../utils/axios";
 import { AuthContext } from "../../context/AuthContext";
 
-const EventList = ({ currentEvents }) => {
-  return (
-    <List>
-      {currentEvents.map((event) => (
-        <ListItem
-          key={event._id}
-          sx={{
-            margin: "10px 0",
-            borderRadius: "2px",
-          }}
-        >
-          <ListItemText
-            primary={event.title}
-            secondary={
-              <Typography>
-                {formatDate(event.start, {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </Typography>
-            }
-          />
-        </ListItem>
-      ))}
-    </List>
-  );
-};
+// const EventList = ({ currentEvents }) => {
+//   return (
+//     <List>
+//       {currentEvents.map((event) => (
+//         <ListItem
+//           key={event._id}
+//           sx={{
+//             margin: "10px 0",
+//             borderRadius: "2px",
+//           }}
+//         >
+//           <ListItemText
+//             primary={event.title}
+//             secondary={
+//               <Typography>
+//                 {formatDate(event.start, {
+//                   year: "numeric",
+//                   month: "short",
+//                   day: "numeric",
+//                 })}
+//               </Typography>
+//             }
+//           />
+//         </ListItem>
+//       ))}
+//     </List>
+//   );
+// };
 
 const MeetingDialog = ({
   open,
@@ -141,7 +144,7 @@ const MeetingCalendar = () => {
   const meetingType = useRef();
   const userId = "6440827f7b7d9337a2202d16";
   const calendarRef = useRef(null);
-  const { createMeeting } = useMeeting();
+  const { createMeeting, deleteMeeting } = useMeeting();
   const { user } = useContext(AuthContext);
 
   console.log(user);
@@ -230,13 +233,16 @@ const MeetingCalendar = () => {
     }
   };
 
-  const handleEventClick = (selected) => {
+  const handleEventClick = async (selected) => {
     if (
       window.confirm(
         `Are you sure you want to delete the event '${selected.event.title}'`
       )
     ) {
       selected.event.remove();
+
+      const response = await deleteMeeting(selected.event._def.publicId);
+      enqueueSnackbar("Meeting deleted successfully", { variant: "success" });
     }
   };
 
@@ -244,18 +250,18 @@ const MeetingCalendar = () => {
     <Box m="20px">
       <Box display="flex" justifyContent="space-between">
         {/* CALENDAR SIDEBAR */}
-        <Box
+        {/* <Box
           flex="1 1 20%"
           backgroundColor={theme.palette.primary[700]}
           p="15px"
           borderRadius="4px"
         >
-          <Typography variant="h5">Events</Typography>
-          <EventList currentEvents={currentEvents} />
-        </Box>
+          {/* <Typography variant="h5">Events</Typography> */}
+        {/* <EventList currentEvents={currentEvents} /> */}
+        {/* </Box> */}
 
         {/* CALENDAR */}
-        <Box flex="1 1 100%" ml="15px">
+        <Box flex="1 1 100%">
           <FullCalendar
             height="75vh"
             plugins={[

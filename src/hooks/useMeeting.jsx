@@ -17,6 +17,15 @@ export const useMeeting = () => {
     }
   };
 
+  const deleteMeeting = async (meetId) => {
+    try {
+      const response = await api.delete(`/meetings/${meetId}`);
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const createMeeting = async (meeting, userId) => {
     try {
       const mentorResponse = await api.get(`/mentors/${userId}`);
@@ -45,5 +54,6 @@ export const useMeeting = () => {
   return {
     createMeeting,
     getAllMeetings,
+    deleteMeeting,
   };
 };
