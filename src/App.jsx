@@ -4,7 +4,7 @@ import ThemeProvider from "./theme";
 
 import Dashboard from "./pages/Dashboard";
 
-import DashboardLayout from "./layouts/DashBoardLayout";
+import DashboardLayout from "./layouts/DashboardLayout";
 import MeetingCalendar from "./pages/Meeting/MeetingCalendar";
 import Chat from "./pages/Chat";
 import Login from "./pages/Login";
