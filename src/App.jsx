@@ -35,7 +35,7 @@ function App() {
             <main className="content">
               <Routes>
                 <Route element={<DashboardLayout />}>
-                  <Route path="/" element={<Login />} />
+                  <Route path="/" element={<Dashboard />} />
                   <Route path="/chat" element={<Chat />} />
                   <Route path="/meetings" element={<MeetingCalendar />} />
                   <Route path="/users" element={<User />} />
