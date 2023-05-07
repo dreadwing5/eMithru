@@ -59,7 +59,7 @@ const Sidebar = ({
           </Box>
 
           <FlexBetween color={theme.palette.secondary.main}>
-            <UserAvatar name={user.name} role={user.role} theme={theme} />
+            <UserAvatar name={user?.name} role={user?.role} theme={theme} />
 
             {!isNonMobile && (
               <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
