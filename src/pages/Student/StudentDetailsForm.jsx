@@ -1,11 +1,11 @@
-import { useState } from "react";
 import { useSnackbar } from "notistack";
-import { useCallback } from "react";
+import { useCallback, useContext, useState, useEffect } from "react";
 
 import api from "../../utils/axios";
 
 // form
 import { useForm } from "react-hook-form";
+import { AuthContext } from "../../context/AuthContext";
 
 // @mui
 import { Box, Grid, Card, Stack } from "@mui/material";
@@ -38,42 +38,44 @@ const yesNoOptions = [
   { value: "no", label: "No" },
 ];
 
-const DEFAULT_VALUES = {
-  fullName: {
-    firstName: "John",
-    middleName: "A",
-    lastName: "Doe",
-  },
-  department: "Computer Science",
-  nameOnMarksheet: "John A Doe",
-  personalEmail: "john.doe@example.com",
-  email: "john.doe@college.edu",
-  usn: "CS101",
-  dateOfBirth: "2000-01-01",
-  bloodGroup: "O+",
-  mobileNumber: "1234567890",
-  alternatePhoneNumber: "0987654321",
-  nationality: "American",
-  domicile: "California",
-  religion: "Christianity",
-  category: "General",
-  caste: "N/A",
-  hostelite: "no",
-  subCaste: "N/A",
-  aadharCardNumber: "123456789012",
-  physicallyChallenged: "no",
-  admissionDate: "2022-09-01",
-  sportsLevel: "national",
-  defenceOrExServiceman: "notApplicable",
-  isForeigner: "no",
-  photo: null,
-};
-
 export default function StudentDetailsForm() {
   const { enqueueSnackbar } = useSnackbar();
+  const { user } = useContext(AuthContext);
 
+  const DEFAULT_VALUES = {
+    userId: user._id,
+    fullName: {
+      firstName: "John",
+      middleName: "A",
+      lastName: "Doe",
+    },
+    department: "Computer Science",
+    nameOnMarksheet: "John A Doe",
+    personalEmail: "john.doe@example.com",
+    email: "john.doe@college.edu",
+    usn: "CS101",
+    dateOfBirth: "2000-01-01",
+    bloodGroup: "O+",
+    mobileNumber: "1234567890",
+    alternatePhoneNumber: "0987654321",
+    nationality: "American",
+    domicile: "California",
+    religion: "Christianity",
+    category: "General",
+    caste: "N/A",
+    hostelite: "no",
+    subCaste: "N/A",
+    aadharCardNumber: "123456789012",
+    physicallyChallenged: "no",
+    admissionDate: "2022-09-01",
+    sportsLevel: "National",
+    defenceOrExServiceman: "Not Applicable",
+    isForeigner: "no",
+    photo: null,
+  };
   const methods = useForm({
     defaultValues: {
+      userId: user._id,
       fullName: {
         firstName: "",
         middleName: "",
@@ -109,7 +111,32 @@ export default function StudentDetailsForm() {
     handleSubmit,
     reset,
     formState: { isSubmitting },
+    setValue,
   } = methods;
+
+  const fetchStudentData = useCallback(async () => {
+    try {
+      const response = await api.get(`/students/profile/${user._id}`);
+      const { data } = response.data;
+      if (data) {
+        for (const key in data) {
+          if (data[key] && typeof data[key] === "object") {
+            for (const innerKey in data[key]) {
+              setValue(`${key}.${innerKey}`, data[key][innerKey]);
+            }
+          } else {
+            setValue(key, data[key]);
+          }
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching student data", error);
+    }
+  }, [user._id]);
+
+  useEffect(() => {
+    fetchStudentData();
+  }, [fetchStudentData]);
 
   const handleFillMockData = () => {
     reset(DEFAULT_VALUES);
@@ -121,7 +148,7 @@ export default function StudentDetailsForm() {
 
   const onSubmit = useCallback(async (formData) => {
     try {
-      await api.post("/api/student-profile", formData);
+      await api.post("/students/profile", formData);
       enqueueSnackbar("Student profile created successfully!", {
         variant: "success",
       });

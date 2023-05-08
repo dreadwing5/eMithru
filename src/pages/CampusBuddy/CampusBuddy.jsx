@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Stack,
@@ -15,6 +15,27 @@ import { deepOrange } from "@mui/material/colors";
 import AssistantIcon from "@mui/icons-material/Assistant";
 import PersonIcon from "@mui/icons-material/Person";
 import api from "../../utils/axios";
+
+const useTypewriterEffect = (text, typingSpeed) => {
+  const [typewriterText, setTypewriterText] = useState("");
+
+  useEffect(() => {
+    let index = 0;
+    const timer = setInterval(() => {
+      setTypewriterText((prev) => prev + text.charAt(index));
+      index++;
+      if (index > text.length) {
+        clearInterval(timer);
+      }
+    }, typingSpeed);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, [text, typingSpeed]);
+
+  return typewriterText;
+};
 
 const CampusBuddyHeader = () => {
   return (
@@ -53,14 +74,6 @@ const MOCK_MESSAGE = [
     body: "Hello! I'm your Campus Buddy. How can I help you today?",
     sender: "ai",
   },
-  {
-    body: "What's the schedule for today's classes?",
-    sender: "user",
-  },
-  {
-    body: "Today's classes are: Math at 9 am, History at 11 am, and Chemistry at 2 pm.",
-    sender: "ai",
-  },
 ];
 
 const CampusBuddy = () => {
@@ -75,17 +88,27 @@ const CampusBuddy = () => {
   // api for communicating with campusBuddy (chatbot)
   const handleSendMessage = async () => {
     console.log(messageInput);
+    setMessageInput("");
     if (messageInput.trim().length > 0) {
       setMessages([...messages, { body: messageInput, sender: "user" }]);
       setIsLoading(true);
       const response = await api.post("campus-buddy/query", {
         query: messageInput,
       });
-
       const { data } = response.data;
-      console.log(data);
-      setMessages([...messages, { body: data.output, sender: "ai" }]);
-      setMessageInput("");
+      /*     Simulate a delay to mimic the response time of an API call
+       setTimeout(() => {
+          setMessages((prevMessages) => [
+            ...prevMessages,
+            { body: customAIMessage, sender: "ai" },
+          ]);
+          setIsLoading(false);
+        }, 1000);   */
+
+      setMessages((prevMessages) => [
+        ...prevMessages,
+        { body: data.output, sender: "ai" },
+      ]);
       setIsLoading(false);
     }
   };
@@ -152,6 +175,11 @@ const CampusBuddy = () => {
 const ChatMessage = ({ message }) => {
   const isUserMessage = message.sender === "user";
   const justifyContent = isUserMessage ? "flex-end" : "flex-start";
+  const typingSpeed = 5;
+  const typewriterText = useTypewriterEffect(
+    message.sender === "ai" ? message.body : "",
+    typingSpeed
+  );
 
   return (
     <Box
@@ -181,7 +209,8 @@ const ChatMessage = ({ message }) => {
             <AssistantIcon />
           </Avatar>
         )}
-        <Typography>{message.body}</Typography>
+
+        <Typography>{isUserMessage ? message.body : typewriterText}</Typography>
       </Paper>
     </Box>
   );

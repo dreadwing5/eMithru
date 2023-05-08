@@ -3,7 +3,7 @@ import { Container, Grid, Typography, Box } from "@mui/material";
 import Page from "../components/Page";
 import { Card, CardHeader, CardContent } from "@mui/material";
 import { useState } from "react";
-import comingSoon from "../public/coming-soon.png";
+// import comingSoon from "../public/coming-soon.png";
 import Image from "mui-image";
 
 //Dialog

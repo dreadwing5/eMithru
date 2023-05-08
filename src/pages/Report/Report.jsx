@@ -23,7 +23,6 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import exportToExcel from "./ExportToExcel";
 import { Search } from "@mui/icons-material";
 import GetApp from "@mui/icons-material/GetApp";
 
@@ -66,7 +65,7 @@ participant name should be there as comma seperate list
 const Report = () => {
   const [threads, setThreads] = useState([]);
 
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [openDialogThreadId, setOpenDialogThreadId] = useState(null);
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -108,12 +107,13 @@ const Report = () => {
     setSearchTerm(event.target.value);
   };
 
-  const handleOpenDialog = () => {
-    setIsDialogOpen(true);
+  const handleOpenDialog = (threadId) => {
+    // add parameter
+    setOpenDialogThreadId(threadId); // set the current thread ID
   };
 
   const handleCloseDialog = () => {
-    setIsDialogOpen(false);
+    setOpenDialogThreadId(null); // reset the current thread ID
   };
 
   useEffect(() => {
@@ -289,8 +289,14 @@ const Report = () => {
                           {thread.description}
                         </Typography>
                       </Box>
-                      <Button onClick={handleOpenDialog}>Read more</Button>
-                      <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+                      <Button onClick={() => handleOpenDialog(thread._id)}>
+                        Read more
+                      </Button>{" "}
+                      {/* pass the thread ID */}
+                      <Dialog
+                        open={openDialogThreadId === thread._id} // check if this thread's dialog should be open
+                        onClose={handleCloseDialog}
+                      >
                         <DialogContent>
                           <Typography>{thread.description}</Typography>
                         </DialogContent>
