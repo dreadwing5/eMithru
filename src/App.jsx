@@ -113,7 +113,7 @@ function App() {
                     }
                   />
                   <Route
-                    path="/ptm"
+                    path="/student/ptm"
                     element={
                       <ProtectedRouteWrapper>
                         <Ptm />

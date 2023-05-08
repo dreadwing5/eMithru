@@ -23,7 +23,7 @@ const StudentTable = ({ students, onEdit }) => {
         {students.map((student) => (
           <TableRow key={student._id}>
             <TableCell>{student.name}</TableCell>
-            <TableCell>{student.usn}</TableCell>
+            <TableCell>{student?.usn}1CR19IS125</TableCell>
             <TableCell>
               {student.mentor && student.mentor.name
                 ? student.mentor.name

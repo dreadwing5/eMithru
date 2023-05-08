@@ -23,9 +23,9 @@ const MentorAllocation = () => {
     const fetchStudents = async () => {
       try {
         const response = await api.get("/students");
-        const { students } = response.data;
-        console.log(students);
-        setStudents(students);
+        const { data } = response.data;
+        console.log(data);
+        setStudents(data);
       } catch (error) {
         console.error(error);
       }
