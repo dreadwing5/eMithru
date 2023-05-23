@@ -16,7 +16,7 @@ import HeaderBreadcrumbs from "../../components/HeaderBreadcrumbs";
 
 import React from "react";
 import StudentDetailsForm from "./StudentDetailsForm";
-import AdmissionDetails from "./AdmissionDetails"
+import AdmissionDetails from "./AdmissionDetails";
 import LocalGuardianForm from "./LocalGuardianForm";
 import ParentsDetails from "./ParentsDetails";
 import ContactDetails from "./ContactDetails";
@@ -49,12 +49,12 @@ export default function StudentProfile() {
     {
       value: "Admission Details",
       icon: <Iconify icon={"ic:round-account-box"} width={20} height={20} />,
-      component: <AdmissionDetails/>,
+      component: <AdmissionDetails />,
     },
   ];
 
   return (
-    <Page title="Stduent Profile">
+    <Page title="Student Profile">
       <Container maxWidth="lg">
         <Tabs
           allowScrollButtonsMobile
