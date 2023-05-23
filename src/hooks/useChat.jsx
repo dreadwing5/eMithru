@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 import { AuthContext } from "../context/AuthContext";
 import { BASE_URL, SOCKET_URL } from "../config";
 import ChatContext from "../context/ChatContext";
+// import { AuthContext } from "../context/AuthContext";
 
 import api from "../utils/axios";
 
@@ -13,13 +14,9 @@ export default function ChatProvider({ children }) {
   const [arrivalMessage, setArrivalMessage] = useState(null);
   const socket = useRef();
 
-  // const {
-  //   user: {
-  //     data: { user: userInfo },
-  //   },
-  // } = useContext(AuthContext);
-
-  const userId = "6440840795719c38cc99d814";
+  const { user } = useContext(AuthContext);
+  console.log(user);
+  // const user._id = "6440840795719c38cc99d814";
 
   useEffect(() => {
     socket.current = io(SOCKET_URL);
@@ -63,11 +60,11 @@ export default function ChatProvider({ children }) {
 
   const sendMessage = async (newMessage) => {
     const message = {
-      senderId: userId,
+      senderId: user._id,
       body: newMessage,
     };
     socket.current.emit("sendMessage", {
-      sender: userId,
+      sender: user._id,
       body: newMessage,
       room: currentChat._id,
     });
