@@ -9,12 +9,62 @@ import {
   Card,
   Container,
   Avatar,
+  keyframes,
 } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import { deepOrange } from "@mui/material/colors";
 import AssistantIcon from "@mui/icons-material/Assistant";
 import PersonIcon from "@mui/icons-material/Person";
 import api from "../../utils/axios";
+import { useSnackbar } from "notistack";
+const bounce = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+`;
+const ThinkingAnimation = ({ size = 40 }) => {
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        width: size,
+        height: size,
+        position: "relative",
+      }}
+    >
+      <Box
+        sx={{
+          width: size / 2,
+          height: size / 2,
+          bgcolor: "primary.main",
+          borderRadius: "50%",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          animation: `${bounce} 1s ease-in-out infinite`,
+          animationDelay: "-0.5s",
+        }}
+      />
+      <Box
+        sx={{
+          width: size / 2,
+          height: size / 2,
+          bgcolor: "secondary.main",
+          borderRadius: "50%",
+          position: "absolute",
+          top: 0,
+          right: 0,
+          animation: `${bounce} 1s ease-in-out infinite`,
+        }}
+      />
+    </Box>
+  );
+};
 
 const useTypewriterEffect = (text, typingSpeed) => {
   const [typewriterText, setTypewriterText] = useState("");
@@ -22,9 +72,10 @@ const useTypewriterEffect = (text, typingSpeed) => {
   useEffect(() => {
     let index = 0;
     const timer = setInterval(() => {
-      setTypewriterText((prev) => prev + text.charAt(index));
-      index++;
-      if (index > text.length) {
+      if (index < text.length) {
+        setTypewriterText((prev) => prev + text.charAt(index));
+        index++;
+      } else {
         clearInterval(timer);
       }
     }, typingSpeed);
@@ -36,7 +87,6 @@ const useTypewriterEffect = (text, typingSpeed) => {
 
   return typewriterText;
 };
-
 const CampusBuddyHeader = () => {
   return (
     <Box
@@ -71,7 +121,7 @@ const CampusBuddyHeader = () => {
 
 const MOCK_MESSAGE = [
   {
-    body: "Hello! I'm your Campus Buddy. How can I help you today?",
+    body: "Heey, I'm your Campus Buddy. How can I help you today?",
     sender: "ai",
   },
 ];
@@ -80,6 +130,7 @@ const CampusBuddy = () => {
   const [messages, setMessages] = useState(MOCK_MESSAGE);
   const [messageInput, setMessageInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleMessageInput = (e) => {
     setMessageInput(e.target.value);
@@ -92,23 +143,22 @@ const CampusBuddy = () => {
     if (messageInput.trim().length > 0) {
       setMessages([...messages, { body: messageInput, sender: "user" }]);
       setIsLoading(true);
-      const response = await api.post("campus-buddy/query", {
-        query: messageInput,
-      });
-      const { data } = response.data;
-      /*     Simulate a delay to mimic the response time of an API call
-       setTimeout(() => {
-          setMessages((prevMessages) => [
-            ...prevMessages,
-            { body: customAIMessage, sender: "ai" },
-          ]);
-          setIsLoading(false);
-        }, 1000);   */
-
-      setMessages((prevMessages) => [
-        ...prevMessages,
-        { body: data.output, sender: "ai" },
-      ]);
+      try {
+        const response = await api.post("campus-buddy/query", {
+          query: messageInput,
+        });
+        const { data } = response.data;
+        setMessages((prevMessages) => [
+          ...prevMessages,
+          { body: data.output, sender: "ai" },
+        ]);
+      } catch (error) {
+        console.error("Error communicating with Campus Buddy:", error);
+        enqueueSnackbar(
+          "Error communicating with Campus Buddy. Please try again.",
+          { variant: "error" }
+        );
+      }
       setIsLoading(false);
     }
   };
@@ -144,17 +194,7 @@ const CampusBuddy = () => {
               {messages.map((message, index) => (
                 <ChatMessage key={index} message={message} />
               ))}
-              {isLoading && (
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <Typography variant="body1">Thinking...</Typography>
-                </Box>
-              )}
+              {isLoading && <ThinkingAnimation size={24} />}
             </Box>
             <Box sx={{ p: 3 }}>
               <ChatMessageInput

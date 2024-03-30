@@ -1,4 +1,3 @@
-import * as React from "react";
 import logo from "../public/logo.png";
 import {
   Box,
@@ -16,53 +15,61 @@ import {
   Avatar,
   useTheme,
 } from "@mui/material";
-import { useContext, useRef } from "react";
+import { useContext, useRef, useState } from "react";
 import { loginCall } from "../apiCalls";
 import { AuthContext } from "../context/AuthContext";
 import Image from "mui-image";
 import Page from "../components/Page";
+import { useSnackbar } from "notistack";
 
 import Illustration from "../public/login_illustration.png";
 
 const Login = () => {
   const email = useRef();
   const password = useRef();
+  const { enqueueSnackbar } = useSnackbar();
   const { isFetching, dispatch } = useContext(AuthContext);
 
-  const handleSubmit = (e) => {
+  const [demoEmail, setDemoEmail] = useState("aditisharma@example.com");
+  const [demoPassword, setDemoPassword] = useState("password");
+
+  const copyCredentials = () => {
+    email.current.value = demoEmail;
+    password.current.value = demoPassword;
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    loginCall(
-      { email: email.current.value, password: password.current.value },
-      dispatch
-    );
+
+    // Validate email and password
+    if (!email.current.value || !password.current.value) {
+      enqueueSnackbar("Please enter email and password", {
+        variant: "warning",
+      });
+      return;
+    }
+
+    try {
+      await loginCall(
+        { email: email.current.value, password: password.current.value },
+        dispatch
+      );
+      enqueueSnackbar("Login Successful", { variant: "success" });
+    } catch (error) {
+      console.log("error", error);
+      if (error.response && error.response.status === 401) {
+        enqueueSnackbar("Invalid email or password", { variant: "error" });
+      } else {
+        enqueueSnackbar("Error logging in. Please try again.", {
+          variant: "error",
+        });
+      }
+    }
   };
 
   return (
     <Page title="LOGIN | CMRIT">
       <Container maxWidth="lg">
-        {/* <Avatar
-        sx={{
-          background: theme.palette.background.paper,
-          width: 90,
-          height: 90,
-          margin: "0 auto",
-          mt: 2,
-          mb: 2,
-        }}
-      >
-        <img
-          src={logo}
-          alt="CMRIT Logo"
-          width="100"
-          style={{
-            transform: "scale(1.3)",
-            filter:
-              theme.palette.mode === "dark"
-                ? "invert(100%) hue-rotate(180deg)"
-                : "none",
-          }}
-        />
-      </Avatar> */}
         <Box
           sx={{
             display: "flex",
@@ -100,6 +107,32 @@ const Login = () => {
                   </Box>
                   <Box>
                     <Stack spacing={2} sx={{ textAlign: "left" }}>
+                      <Box
+                        sx={{
+                          p: 2,
+                          backgroundColor: "background.default",
+                          borderRadius: 1,
+                          mt: 2,
+                        }}
+                      >
+                        <Typography variant="subtitle1" gutterBottom>
+                          Demo Credentials
+                        </Typography>
+                        <Typography variant="body2">
+                          Email: {demoEmail}
+                        </Typography>
+                        <Typography variant="body2" sx={{ mt: 1 }}>
+                          Password: {demoPassword}
+                        </Typography>
+                        <Button
+                          variant="outlined"
+                          size="small"
+                          sx={{ mt: 2 }}
+                          onClick={copyCredentials}
+                        >
+                          Copy Credentials
+                        </Button>
+                      </Box>
                       <Typography variant="subtitle1">Email Address</Typography>
                       <TextField
                         margin="normal"
@@ -122,14 +155,14 @@ const Login = () => {
                         autoComplete="current-password"
                         inputRef={password}
                       />
-                      <Box>
+                      {/* <Box>
                         <FormControlLabel
                           control={
                             <Checkbox value="remember" color="primary" />
                           }
                           label="Keep me logged in"
                         />
-                      </Box>
+                      </Box> */}
 
                       <Button
                         type="submit"
@@ -148,7 +181,7 @@ const Login = () => {
                           "Log In"
                         )}
                       </Button>
-                      <Box sx={{ display: "flex" }}>
+                      {/* <Box sx={{ display: "flex" }}>
                         <Link
                           component="button"
                           variant="body1"
@@ -158,7 +191,7 @@ const Login = () => {
                         >
                           Forgot password?
                         </Link>
-                      </Box>
+                      </Box> */}
                     </Stack>
                   </Box>
                 </Box>
