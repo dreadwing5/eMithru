@@ -1,5 +1,5 @@
 import { useSnackbar } from "notistack";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 // @mui
 import { alpha } from "@mui/material/styles";
@@ -13,6 +13,7 @@ import useIsMountedRef from "../../hooks/useIsMountedRef";
 import MyAvatar from "../../components/MyAvatar";
 import MenuPopover from "../../components/MenuPopover";
 import IconButtonAnimate from "../../components/animate/IconButtonAnimate";
+import { AuthContext } from "../../context/AuthContext";
 
 // ----------------------------------------------------------------------
 
@@ -32,10 +33,7 @@ const MENU_OPTIONS = [
 export default function AccountPopover() {
   const navigate = useNavigate();
 
-  const user = {
-    displayName: "John Doe",
-    email: "johndoe@example.com",
-  };
+  const { user, dispatch } = useContext(AuthContext);
 
   const isMountedRef = useIsMountedRef();
 
@@ -53,9 +51,8 @@ export default function AccountPopover() {
 
   const handleLogout = async () => {
     try {
-      // await logout();
-      // navigate(PATH_AUTH.login, { replace: true });
-      console.log("LOGGING OUT....");
+      dispatch({ type: "LOGOUT" });
+      navigate("/login");
 
       if (isMountedRef.current) {
         handleClose();
@@ -85,7 +82,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <MyAvatar />
+        <MyAvatar user={user} />
       </IconButtonAnimate>
 
       <MenuPopover
@@ -103,10 +100,8 @@ export default function AccountPopover() {
         }}
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
-          <Typography variant="subtitle2" noWrap>
-            {user?.displayName}
-          </Typography>
-          <Typography variant="body2" sx={{ color: "text.secondary" }} noWrap>
+          <Typography variant="subtitle2">{user?.name}</Typography>
+          <Typography variant="body2" sx={{ color: "text.secondary" }}>
             {user?.email}
           </Typography>
         </Box>

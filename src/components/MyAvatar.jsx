@@ -7,23 +7,12 @@ import Avatar from "./Avatar";
 
 // ----------------------------------------------------------------------
 
-export default function MyAvatar({ ...other }) {
-  // const { user } = useAuth();
-
-  const user = {
-    displayName: "John Doe",
-    photoURL:
-      "https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_1.jpg",
-  };
+export default function MyAvatar({ user }) {
+  const { name, color } = createAvatar(user?.name);
 
   return (
-    <Avatar
-      src={user?.photoURL}
-      alt={user?.displayName}
-      color={user?.photoURL ? "default" : createAvatar(user?.displayName).color}
-      {...other}
-    >
-      {createAvatar(user?.displayName).name}
+    <Avatar alt={user?.name} color={color}>
+      {name}
     </Avatar>
   );
 }
