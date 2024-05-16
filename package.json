@@ -38,6 +38,7 @@
     "react-hook-form": "^7.27.1",
     "react-lazy-load-image-component": "^1.5.1",
     "react-router-dom": "^6.4.4",
+    "react-swipeable-views": "^0.14.0",
     "simplebar-react": "^3.2.3",
     "socket.io-client": "^4.5.4",
     "timeago.js": "^4.0.2",

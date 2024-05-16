@@ -23,6 +23,7 @@ import {
 } from "@mui/material";
 
 import { BugReport as BugReportIcon } from "@mui/icons-material";
+import DashboardHeader from "../components/DashboardHeader";
 
 const TaskWidget = () => {
 	return (
@@ -124,7 +125,8 @@ const Dashboard = () => {
 
 	return (
 		<Page title="Dashboard">
-			<Container maxWidth="xl">
+			<DashboardHeader />
+			{/* <Container maxWidth="xl">
 				<Box sx={{ mb: 5 }}>
 					<Typography variant="h4">
 						Dashboard <sup style={{ fontSize: "0.8rem" }}>Beta</sup>
@@ -157,7 +159,7 @@ const Dashboard = () => {
               <Image src={comingSoon} width="700px" duration={1000} />
             </Box>
           </Grid> */}
-					<Grid
+			{/* <Grid
 						item
 						xs={12}
 						md={12}>
@@ -184,7 +186,7 @@ const Dashboard = () => {
 					open={bugReportDialogOpen}
 					onClose={handleBugReportDialogClose}
 				/>
-			</Container>
+			</Container>  */}
 		</Page>
 	);
 };
