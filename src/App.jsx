@@ -26,6 +26,7 @@ import Thread from "./pages/Thread/Thread";
 import ThreadWindow from "./pages/Thread/ThreadWindow";
 import Report from "./pages/Report/Report";
 
+// TODO : Need to remove routing logic from app component
 function App() {
   const { user } = useContext(AuthContext);
   return (
