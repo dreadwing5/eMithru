@@ -1,6 +1,7 @@
 import { Route, Routes, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import ThemeProvider from "./theme";
+import LazyLoadWrapper from "./components/loader/LazyLoadWrapper";
 
 import Dashboard from "./pages/Dashboard";
 import ProtectedRouteWrapper from "./ProtectedRoute";
@@ -25,6 +26,7 @@ import Thread from "./pages/Thread/Thread";
 import ThreadWindow from "./pages/Thread/ThreadWindow";
 import Report from "./pages/Report/Report";
 
+// TODO : Need to remove routing logic from app component
 function App() {
   const { user } = useContext(AuthContext);
   return (
@@ -44,7 +46,7 @@ function App() {
                     path="/"
                     element={
                       <ProtectedRouteWrapper>
-                        <Dashboard />
+                        <LazyLoadWrapper component={Dashboard} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -52,7 +54,7 @@ function App() {
                     path="/chat"
                     element={
                       <ProtectedRouteWrapper>
-                        <Chat />
+                        <LazyLoadWrapper component={Chat} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -60,7 +62,7 @@ function App() {
                     path="/meetings"
                     element={
                       <ProtectedRouteWrapper>
-                        <MeetingCalendar />
+                        <LazyLoadWrapper component={MeetingCalendar} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -68,7 +70,7 @@ function App() {
                     path="/users"
                     element={
                       <ProtectedRouteWrapper>
-                        <User />
+                        <LazyLoadWrapper component={User} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -76,7 +78,7 @@ function App() {
                     path="/student/profile"
                     element={
                       <ProtectedRouteWrapper>
-                        <StudentProfile />
+                        <LazyLoadWrapper component={StudentProfile} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -84,7 +86,7 @@ function App() {
                     path="/student/academic"
                     element={
                       <ProtectedRouteWrapper>
-                        <Academic />
+                        <LazyLoadWrapper component={Academic} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -92,7 +94,7 @@ function App() {
                     path="/student/admission"
                     element={
                       <ProtectedRouteWrapper>
-                        <AdmissionDetailsPage />
+                        <LazyLoadWrapper component={AdmissionDetailsPage} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -100,7 +102,7 @@ function App() {
                     path="/student/placement"
                     element={
                       <ProtectedRouteWrapper>
-                        <Placement />
+                        <LazyLoadWrapper component={Placement} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -108,7 +110,7 @@ function App() {
                     path="/mentor"
                     element={
                       <ProtectedRouteWrapper>
-                        <MentorAllocation />
+                        <LazyLoadWrapper component={MentorAllocation} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -116,7 +118,7 @@ function App() {
                     path="/student/ptm"
                     element={
                       <ProtectedRouteWrapper>
-                        <Ptm />
+                        <LazyLoadWrapper component={Ptm} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -124,7 +126,7 @@ function App() {
                     path="/campus-buddy"
                     element={
                       <ProtectedRouteWrapper>
-                        <CampusBuddy />
+                        <LazyLoadWrapper component={CampusBuddy} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -132,7 +134,7 @@ function App() {
                     path="/student/attendance"
                     element={
                       <ProtectedRouteWrapper>
-                        <Attendance />
+                        <LazyLoadWrapper component={Attendance} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -140,7 +142,7 @@ function App() {
                     path="/threads"
                     element={
                       <ProtectedRouteWrapper>
-                        <Thread />
+                        <LazyLoadWrapper component={Thread} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -148,7 +150,7 @@ function App() {
                     path="/threads/:threadId"
                     element={
                       <ProtectedRouteWrapper>
-                        <ThreadWindow />
+                        <LazyLoadWrapper component={ThreadWindow} />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -156,7 +158,7 @@ function App() {
                     path="/report"
                     element={
                       <ProtectedRouteWrapper>
-                        <Report />
+                        <LazyLoadWrapper component={Report} />
                       </ProtectedRouteWrapper>
                     }
                   />
