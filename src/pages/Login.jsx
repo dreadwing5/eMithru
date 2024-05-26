@@ -6,7 +6,7 @@ import {
   Container,
   TextField,
   FormControlLabel,
-  Checkbox,
+  Radio,
   Button,
   CircularProgress,
   Grid,
@@ -21,21 +21,42 @@ import { AuthContext } from "../context/AuthContext";
 import Image from "mui-image";
 import Page from "../components/Page";
 import { useSnackbar } from "notistack";
+import { useNavigate } from "react-router-dom";
 
 import Illustration from "../public/login_illustration.png";
 
 const Login = () => {
+  const navigate = useNavigate();
   const email = useRef();
   const password = useRef();
   const { enqueueSnackbar } = useSnackbar();
   const { isFetching, dispatch } = useContext(AuthContext);
 
-  const [demoEmail, setDemoEmail] = useState("aditisharma@example.com");
-  const [demoPassword, setDemoPassword] = useState("password");
+  const [isFacultyDemoChecked, setIsFacultyDemoChecked] = useState(false);
+  const [isStudentDemoChecked, setIsStudentDemoChecked] = useState(false);
 
-  const copyCredentials = () => {
-    email.current.value = demoEmail;
-    password.current.value = demoPassword;
+  const handleFacultyDemoChange = (event) => {
+    setIsFacultyDemoChecked(event.target.checked);
+    if (event.target.checked) {
+      email.current.value = "facultydemo@emithru.com";
+      password.current.value = "facultypassword";
+      setIsStudentDemoChecked(false);
+    } else {
+      email.current.value = "";
+      password.current.value = "";
+    }
+  };
+
+  const handleStudentDemoChange = (event) => {
+    setIsStudentDemoChecked(event.target.checked);
+    if (event.target.checked) {
+      email.current.value = "studentdemo@emithru.com";
+      password.current.value = "studentpassword";
+      setIsFacultyDemoChecked(false);
+    } else {
+      email.current.value = "";
+      password.current.value = "";
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -50,11 +71,20 @@ const Login = () => {
     }
 
     try {
-      await loginCall(
+      const data = await loginCall(
         { email: email.current.value, password: password.current.value },
         dispatch
       );
       enqueueSnackbar("Login Successful", { variant: "success" });
+
+      // Redirect based on user's roleName
+      if (data.data.user.roleName === "admin") {
+        // Redirect to admin dashboard
+        navigate("/admin/dashboard");
+      } else {
+        // Redirect to regular user dashboard or home page
+        navigate("/");
+      }
     } catch (error) {
       console.log("error", error);
       if (error.response && error.response.status === 401) {
@@ -118,20 +148,24 @@ const Login = () => {
                         <Typography variant="subtitle1" gutterBottom>
                           Demo Credentials
                         </Typography>
-                        <Typography variant="body2">
-                          Email: {demoEmail}
-                        </Typography>
-                        <Typography variant="body2" sx={{ mt: 1 }}>
-                          Password: {demoPassword}
-                        </Typography>
-                        <Button
-                          variant="outlined"
-                          size="small"
-                          sx={{ mt: 2 }}
-                          onClick={copyCredentials}
-                        >
-                          Copy Credentials
-                        </Button>
+                        <FormControlLabel
+                          control={
+                            <Radio
+                              checked={isFacultyDemoChecked}
+                              onChange={handleFacultyDemoChange}
+                            />
+                          }
+                          label="Faculty Demo"
+                        />
+                        <FormControlLabel
+                          control={
+                            <Radio
+                              checked={isStudentDemoChecked}
+                              onChange={handleStudentDemoChange}
+                            />
+                          }
+                          label="Student Demo"
+                        />
                       </Box>
                       <Typography variant="subtitle1">Email Address</Typography>
                       <TextField
@@ -155,14 +189,6 @@ const Login = () => {
                         autoComplete="current-password"
                         inputRef={password}
                       />
-                      {/* <Box>
-                        <FormControlLabel
-                          control={
-                            <Checkbox value="remember" color="primary" />
-                          }
-                          label="Keep me logged in"
-                        />
-                      </Box> */}
 
                       <Button
                         type="submit"
@@ -181,17 +207,6 @@ const Login = () => {
                           "Log In"
                         )}
                       </Button>
-                      {/* <Box sx={{ display: "flex" }}>
-                        <Link
-                          component="button"
-                          variant="body1"
-                          onClick={() => {
-                            // handle forgot password logic here
-                          }}
-                        >
-                          Forgot password?
-                        </Link>
-                      </Box> */}
                     </Stack>
                   </Box>
                 </Box>
