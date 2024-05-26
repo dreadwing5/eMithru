@@ -6,7 +6,7 @@ import {
   Container,
   TextField,
   FormControlLabel,
-  Checkbox,
+  Radio,
   Button,
   CircularProgress,
   Grid,
@@ -150,7 +150,7 @@ const Login = () => {
                         </Typography>
                         <FormControlLabel
                           control={
-                            <Checkbox
+                            <Radio
                               checked={isFacultyDemoChecked}
                               onChange={handleFacultyDemoChange}
                             />
@@ -159,7 +159,7 @@ const Login = () => {
                         />
                         <FormControlLabel
                           control={
-                            <Checkbox
+                            <Radio
                               checked={isStudentDemoChecked}
                               onChange={handleStudentDemoChange}
                             />
