@@ -1,11 +1,9 @@
 import { useState, useEffect, useContext } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import NavConfig from "./NavConfig";
+import { useLocation } from "react-router-dom";
+import getNavConfig from "./NavConfig";
 import SidebarDrawer from "./SidebarDrawer";
-import UserAvatar from "./UserAvatar";
 import NavItemsList from "./NavItemsList";
 import FlexBetween from "../../components/FlexBetween";
-import Scrollbar from "../../components/Scrollbar";
 import logo from "../../public/logo.png";
 import { Box, IconButton, useTheme } from "@mui/material";
 import { ChevronLeft } from "@mui/icons-material";
@@ -17,8 +15,7 @@ const Sidebar = ({
   setIsSidebarOpen,
   isNonMobile,
 }) => {
-  const { pathname } = useLocation(); //keep track of url path
-
+  const { pathname } = useLocation();
   const [active, setActive] = useState("dashboard");
   const theme = useTheme();
   const { user } = useContext(AuthContext);
@@ -34,6 +31,8 @@ const Sidebar = ({
       setActive(normalizeText(pathname.substring(1)));
     }
   }, [pathname]);
+
+  const navConfig = getNavConfig(user?.roleName);
 
   return (
     <Box component="nav">
@@ -57,19 +56,15 @@ const Sidebar = ({
               }}
             />
           </Box>
-
           <FlexBetween color={theme.palette.secondary.main}>
-            {/* <UserAvatar name={user?.name} role={user?.role} theme={theme} /> */}
-
             {!isNonMobile && (
               <IconButton onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
                 <ChevronLeft />
               </IconButton>
             )}
           </FlexBetween>
-
           <NavItemsList
-            navConfig={NavConfig}
+            navConfig={navConfig}
             active={active}
             setActive={setActive}
           />

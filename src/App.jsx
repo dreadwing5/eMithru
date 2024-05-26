@@ -25,7 +25,7 @@ import Attendance from "./pages/Student/Attendance";
 import Thread from "./pages/Thread/Thread";
 import ThreadWindow from "./pages/Thread/ThreadWindow";
 import Report from "./pages/Report/Report";
-
+import AdminDashboard from "./pages/Admin/AdminDashboard";
 // TODO : Need to remove routing logic from app component
 function App() {
   const { user } = useContext(AuthContext);
@@ -47,6 +47,14 @@ function App() {
                     element={
                       <ProtectedRouteWrapper>
                         <LazyLoadWrapper component={Dashboard} />
+                      </ProtectedRouteWrapper>
+                    }
+                  />
+                  <Route
+                    path="/admin/dashboard"
+                    element={
+                      <ProtectedRouteWrapper allowedRoles={["admin"]}>
+                        <LazyLoadWrapper component={AdminDashboard} />
                       </ProtectedRouteWrapper>
                     }
                   />
