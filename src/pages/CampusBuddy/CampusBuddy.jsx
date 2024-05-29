@@ -66,26 +66,27 @@ const ThinkingAnimation = ({ size = 40 }) => {
   );
 };
 
-const useTypewriterEffect = (text, typingSpeed) => {
-  const [typewriterText, setTypewriterText] = useState("");
+const useTypewriter = (text, speed = 20) => {
+  const [displayText, setDisplayText] = useState("");
+  const [index, setIndex] = useState(0);
 
   useEffect(() => {
-    let index = 0;
-    const timer = setInterval(() => {
-      if (index < text.length) {
-        setTypewriterText((prev) => prev + text.charAt(index));
-        index++;
-      } else {
-        clearInterval(timer);
+    const timeoutId = setTimeout(() => {
+      if (index === text.length) {
+        clearTimeout(timeoutId);
+        return;
       }
-    }, typingSpeed);
+
+      setDisplayText((prevText) => prevText + text.charAt(index));
+      setIndex((prevIndex) => prevIndex + 1);
+    }, speed);
 
     return () => {
-      clearInterval(timer);
+      clearTimeout(timeoutId);
     };
-  }, [text, typingSpeed]);
+  }, [text, speed, index]);
 
-  return typewriterText;
+  return displayText;
 };
 const CampusBuddyHeader = () => {
   return (
@@ -121,7 +122,7 @@ const CampusBuddyHeader = () => {
 
 const MOCK_MESSAGE = [
   {
-    body: "Heey, I'm your Campus Buddy. How can I help you today?",
+    body: "Hey, I'm your Campus Buddy. How can I help you today?",
     sender: "ai",
   },
 ];
@@ -216,7 +217,7 @@ const ChatMessage = ({ message }) => {
   const isUserMessage = message.sender === "user";
   const justifyContent = isUserMessage ? "flex-end" : "flex-start";
   const typingSpeed = 5;
-  const typewriterText = useTypewriterEffect(
+  const typewriterText = useTypewriter(
     message.sender === "ai" ? message.body : "",
     typingSpeed
   );

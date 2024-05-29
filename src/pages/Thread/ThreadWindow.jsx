@@ -212,7 +212,7 @@ export default function ThreadWindow() {
 
   const handleThreadClose = async () => {
     try {
-      const response = await api.patch(`/threads/${thread._id}`);
+      const response = await api.patch(`/threads/${thread._id}/close`);
       if (response.status === 200) {
         enqueueSnackbar("Successfully marked thread closed!", {
           variant: "success",
