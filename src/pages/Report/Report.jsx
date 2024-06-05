@@ -29,6 +29,7 @@ import GetApp from "@mui/icons-material/GetApp";
 import Page from "../../components/Page";
 import api from "../../utils/axios"; // replace with your actual API path
 import axios from "axios";
+import ProtectedRouteWrapper from "../../ProtectedRoute";
 
 const baseURL = import.meta.env.VITE_PYTHON_API;
 
@@ -360,5 +361,10 @@ const Report = () => {
     </Page>
   );
 };
-
-export default Report;
+export default function ProtectedReport() {
+  return (
+    <ProtectedRouteWrapper allowedRoles={["admin"]}>
+      <Report />
+    </ProtectedRouteWrapper>
+  );
+}

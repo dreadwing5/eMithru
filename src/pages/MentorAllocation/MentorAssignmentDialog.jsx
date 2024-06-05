@@ -22,7 +22,12 @@ const MentorAssignmentDialog = ({ open, student, onClose }) => {
   useEffect(() => {
     const fetchMentors = async () => {
       try {
-        const response = await api.get("/users?role=faculty");
+        const token = localStorage.getItem("token"); // Get the token from local storage or wherever it's stored
+        const response = await api.get("/users?role=faculty", {
+          headers: {
+            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
+          },
+        });
         const { data } = response.data;
         console.log(data);
         setMentors(data.users);

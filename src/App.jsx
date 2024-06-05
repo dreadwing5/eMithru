@@ -26,6 +26,7 @@ import Thread from "./pages/Thread/Thread";
 import ThreadWindow from "./pages/Thread/ThreadWindow";
 import Report from "./pages/Report/Report";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AddUserForm from "./pages/Admin/AddUserForm";
 // TODO : Need to remove routing logic from app component
 function App() {
   const { user } = useContext(AuthContext);
@@ -55,6 +56,22 @@ function App() {
                     element={
                       <ProtectedRouteWrapper allowedRoles={["admin"]}>
                         <LazyLoadWrapper component={AdminDashboard} />
+                      </ProtectedRouteWrapper>
+                    }
+                  />
+                  <Route
+                    path="/admin/add-user"
+                    element={
+                      <ProtectedRouteWrapper allowedRoles={["admin"]}>
+                        <LazyLoadWrapper component={AddUserForm} />
+                      </ProtectedRouteWrapper>
+                    }
+                  />
+                  <Route
+                    path="/admin/report"
+                    element={
+                      <ProtectedRouteWrapper allowedRoles={["admin"]}>
+                        <Report />
                       </ProtectedRouteWrapper>
                     }
                   />
@@ -115,10 +132,10 @@ function App() {
                     }
                   />
                   <Route
-                    path="/mentor"
+                    path="/admin/mentor-assignment"
                     element={
-                      <ProtectedRouteWrapper>
-                        <LazyLoadWrapper component={MentorAllocation} />
+                      <ProtectedRouteWrapper allowedRoles={["admin"]}>
+                        <MentorAllocation />
                       </ProtectedRouteWrapper>
                     }
                   />

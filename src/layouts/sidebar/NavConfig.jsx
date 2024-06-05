@@ -16,11 +16,20 @@ const adminNavConfig = [
     icon: <PersonAddOutlinedIcon />,
     link: "/admin/add-user",
   },
-  { text: "View Users", icon: <PeopleOutlinedIcon />, link: "/admin/users" },
+  {
+    text: "User Management",
+    icon: <PeopleOutlinedIcon />,
+    link: "/admin/dashboard",
+  },
   {
     text: "Mentor Assignment",
     icon: <PersonOutlinedIcon />,
     link: "/admin/mentor-assignment",
+  },
+  {
+    text: "Report",
+    icon: <ReportOutlinedIcon />,
+    link: "/admin/report",
   },
 ];
 

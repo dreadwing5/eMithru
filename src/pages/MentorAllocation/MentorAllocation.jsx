@@ -12,6 +12,7 @@ import Page from "../../components/Page";
 import api from "../../utils/axios";
 import StudentTable from "./StudentTable";
 import MentorAssignmentDialog from "./MentorAssignmentDialog";
+import ProtectedRouteWrapper from "../../ProtectedRoute";
 
 const MentorAllocation = () => {
   const [students, setStudents] = useState([]);
@@ -53,35 +54,37 @@ const MentorAllocation = () => {
   });
 
   return (
-    <Page title="User: Account Settings">
-      <Container maxWidth="lg">
-        <TableContainer component={Paper}>
-          <Box
-            sx={{ display: "flex", flexDirection: "column", height: "100%" }}
-          >
-            <Select
-              value={filterOption}
-              onChange={(e) => setFilterOption(e.target.value)}
+    <ProtectedRouteWrapper allowedRoles={["admin"]}>
+      <Page title="User: Account Settings">
+        <Container maxWidth="lg">
+          <TableContainer component={Paper}>
+            <Box
+              sx={{ display: "flex", flexDirection: "column", height: "100%" }}
             >
-              <MenuItem value="all">All</MenuItem>
-              <MenuItem value="assigned">Assigned Mentors</MenuItem>
-              <MenuItem value="unassigned">Unassigned Mentors</MenuItem>
-            </Select>
+              <Select
+                value={filterOption}
+                onChange={(e) => setFilterOption(e.target.value)}
+              >
+                <MenuItem value="all">All</MenuItem>
+                <MenuItem value="assigned">Assigned Mentors</MenuItem>
+                <MenuItem value="unassigned">Unassigned Mentors</MenuItem>
+              </Select>
 
-            <StudentTable
-              students={filteredStudents}
-              onEdit={handleEdit}
-            ></StudentTable>
-          </Box>
-        </TableContainer>
-      </Container>
+              <StudentTable
+                students={filteredStudents}
+                onEdit={handleEdit}
+              ></StudentTable>
+            </Box>
+          </TableContainer>
+        </Container>
 
-      <MentorAssignmentDialog
-        open={dialogOpen}
-        student={selectedStudent}
-        onClose={handleDialogClose}
-      />
-    </Page>
+        <MentorAssignmentDialog
+          open={dialogOpen}
+          student={selectedStudent}
+          onClose={handleDialogClose}
+        />
+      </Page>
+    </ProtectedRouteWrapper>
   );
 };
 
