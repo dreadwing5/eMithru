@@ -7,6 +7,9 @@ This platform provides comprehensive tools for educators, mentors, and mentees a
 - React (v17+)
 - Material-UI (v5)
 - Vite
+- Redux
+- Zod
+- Next JS
 
 ## Features
 
@@ -26,12 +29,17 @@ This platform provides comprehensive tools for educators, mentors, and mentees a
 
 ### 1. Clone the repository
 
-`git clone https://github.com/dreadwing5/cmrit-mentoring-tool-frontend.git
-cd cmrit-mentoring-tool-frontend`
+````bash
+git clone https://github.com/dreadwing5/cmrit-mentoring-tool-frontend.git
+cd cmrit-mentoring-tool-frontend
+
+````
 
 ### 2. Install dependencies
 
-`yarn install`
+````bash
+yarn install
+````
 
 ### 3. Configure environment variables
 
@@ -43,7 +51,9 @@ Replace `<your_api_base_url>` with the base URL of your backend server.
 
 ### 4. Start the development server
 
-`yarn run dev`
+````bash
+yarn run dev
+````
 
 This will start the frontend development server.
 
@@ -55,11 +65,15 @@ Open your browser and navigate to `http://localhost:3000` to view the applicatio
 
 To create a production build, run the following command:
 
-`yarn build`
+````bash
+yarn build
+````
 
 After the build is completed, you can serve the production build using:
 
-`yarn serve`
+````bash
+yarn serve
+````
 
 This will start the production server, and you can access the application on `http://localhost:5000`.
 
