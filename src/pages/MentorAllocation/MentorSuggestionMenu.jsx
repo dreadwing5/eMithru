@@ -11,7 +11,7 @@ const MentorSuggestionMenu = ({
   const menuItems = useMemo(() => {
     return suggestions.map((mentor) => (
       <MenuItem
-        key={mentor._id}
+        key={mentor.id}
         onClick={() => {
           onMentorSelect(mentor);
           onClose();

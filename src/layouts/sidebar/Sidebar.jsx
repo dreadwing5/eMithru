@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import getNavConfig from "./NavConfig";
+import NavConfig from "./NavConfig";
 import SidebarDrawer from "./SidebarDrawer";
 import NavItemsList from "./NavItemsList";
 import FlexBetween from "../../components/FlexBetween";
@@ -32,7 +32,7 @@ const Sidebar = ({
     }
   }, [pathname]);
 
-  const navConfig = getNavConfig(user?.roleName);
+  const navConfig = NavConfig.getNavConfig(user?.role);
 
   return (
     <Box component="nav">
@@ -67,6 +67,7 @@ const Sidebar = ({
             navConfig={navConfig}
             active={active}
             setActive={setActive}
+            userRole={user?.role}
           />
         </SidebarDrawer>
       )}

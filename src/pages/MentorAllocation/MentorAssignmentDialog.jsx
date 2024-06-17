@@ -8,9 +8,7 @@ import {
   Button,
   IconButton,
 } from "@mui/material";
-import axios from "axios";
 import MentorSuggestionMenu from "./MentorSuggestionMenu";
-
 import api from "../../utils/axios";
 
 const MentorAssignmentDialog = ({ open, student, onClose }) => {
@@ -22,12 +20,7 @@ const MentorAssignmentDialog = ({ open, student, onClose }) => {
   useEffect(() => {
     const fetchMentors = async () => {
       try {
-        const token = localStorage.getItem("token"); // Get the token from local storage or wherever it's stored
-        const response = await api.get("/users?role=faculty", {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-          },
-        });
+        const response = await api.get("/users?role=faculty");
         const { data } = response.data;
         console.log(data);
         setMentors(data.users);
@@ -43,12 +36,10 @@ const MentorAssignmentDialog = ({ open, student, onClose }) => {
     const value = event.target.value.trim();
     if (value !== "") {
       setSuggestions(
-        // Convert the list of names to a list of mentor objects
         mentors.filter((mentor) =>
           mentor.name.toLowerCase().startsWith(value.toLowerCase())
         )
       );
-
       setAnchorEl(event.target);
     } else {
       setSuggestions([]);
@@ -58,9 +49,9 @@ const MentorAssignmentDialog = ({ open, student, onClose }) => {
 
   const handleSave = async () => {
     try {
-      const response = await api.post("/mentors", {
-        mentorId: selectedMentor._id,
-        menteeId: student._id,
+      const response = await api.post("/mentorship", {
+        mentorId: selectedMentor.id,
+        menteeId: student.id,
         startDate: new Date().toISOString(),
       });
       console.log(response.data.message);

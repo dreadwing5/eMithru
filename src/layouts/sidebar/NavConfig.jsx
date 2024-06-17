@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import EventOutlinedIcon from "@mui/icons-material/EventOutlined";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
@@ -35,7 +36,6 @@ const adminNavConfig = [
 
 const facultyNavConfig = [
   { text: "Threads", icon: <QuestionAnswerOutlinedIcon />, link: "/threads" },
-  { text: "Report", icon: <ReportOutlinedIcon />, link: "/report" },
   { text: "Meetings", icon: <EventOutlinedIcon />, link: "/meetings" },
   { text: "Chat", icon: <ChatOutlinedIcon />, link: "/chat" },
   { text: "Campus Buddy", icon: <InfoOutlinedIcon />, link: "/campus-buddy" },
@@ -45,24 +45,27 @@ const facultyNavConfig = [
 const studentNavConfig = [
   { text: "Home", icon: <HomeOutlinedIcon />, link: "/" },
   { text: "Threads", icon: <QuestionAnswerOutlinedIcon />, link: "/threads" },
-  { text: "Report", icon: <ReportOutlinedIcon />, link: "/report" },
   { text: "Meetings", icon: <EventOutlinedIcon />, link: "/meetings" },
   { text: "Chat", icon: <ChatOutlinedIcon />, link: "/chat" },
   { text: "Campus Buddy", icon: <InfoOutlinedIcon />, link: "/campus-buddy" },
 ];
 
-const getNavConfig = (role) => {
-  console.log("ROLE", role);
-  switch (role) {
-    case "admin":
-      return adminNavConfig;
-    case "faculty":
-      return facultyNavConfig;
-    case "student":
-      return studentNavConfig;
-    default:
-      return [];
-  }
+const NavConfig = {
+  getNavConfig: (role) => {
+    switch (role) {
+      case "admin":
+        return NavConfig.adminNavConfig;
+      case "faculty":
+        return NavConfig.facultyNavConfig;
+      case "student":
+        return NavConfig.studentNavConfig;
+      default:
+        return [];
+    }
+  },
+  adminNavConfig,
+  facultyNavConfig,
+  studentNavConfig,
 };
 
-export default getNavConfig;
+export default NavConfig;

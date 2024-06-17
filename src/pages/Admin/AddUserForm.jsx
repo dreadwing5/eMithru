@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { BASE_URL } from "../../config";
 import {
   Box,
   Typography,
@@ -16,7 +15,7 @@ import {
   InputAdornment,
 } from "@mui/material";
 import { styled } from "@mui/system";
-import api from "axios";
+import api from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
 import {
   Person as PersonIcon,
@@ -24,6 +23,8 @@ import {
   Phone as PhoneIcon,
   Lock as LockIcon,
 } from "@mui/icons-material";
+
+import { useSnackbar } from "notistack";
 
 const Root = styled(Box)(({ theme }) => ({
   display: "flex",
@@ -71,40 +72,46 @@ const AddUserForm = () => {
   const [role, setRole] = useState("");
   const [avatar, setAvatar] = useState(null);
   const navigate = useNavigate();
+  const { enqueueSnackbar } = useSnackbar();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const formData = new FormData();
-      formData.append("name", name);
-      formData.append("email", email);
-      formData.append("password", password);
-      formData.append("passwordConfirm", passwordConfirm);
-      formData.append("phone", phone);
-      formData.append("role", role);
-      if (avatar) {
-        formData.append("avatar", avatar);
-      }
+      const formData = {
+        name,
+        email,
+        password,
+        passwordConfirm,
+        phone,
+        role,
+        avatar,
+      };
 
-      const token = localStorage.getItem("token");
-
-      const response = await api.post(
-        `${import.meta.env.VITE_API_URL}/users`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await api.post("/users/signup", formData);
 
       console.log("User created:", response.data);
-      navigate("/admin/users");
+      enqueueSnackbar("User created. Waiting for verification.", {
+        variant: "success",
+      });
+      navigate("/admin/dashboard");
     } catch (error) {
       console.error("Error adding user:", error);
-      // Handle specific error cases or display error messages to the user
+      if (
+        error.response &&
+        error.response.data.message === "Email already exists"
+      ) {
+        enqueueSnackbar(
+          "Email already exists. User is waiting for verification.",
+          {
+            variant: "warning",
+          }
+        );
+      } else {
+        enqueueSnackbar("Error creating user. Please try again.", {
+          variant: "error",
+        });
+      }
     }
   };
 

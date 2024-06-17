@@ -16,12 +16,13 @@ import {
   useTheme,
 } from "@mui/material";
 import { useContext, useRef, useState } from "react";
-import { loginCall } from "../apiCalls";
 import { AuthContext } from "../context/AuthContext";
 import Image from "mui-image";
 import Page from "../components/Page";
 import { useSnackbar } from "notistack";
 import { useNavigate } from "react-router-dom";
+import api from "../utils/axios";
+import { loginCall } from "../apiCalls"; // Import the loginCall function
 
 import Illustration from "../public/login_illustration.png";
 
@@ -71,29 +72,47 @@ const Login = () => {
     }
 
     try {
-      const data = await loginCall(
-        { email: email.current.value, password: password.current.value },
+      const res = await loginCall(
+        {
+          email: email.current.value,
+          password: password.current.value,
+        },
         dispatch
       );
-      enqueueSnackbar("Login Successful", { variant: "success" });
 
-      // Redirect based on user's roleName
-      if (data.data.user.roleName === "admin") {
-        // Redirect to admin dashboard
-        navigate("/admin/dashboard");
+      console.log("API response:", res); // Debug statement
+
+      if (res.status === "success") {
+        const { user, accessToken } = res.data;
+        console.log("Access Token:", accessToken); // Add this line
+        localStorage.setItem("accessToken", accessToken); // Log the user's role
+        enqueueSnackbar("Login Successful", { variant: "success" });
+
+        // Store the user's role in local storage or session storage
+        localStorage.setItem("userRole", user.role);
+
+        // Redirect based on user's role
+        if (user.role === "admin") {
+          console.log("Navigating to admin dashboard"); // Debug statement
+          navigate("/admin/dashboard");
+        } else if (user.role === "faculty") {
+          console.log("Navigating to faculty dashboard"); // Debug statement
+          navigate("/faculty/dashboard");
+        } else if (user.role === "student") {
+          console.log("Navigating to student dashboard"); // Debug statement
+          navigate("/student/dashboard");
+        } else {
+          console.log("Navigating to default route"); // Debug statement
+          navigate("/");
+        }
       } else {
-        // Redirect to regular user dashboard or home page
-        navigate("/");
+        enqueueSnackbar("Invalid email or password", { variant: "error" });
       }
     } catch (error) {
       console.log("error", error);
-      if (error.response && error.response.status === 401) {
-        enqueueSnackbar("Invalid email or password", { variant: "error" });
-      } else {
-        enqueueSnackbar("Error logging in. Please try again.", {
-          variant: "error",
-        });
-      }
+      enqueueSnackbar("Error logging in. Please try again.", {
+        variant: "error",
+      });
     }
   };
 

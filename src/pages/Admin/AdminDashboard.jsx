@@ -29,7 +29,7 @@ import {
   Add as AddIcon,
 } from "@mui/icons-material";
 import { styled } from "@mui/system";
-import axios from "axios";
+import api from "../../utils/axios";
 import { useNavigate } from "react-router-dom";
 
 const Root = styled(Box)(({ theme }) => ({
@@ -64,8 +64,8 @@ const AdminDashboard = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("/api/users");
-      setUsers(response.data);
+      const response = await api.get("/users");
+      setUsers(response.data.data.users);
     } catch (error) {
       console.error("Error fetching users:", error);
     }

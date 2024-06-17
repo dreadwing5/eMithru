@@ -10,6 +10,7 @@ const NavigationItem = ({
   dropdownItems,
   active,
   setActive,
+  userRole,
 }) => {
   const theme = useTheme();
   const navigate = useNavigate();
@@ -22,19 +23,22 @@ const NavigationItem = ({
   const lcText = normalizeText(text);
 
   //FIXME : This can cause issue with nested item
-  const isActive =
-    pathname === link || pathname.startsWith(`${link}/`) ? lcText : "";
+  const isActive = pathname === pathname.startsWith(`${link}/`) ? lcText : "";
 
   const isDropdown = dropdownItems && dropdownItems.length > 0;
   const navButtonBackgroundColor =
     theme.palette.mode === "dark" ? "#37404a" : "#e9eaeb";
 
   const onToggleDropdown = () => {
-    setActive(active === lcText ? "" : lcText);
+    if (isDropdown) {
+      setActive(active === lcText ? "" : lcText);
+    } else {
+      onItemClick();
+    }
   };
 
-  const onItemClick = (itemLink) => {
-    navigate(itemLink);
+  const onItemClick = () => {
+    navigate(link);
     setActive(lcText);
   };
 
@@ -54,9 +58,7 @@ const NavigationItem = ({
           active={isActive}
           navButtonBackgroundColor={navButtonBackgroundColor}
           isDropdown={isDropdown}
-          onToggleDropdown={
-            isDropdown ? onToggleDropdown : () => onItemClick(link)
-          }
+          onToggleDropdown={onToggleDropdown}
         />
       </ListItem>
       <List sx={{ px: 2, py: 0 }}>
